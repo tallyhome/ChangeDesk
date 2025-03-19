@@ -23,7 +23,9 @@
                 
                 <div class="mb-3">
                     <label for="content" class="form-label">Contenu</label>
-                    <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
+                    <div id="content-container">
+                        <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
+                    </div>
                 </div>
                 
                 <button type="submit" class="btn btn-primary">Créer</button>
@@ -67,6 +69,26 @@
 @endpush
 
 @push('scripts')
-<!-- Scripts Summernote -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#content').summernote({
+            placeholder: 'Entrez le contenu de la version ici...',
+            tabsize: 2,
+            height: 300,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture']],
+                ['view', ['fullscreen', 'codeview', 'help']]
+            ]
+        });
+    });
 </script>
 @endpush

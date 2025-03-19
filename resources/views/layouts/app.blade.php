@@ -44,6 +44,28 @@
             box-shadow: none !important;
             outline: none !important;
         }
+        
+        /* Style pour un pied de page plus compact et toujours en bas */
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        
+        #app {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        main {
+            flex: 1;
+        }
+        
+        footer {
+            padding: 0.5rem 0 !important;
+            background-color: #f8f9fa !important;
+            font-size: 0.85rem;
+        }
     </style>
     @yield('head')
     @stack('styles')
@@ -66,10 +88,10 @@
                             <a class="nav-link {{ request()->routeIs('changelog') ? 'active' : '' }}" href="{{ route('changelog') }}">Changelog</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('terms') ? 'active' : '' }}" href="{{ route('terms') }}">Conditions d'utilisation</a>
+                            <a class="nav-link {{ request()->routeIs('todolist') ? 'active' : '' }}" href="{{ route('todolist') }}">Prochaines fonctionnalités</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('privacy') ? 'active' : '' }}" href="{{ route('privacy') }}">Politique de confidentialité</a>
+                            <a class="nav-link {{ request()->routeIs('bug-report') ? 'active' : '' }}" href="{{ route('bug-report') }}">Signaler un bug</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav">
@@ -82,6 +104,8 @@
                                     <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                                     <li><a class="dropdown-item" href="{{ route('admin.pages.index') }}">Pages</a></li>
                                     <li><a class="dropdown-item" href="{{ route('admin.changelog') }}">Changelog</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('admin.todolist') }}">Prochaines fonctionnalités</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('admin.bug-reports') }}">Rapports de bugs</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item">
@@ -105,9 +129,26 @@
         </main>
     </div>
 
+    <footer>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; {{ date('Y') }} MyVcard MyPredict. Tous droits réservés.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="{{ route('terms') }}" class="text-decoration-none me-3">Conditions d'utilisation</a>
+                    <a href="{{ route('privacy') }}" class="text-decoration-none">Politique de confidentialité</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Summernote -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
     @yield('scripts')
     @stack('scripts')
 </body>
