@@ -10,13 +10,13 @@ class VersionController extends Controller
     public function index()
     {
         $versions = Version::orderBy('release_date', 'desc')->get();
-        return view('admin.changelog', compact('versions'));
+        return view('admin.changelog.index', compact('versions'));
     }
 
     public function create()
     {
         $versions = Version::orderBy('release_date', 'desc')->get();
-        return view('admin.changelog', compact('versions'));
+        return view('admin.changelog.create', compact('versions'));
     }
 
     public function store(Request $request)
@@ -35,7 +35,7 @@ class VersionController extends Controller
     public function edit(Version $version)
     {
         $versions = Version::orderBy('release_date', 'desc')->get();
-        return view('admin.changelog', compact('version', 'versions'));
+        return view('admin.changelog.edit', compact('version', 'versions'));
     }
 
     public function update(Request $request, Version $version)
@@ -45,9 +45,19 @@ class VersionController extends Controller
             'release_date' => 'required|date',
             'content' => 'required|string'
         ]);
-
-        $version->update($validated);
-
+        
+        $version->version_number = $validated['version_number'];
+        $version->release_date = $validated['release_date'];
+        $version->content = $validated['content'];
+        $version->save();
+        
         return redirect()->route('admin.changelog')->with('success', 'Version mise à jour avec succès');
+    }
+
+    public function destroy(Version $version)
+    {
+        $version->delete();
+        
+        return redirect()->route('admin.changelog')->with('success', 'Version supprimée avec succès');
     }
 }

@@ -2,18 +2,21 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Version extends Model
 {
-    protected $fillable = ['version_number', 'release_date', 'content'];
-    protected $dates = [
+    use HasFactory;
+    
+    protected $fillable = [
+        'version_number',
         'release_date',
-        'created_at',
-        'updated_at'
+        'content'
     ];
-
+    
     protected $casts = [
-        'release_date' => 'date'
+        'release_date' => 'datetime',
     ];
 }
