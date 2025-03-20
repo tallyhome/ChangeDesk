@@ -30,7 +30,7 @@ class VersionController extends Controller
         $version = new Version();
         $version->version_number = $validated['version_number'];
         $version->release_date = $validated['release_date'];
-        // Suppression de la ligne qui utilise description
+        $version->description = ''; // Ajout d'une valeur par défaut pour description
         $version->content = $validated['content'];
         $version->save();
         
@@ -54,7 +54,7 @@ class VersionController extends Controller
         
         $version->version_number = $validated['version_number'];
         $version->release_date = $validated['release_date'];
-        // Suppression de la ligne qui utilise description
+        // Nous conservons la valeur existante de description
         $version->content = $validated['content'];
         $version->save();
         

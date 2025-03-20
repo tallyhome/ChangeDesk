@@ -13,7 +13,7 @@ class CreateVersionsTable extends Migration
                 $table->id();
                 $table->string('version_number');
                 $table->date('release_date');
-                $table->string('description');
+                $table->string('description')->default(''); // Définir une valeur par défaut
                 $table->text('content');
                 $table->timestamps();
             });

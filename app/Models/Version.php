@@ -12,6 +12,7 @@ class Version extends Model
     protected $fillable = [
         'version_number',
         'release_date',
+        'description',
         'content'
     ];
     
