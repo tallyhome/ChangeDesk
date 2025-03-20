@@ -25,6 +25,7 @@ class VersionController extends Controller
             'version_number' => 'required|string|max:20',
             'release_date' => 'required|date',
             'content' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
         
         $version = new Version();
@@ -32,6 +33,14 @@ class VersionController extends Controller
         $version->release_date = $validated['release_date'];
         $version->description = ''; // Ajout d'une valeur par défaut pour description
         $version->content = $validated['content'];
+        
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('uploads'), $imageName);
+            $version->image_path = 'uploads/' . $imageName;
+        }
+        
         $version->save();
         
         return redirect()->route('admin.changelog')->with('success', 'Version ajoutée avec succès.');
@@ -50,12 +59,26 @@ class VersionController extends Controller
             'version_number' => 'required|string|max:20',
             'release_date' => 'required|date',
             'content' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
         
         $version->version_number = $validated['version_number'];
         $version->release_date = $validated['release_date'];
         // Nous conservons la valeur existante de description
         $version->content = $validated['content'];
+        
+        if ($request->hasFile('image')) {
+            // Supprimer l'ancienne image si elle existe
+            if ($version->image_path && file_exists(public_path($version->image_path))) {
+                unlink(public_path($version->image_path));
+            }
+            
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('uploads'), $imageName);
+            $version->image_path = 'uploads/' . $imageName;
+        }
+        
         $version->save();
         
         return redirect()->route('admin.changelog')->with('success', 'Version mise à jour avec succès.');

@@ -5,7 +5,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\VersionController;
-use App\Http\Controllers\ImageUploadController;
+use App\Http\Controllers\Admin\ImageUploadController;
 use App\Http\Controllers\Admin\TodoItemController;
 use App\Http\Controllers\Admin\BugReportController;
 
@@ -64,4 +64,5 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/bug-reports/{bugReport}/edit', [BugReportController::class, 'edit'])->name('bug_reports.edit');
     Route::put('/bug-reports/{bugReport}', [BugReportController::class, 'update'])->name('bug_reports.update');
     Route::delete('/bug-reports/{bugReport}', [BugReportController::class, 'destroy'])->name('bug_reports.destroy');
+    Route::delete('/todos/{id}', [TodoController::class, 'destroy'])->name('todos.destroy');
 });

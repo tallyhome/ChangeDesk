@@ -13,7 +13,8 @@ class Version extends Model
         'version_number',
         'release_date',
         'description',
-        'content'
+        'content',
+        'image_path'
     ];
     
     protected $casts = [

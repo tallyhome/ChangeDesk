@@ -61,8 +61,9 @@ class TodoItemController extends Controller
         return redirect()->route('admin.todolist')->with('success', 'Fonctionnalité mise à jour avec succès.');
     }
 
-    public function destroy(string $id)
+    public function destroy(TodoItem $todoItem)
     {
-        //
+        $todoItem->delete();
+        return redirect()->route('admin.todolist')->with('success', 'Fonctionnalité supprimée avec succès.');
     }
 }

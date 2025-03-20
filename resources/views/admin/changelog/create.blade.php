@@ -88,16 +88,28 @@
                 ['insert', ['link', 'picture']],
                 ['view', ['fullscreen', 'codeview', 'help']]
             ],
-            // Utilisation de l'encodage base64 pour les images
             callbacks: {
                 onImageUpload: function(files) {
                     for (let i = 0; i < files.length; i++) {
-                        let reader = new FileReader();
-                        reader.onloadend = function() {
-                            let image = $('<img>').attr('src', reader.result);
-                            $('#content').summernote('insertNode', image[0]);
-                        }
-                        reader.readAsDataURL(files[i]);
+                        let formData = new FormData();
+                        formData.append('file', files[i]);
+                        $.ajax({
+                            url: '{{ route("admin.upload.image") }}',
+                            method: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(data) {
+                                $('#content').summernote('insertImage', data.location);
+                            },
+                            error: function(xhr) {
+                                console.error('Erreur lors de l\'upload:', xhr.responseText);
+                                alert('Erreur lors de l\'upload de l\'image');
+                            }
+                        });
                     }
                 }
             }
