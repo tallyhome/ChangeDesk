@@ -105,7 +105,7 @@
                                     <li><a class="dropdown-item" href="{{ route('admin.pages.index') }}">Pages</a></li>
                                     <li><a class="dropdown-item" href="{{ route('admin.changelog') }}">Changelog</a></li>
                                     <li><a class="dropdown-item" href="{{ route('admin.todolist') }}">Prochaines fonctionnalités</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('admin.bug-reports') }}">Rapports de bugs</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('admin.bug_reports') }}">Rapports de bugs</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item">

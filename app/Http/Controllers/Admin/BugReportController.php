@@ -4,62 +4,80 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\BugReport;
 
 class BugReportController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $bugReports = BugReport::orderBy('created_at', 'desc')->get();
+        return view('admin.bug_reports.index', compact('bugReports'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('admin.bug_reports.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'severity' => 'required|string|in:low,medium,high,critical',
+            'status' => 'required|string|in:open,in_progress,resolved,closed',
+            'progress' => 'required|integer|min:0|max:100',
+            'color' => 'required|string|in:primary,success,info,warning,danger',
+            'expected_fix_date' => 'nullable|date',
+        ]);
+        
+        $bugReport = new \App\Models\BugReport();
+        $bugReport->title = $validated['title'];
+        $bugReport->description = $validated['description'];
+        $bugReport->severity = $validated['severity'];
+        $bugReport->status = $validated['status'];
+        $bugReport->progress = $validated['progress'];
+        $bugReport->color = $validated['color'];
+        
+        // Définir une valeur par défaut pour reporter_name et reporter_email
+        $bugReport->reporter_name = 'Admin';
+        $bugReport->reporter_email = 'admin@example.com'; // Ajout de cette ligne
+        
+        if ($request->has('expected_fix_date') && $request->expected_fix_date) {
+            $bugReport->expected_fix_date = $request->expected_fix_date;
+        }
+        
+        $bugReport->save();
+        
+        return redirect()->route('admin.bug_reports')->with('success', 'Rapport de bug créé avec succès.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(BugReport $bugReport)
     {
-        //
+        return view('admin.bug_reports.edit', compact('bugReport'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, BugReport $bugReport)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'status' => 'required|in:open,in_progress,resolved,closed',
+            'progress' => 'required|integer|min:0|max:100',
+            'color' => 'required|string|in:primary,success,info,warning,danger',
+            'severity' => 'required|in:low,medium,high,critical',
+            'expected_fix_date' => 'nullable|date',
+        ]);
+        
+        $bugReport->update($validated);
+        
+        return redirect()->route('admin.bug_reports')->with('success', 'Rapport de bug mis à jour avec succès.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy(BugReport $bugReport)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $bugReport->delete();
+        
+        return redirect()->route('admin.bug_reports')->with('success', 'Rapport de bug supprimé avec succès.');
     }
 }

@@ -12,12 +12,11 @@ class VersionSeeder extends Seeder
      */
     public function run(): void
     {
-        // Vérifiez les noms de colonnes exacts dans votre table versions
         Version::create([
-            'number' => '1.0.0', // Changé de 'version' à 'number' si c'est le nom correct
+            'number' => '1.0.0',  // Assurez-vous que cette clé correspond à la colonne dans la table
             'release_date' => '2023-01-15',
             'description' => 'Version initiale de l\'application',
-            'changes' => '<ul><li>Lancement de la plateforme</li><li>Système d\'authentification</li><li>Interface utilisateur de base</li></ul>'
+            'changes' => '<ul><li>Lancement de la plateforme</li><li>Système d\'authentification</li><li>Interface utilisateur de base</li></ul>',
         ]);
 
         Version::create([

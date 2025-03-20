@@ -21,15 +21,14 @@
                     <input type="date" class="form-control" id="release_date" name="release_date" required>
                 </div>
                 
+                <!-- Le champ description a été supprimé -->
+                
                 <div class="mb-3">
-                    <label for="content" class="form-label">Contenu</label>
-                    <div id="content-container">
-                        <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
-                    </div>
+                    <label for="content" class="form-label">Changements</label>
+                    <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
                 </div>
                 
-                <button type="submit" class="btn btn-primary">Créer</button>
-                <a href="{{ route('admin.changelog') }}" class="btn btn-secondary">Annuler</a>
+                <button type="submit" class="btn btn-primary">Ajouter</button>
             </form>
         </div>
         
@@ -73,12 +72,13 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/lang/summernote-fr-FR.min.js"></script>
 <script>
     $(document).ready(function() {
         $('#content').summernote({
             placeholder: 'Entrez le contenu de la version ici...',
-            tabsize: 2,
             height: 300,
+            lang: 'fr-FR',
             toolbar: [
                 ['style', ['style']],
                 ['font', ['bold', 'underline', 'clear']],
@@ -87,7 +87,20 @@
                 ['table', ['table']],
                 ['insert', ['link', 'picture']],
                 ['view', ['fullscreen', 'codeview', 'help']]
-            ]
+            ],
+            // Utilisation de l'encodage base64 pour les images
+            callbacks: {
+                onImageUpload: function(files) {
+                    for (let i = 0; i < files.length; i++) {
+                        let reader = new FileReader();
+                        reader.onloadend = function() {
+                            let image = $('<img>').attr('src', reader.result);
+                            $('#content').summernote('insertNode', image[0]);
+                        }
+                        reader.readAsDataURL(files[i]);
+                    }
+                }
+            }
         });
     });
 </script>

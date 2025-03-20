@@ -29,13 +29,14 @@
                     <input type="date" class="form-control" id="release_date" name="release_date" value="{{ $version->release_date->format('Y-m-d') }}" required>
                 </div>
                 
+                <!-- Le champ description a été supprimé -->
+                
                 <div class="mb-3">
-                    <label for="content" class="form-label">Contenu</label>
-                    <textarea class="form-control" id="content" name="content" rows="10" required>{!! $version->content !!}</textarea>
+                    <label for="content" class="form-label">Changements</label>
+                    <textarea class="form-control" id="content" name="content" rows="10" required>{{ $version->content }}</textarea>
                 </div>
                 
                 <button type="submit" class="btn btn-primary">Mettre à jour</button>
-                <a href="{{ route('admin.changelog') }}" class="btn btn-secondary">Annuler</a>
             </form>
         </div>
         
@@ -47,7 +48,7 @@
                 <div class="card-body" style="max-height: 600px; overflow-y: auto;">
                     <ul class="list-group">
                         @foreach($versions as $existingVersion)
-                            <li class="list-group-item {{ $existingVersion->id == $version->id ? 'active' : '' }}">
+                            <li class="list-group-item">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
                                         <strong>v{{ $existingVersion->version_number }}</strong>
@@ -75,13 +76,17 @@
 @endpush
 
 @push('scripts')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
-@section('scripts')
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/lang/summernote-fr-FR.min.js"></script>
 <script>
     $(document).ready(function() {
         $('#content').summernote({
+            placeholder: 'Entrez le contenu de la version ici...',
             height: 300,
+            lang: 'fr-FR',
             toolbar: [
                 ['style', ['style']],
                 ['font', ['bold', 'underline', 'clear']],
@@ -90,55 +95,21 @@
                 ['table', ['table']],
                 ['insert', ['link', 'picture']],
                 ['view', ['fullscreen', 'codeview', 'help']]
-            ]
-        });
-    });
-</script>
-@endsection
-<script>
-    $(document).ready(function() {
-        $('#content').summernote({
-            height: 300,
-            minHeight: null,
-            maxHeight: null,
-            focus: true,
-            toolbar: [
-                ['style', ['style']],
-                ['font', ['bold', 'underline', 'clear']],
-                ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['table', ['table']],
-                ['insert', ['link', 'picture', 'video']],
-                ['view', ['fullscreen', 'codeview', 'help']]
             ],
+            // Utilisation de l'encodage base64 pour les images
             callbacks: {
                 onImageUpload: function(files) {
                     for (let i = 0; i < files.length; i++) {
-                        uploadImage(files[i]);
+                        let reader = new FileReader();
+                        reader.onloadend = function() {
+                            let image = $('<img>').attr('src', reader.result);
+                            $('#content').summernote('insertNode', image[0]);
+                        }
+                        reader.readAsDataURL(files[i]);
                     }
                 }
             }
         });
-
-        function uploadImage(file) {
-            let formData = new FormData();
-            formData.append('file', file);
-            formData.append('_token', '{{ csrf_token() }}');
-            
-            $.ajax({
-                url: '{{ route("admin.upload.image") }}',
-                method: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(data) {
-                    $('#content').summernote('insertImage', data.location);
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.error(textStatus + " " + errorThrown);
-                }
-            });
-        }
     });
 </script>
 @endpush

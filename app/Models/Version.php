@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Version extends Model
 {
@@ -17,6 +16,6 @@ class Version extends Model
     ];
     
     protected $casts = [
-        'release_date' => 'datetime',
+        'release_date' => 'date',
     ];
 }

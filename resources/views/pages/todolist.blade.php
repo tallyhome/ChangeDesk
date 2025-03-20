@@ -1,46 +1,55 @@
 @extends('layouts.app')
 
-@section('title', 'Prochaines fonctionnalités')
+@section('title', 'Fonctionnalités à venir')
 
 @section('content')
 <div class="container py-5">
+    <h1 class="mb-4">Fonctionnalités à venir</h1>
+    
     <div class="row">
-        <div class="col-md-12">
-            <h1 class="mb-4">Prochaines fonctionnalités</h1>
-            
-            <div class="row">
-                @foreach($todoItems as $item)
-                    <div class="col-md-6 mb-4">
-                        <div class="card h-100">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <h5 class="mb-0">{{ $item->title }}</h5>
-                                <span class="badge {{ $item->completion_percentage >= 75 ? 'bg-success' : ($item->completion_percentage >= 25 ? 'bg-warning' : 'bg-danger') }}">
-                                    {{ $item->completion_percentage }}%
-                                </span>
+        @foreach($todoItems as $item)
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $item->title }}</h5>
+                        <div class="card-text">{!! $item->description !!}</div>
+                        
+                        <!-- Barre de progression -->
+                        <div class="progress mb-3">
+                            <div class="progress-bar bg-{{ $item->color ?? 'primary' }}" role="progressbar" 
+                                style="width: {{ $item->progress ?? 0 }}%" 
+                                aria-valuenow="{{ $item->progress ?? 0 }}" 
+                                aria-valuemin="0" 
+                                aria-valuemax="100">{{ $item->progress ?? 0 }}%</div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <i class="fas fa-calendar-alt"></i> Date estimée : 
+                                @if(is_string($item->expected_date))
+                                    {{ $item->expected_date }}
+                                @elseif($item->expected_date)
+                                    {{ $item->expected_date->format('d/m/Y') }}
+                                @else
+                                    Non définie
+                                @endif
                             </div>
-                            <div class="card-body">
-                                <div class="progress mb-3">
-                                    <div class="progress-bar {{ $item->completion_percentage >= 75 ? 'bg-success' : ($item->completion_percentage >= 25 ? 'bg-warning' : 'bg-danger') }}" 
-                                         role="progressbar" 
-                                         style="width: {{ $item->completion_percentage }}%" 
-                                         aria-valuenow="{{ $item->completion_percentage }}" 
-                                         aria-valuemin="0" 
-                                         aria-valuemax="100">
-                                        {{ $item->completion_percentage }}%
-                                    </div>
-                                </div>
-                                <p>{{ $item->description }}</p>
-                                @if($item->estimated_completion_date)
-                                    <p class="text-muted mt-3">
-                                        <i class="fas fa-calendar-alt"></i> Date estimée : {{ $item->estimated_completion_date->format('d/m/Y') }}
-                                    </p>
+                            <div>
+                                @if($item->status == 'pending')
+                                    <span class="badge bg-warning">En attente</span>
+                                @elseif($item->status == 'in_progress')
+                                    <span class="badge bg-info">En cours</span>
+                                @elseif($item->status == 'completed')
+                                    <span class="badge bg-success">Terminé</span>
+                                @else
+                                    <span class="badge bg-secondary">{{ $item->status }}</span>
                                 @endif
                             </div>
                         </div>
                     </div>
-                @endforeach
+                </div>
             </div>
-        </div>
+        @endforeach
     </div>
 </div>
 @endsection
