@@ -66,6 +66,12 @@
             background-color: #f8f9fa !important;
             font-size: 0.85rem;
         }
+
+        /* Style pour le menu déroulant Admin */
+        .dropdown-menu {
+            z-index: 1050 !important;
+            position: absolute !important;
+        }
     </style>
     @yield('head')
     @stack('styles')
