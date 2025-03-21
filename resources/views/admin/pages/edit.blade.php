@@ -2,7 +2,7 @@
 
 @section('title', 'Admin - Éditer ' . $page->title)
 
-@include('partials.summernote')
+@include('partials.tinymce')
 
 @section('content')
 <div class="container">

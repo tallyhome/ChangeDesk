@@ -2,7 +2,7 @@
 
 @section('title', 'Admin - Changelog')
 
-@include('partials.summernote')
+@include('partials.tinymce')
 
 @section('content')
 <div class="container-fluid">

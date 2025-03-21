@@ -103,23 +103,11 @@
 </div>
 @endsection
 
+@include('partials.tinymce')
+
 @section('scripts')
 <script>
     $(document).ready(function() {
-        // Initialiser l'éditeur de texte pour la description
-        $('#description').summernote({
-            placeholder: 'Décrivez le bug en détail...',
-            height: 200,
-            toolbar: [
-                ['style', ['style']],
-                ['font', ['bold', 'underline', 'clear']],
-                ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['table', ['table']],
-                ['insert', ['link']],
-                ['view', ['fullscreen', 'codeview', 'help']]
-            ]
-        });
         
         // Mise à jour dynamique de la barre de progression
         $('#progress').on('input', function() {

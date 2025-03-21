@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class ImageUploadController extends Controller
 {
-    public function upload(Request $request)
+    public function store(Request $request)
     {
         Log::info('Upload request received');
 

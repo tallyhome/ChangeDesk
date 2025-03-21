@@ -92,11 +92,11 @@
 </div>
 @endsection
 
+@include('partials.tinymce')
+
 @section('scripts')
 <script>
     $(document).ready(function() {
-        // Initialiser l'éditeur de texte pour la description si nécessaire
-        $('#description').summernote({
             placeholder: 'Décrivez la fonctionnalité en détail...',
             height: 200,
             toolbar: [

@@ -23,3 +23,22 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+# Définir les types MIME corrects pour les éditeurs de texte
+<IfModule mod_mime.c>
+    AddType text/css .css
+    AddType application/javascript .js
+    AddType application/x-font-ttf .ttf
+    AddType application/x-font-opentype .otf
+    AddType application/font-woff .woff
+    AddType application/font-woff2 .woff2
+    AddType application/vnd.ms-fontobject .eot
+</IfModule>
+
+# Forcer les types MIME pour les fichiers des éditeurs de texte
+<FilesMatch "\.(css)$">
+    ForceType text/css
+</FilesMatch>
+<FilesMatch "\.(js)$">
+    ForceType application/javascript
+</FilesMatch>

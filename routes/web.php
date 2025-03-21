@@ -45,8 +45,9 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::put('/changelog/{version}', [VersionController::class, 'update'])->name('changelog.update');
     Route::delete('/changelog/{version}', [VersionController::class, 'destroy'])->name('changelog.destroy');
     
-    // Upload d'image
-    Route::post('/upload/image', [ImageUploadController::class, 'upload'])->name('upload.image');
+    // Upload d'image - Correction de la route
+    Route::post('/upload/image', [App\Http\Controllers\Admin\ImageUploadController::class, 'store'])
+        ->name('upload.image');
     
     // Routes pour les TodoItems
     Route::get('/todolist', [TodoItemController::class, 'index'])->name('todolist');
