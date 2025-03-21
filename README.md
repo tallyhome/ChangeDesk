@@ -109,9 +109,37 @@ L'application sera accessible à l'adresse http://127.0.0.1:8000
 - progress (progression en pourcentage)
 - color (couleur associée au statut)
 - severity (gravité du bug)
-- expected_fix_date (date prévue de correction)
+- expected_fix_date (date prévue de correction)!
+
 - admin_notes (notes de l'administrateur)
 - timestamps (created_at, updated_at)
+
+
+### Screen 
+# Aperçu du projet
+
+| ChanLog | Todolist | Report Bug |
+|---------|---------|------------|
+| ![ChanLog](https://github.com/user-attachments/assets/fbb8276f-f467-4992-870d-887a50c23f07) | ![Todolist](https://github.com/user-attachments/assets/25ff9e3e-4ea2-4f6c-ba85-38990468a802) | ![Report_Bug](https://github.com/user-attachments/assets/43ef171a-d5c3-4b88-955c-a004f535a889) |
+
+| Admin Todolist News | Admin Report Bug News | Admin Report Bug Edit |
+|---------------------|----------------------|----------------------|
+| ![Admin_todolist_news](https://github.com/user-attachments/assets/694afa42-30b1-4b93-90e2-50d6db63d7c1) | ![Admin_report_bug_news](https://github.com/user-attachments/assets/f0978c77-9787-422f-a5cb-a184e3f49c08) | ![Admin_report_bug_edit](https://github.com/user-attachments/assets/8221bf5e-c696-4b09-ae14-fc3e4590a8eb) |
+
+| Admin Report Bug | Admin Profile | Admin Page |
+|-----------------|---------------|------------|
+| ![Admin_report_bug](https://github.com/user-attachments/assets/2fa10500-601c-4657-9583-a6da547734f2) | ![Admin_Profile](https://github.com/user-attachments/assets/62d6ce4e-c90f-4809-a8f4-6e1aeed5c189) | ![Admin_Page](https://github.com/user-attachments/assets/48e1042f-c36d-49cd-952c-3a00fbc146b9) |
+
+| Admin ChangeLog News | Admin ChangeLog Edit | Admin ChangeLog |
+|---------------------|---------------------|----------------|
+| ![Admin_ChanLog_news](https://github.com/user-attachments/assets/7b59ef04-2e0d-4032-a4b9-6f7993987e17) | ![Admin_ChanLog_edit](https://github.com/user-attachments/assets/4d9f79fa-bcc4-4f99-bc92-8f0d40cb8b34) | ![Admin_ChanLog](https://github.com/user-attachments/assets/7c8eeead-3db6-424f-afa3-f663063dcafe) |
+
+| Admin Todolist Edit | Admin Todolist |
+|--------------------|---------------|
+| ![Admin_todolist_edit](https://github.com/user-attachments/assets/d6709bff-cc71-43b6-9acb-19c24e7c37c2) | ![Admin_todolist](https://github.com/user-attachments/assets/2a8e2825-153b-43e7-a12e-0b916cb10f2f) |
+
+
+
 
 ## Licence
 
