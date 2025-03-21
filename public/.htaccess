@@ -41,4 +41,16 @@
 </FilesMatch>
 <FilesMatch "\.(js)$">
     ForceType application/javascript
+    # Supprimer les caractères de contrôle illégaux
+    <IfModule mod_headers.c>
+        Header set Content-Type "application/javascript; charset=UTF-8"
+    </IfModule>
+</FilesMatch>
+
+# Règle spécifique pour TinyMCE
+<FilesMatch "tinymce/.*\.js$">
+    ForceType application/javascript
+    <IfModule mod_headers.c>
+        Header set Content-Type "application/javascript; charset=UTF-8"
+    </IfModule>
 </FilesMatch>
