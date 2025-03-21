@@ -4,6 +4,11 @@
             <a class="nav-link" href="{{ route('admin.dashboard') }}">Dashboard</a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.profile.edit') }}">
+                <i class="fas fa-user-cog"></i> Mon Profil
+            </a>
+        </li>
+        <li class="nav-item">
             <span class="nav-link">Pages</span>
             <ul class="nav flex-column ms-3">
                 <li class="nav-item">

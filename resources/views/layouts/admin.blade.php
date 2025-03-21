@@ -75,6 +75,11 @@
                                 <i class="fas fa-bug"></i> Rapports de bugs
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.profile.edit') ? 'active' : '' }}" href="{{ route('admin.profile.edit') }}">
+                                <i class="fas fa-user-cog"></i> Mon Profil
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
