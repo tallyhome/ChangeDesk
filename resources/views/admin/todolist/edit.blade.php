@@ -98,6 +98,8 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
+        tinymce.init({
+            selector: '#description',
             placeholder: 'Décrivez la fonctionnalité en détail...',
             height: 200,
             toolbar: [
@@ -112,7 +114,7 @@
         });
         
         // Mise à jour dynamique de la barre de progression
-        $('#progress').on('input', function() {
+        $('#progress').on('input change', function() {
             var value = $(this).val();
             $('#progressValue').text(value);
             $('#progressBar').css('width', value + '%').attr('aria-valuenow', value);

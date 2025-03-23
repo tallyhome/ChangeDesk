@@ -69,13 +69,17 @@ class PageController extends Controller
         $bugReport->color = 'danger'; // Par défaut, la couleur est rouge (danger)
         $bugReport->severity = 'medium'; // Par défaut, la sévérité est moyenne
         
-        // Enregistrer les informations de contact si fournies
+        // Enregistrer les informations de contact si fournies, sinon utiliser des valeurs par défaut
         if (!empty($validated['name'])) {
             $bugReport->reporter_name = $validated['name'];
+        } else {
+            $bugReport->reporter_name = 'Anonyme';
         }
         
         if (!empty($validated['email'])) {
             $bugReport->reporter_email = $validated['email'];
+        } else {
+            $bugReport->reporter_email = 'anonyme@example.com';
         }
         
         $bugReport->save();

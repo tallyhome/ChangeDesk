@@ -92,35 +92,42 @@
 </div>
 @endsection
 
-@include('partials.tinymce')
-
 @section('scripts')
+@include('partials.tinymce')
 <script>
     $(document).ready(function() {
-            placeholder: 'Décrivez la fonctionnalité en détail...',
-            height: 200,
-            toolbar: [
-                ['style', ['style']],
-                ['font', ['bold', 'underline', 'clear']],
-                ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['table', ['table']],
-                ['insert', ['link']],
-                ['view', ['fullscreen', 'codeview', 'help']]
-            ]
+        // Configuration de TinyMCE
+        tinymce.init({
+            selector: '#description',
+            height: 300,
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+            setup: function(editor) {
+                editor.on('change', function() {
+                    editor.save();
+                });
+            }
         });
-        
-        // Mise à jour dynamique de la barre de progression
-        $('#progress').on('input', function() {
+
+        // Gestion de la barre de progression
+        $('#progress').on('input change', function() {
             var value = $(this).val();
             $('#progressValue').text(value);
             $('#progressBar').css('width', value + '%').attr('aria-valuenow', value);
         });
-        
+
         // Mise à jour de la couleur de la barre de progression
         $('#color').on('change', function() {
             var color = $(this).val();
             $('#progressBar').removeClass('bg-primary bg-success bg-info bg-warning bg-danger').addClass('bg-' + color);
+        });
+
+        // Validation du formulaire
+        $('form').on('submit', function(e) {
+            if (!$('#title').val() || !tinymce.get('description').getContent()) {
+                e.preventDefault();
+                alert('Veuillez remplir tous les champs obligatoires');
+            }
         });
     });
 </script>

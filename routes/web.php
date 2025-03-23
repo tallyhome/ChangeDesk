@@ -69,5 +69,6 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/bug-reports/{bugReport}/edit', [BugReportController::class, 'edit'])->name('bug_reports.edit');
     Route::put('/bug-reports/{bugReport}', [BugReportController::class, 'update'])->name('bug_reports.update');
     Route::delete('/bug-reports/{bugReport}', [BugReportController::class, 'destroy'])->name('bug_reports.destroy');
-    Route::delete('/todos/{id}', [TodoController::class, 'destroy'])->name('todos.destroy');
+    // Correction: utilisation du contrôleur TodoItemController au lieu de TodoController
+    Route::delete('/todos/{id}', [TodoItemController::class, 'destroy'])->name('todos.destroy');
 });
