@@ -139,7 +139,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <p class="mb-0">&copy; {{ date('Y') }} MyVcard MyPredict. Tous droits réservés.</p>
+                    <p class="mb-0">&copy; {{ date('Y') }} MyVcard MyPredict. Tous droits réservés. <span class="text-muted">v{{ $appVersion }}</span></p>
                 </div>
                 <div class="col-md-6 text-md-end">
                     <a href="{{ route('terms') }}" class="text-decoration-none me-3">Conditions d'utilisation</a>
