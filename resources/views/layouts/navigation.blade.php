@@ -1,64 +1,78 @@
-<nav class="navbar navbar-expand-md navbar-light bg-primary">
+<!-- Ajoutez ce code à votre fichier de navigation -->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
-        <a class="navbar-brand text-white" href="{{ url('/') }}">MyVcard MyPredict ChanLog</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <a class="navbar-brand" href="{{ route('home') }}">{{ config('app.name') }}</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="{{ route('home') }}">Accueil</a>
+                    <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Accueil</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="{{ route('changelog') }}">Changelog</a>
+                    <a class="nav-link {{ request()->routeIs('changelog') ? 'active' : '' }}" href="{{ route('changelog') }}">Changelog</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="{{ route('terms') }}">Conditions d'utilisation</a>
+                    <a class="nav-link {{ request()->routeIs('todolist') ? 'active' : '' }}" href="{{ route('todolist') }}">Prochaines fonctionnalités</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="{{ route('privacy') }}">Politique de confidentialité</a>
+                    <a class="nav-link {{ request()->routeIs('bug-report') ? 'active' : '' }}" href="{{ route('bug-report') }}">Signaler un bug</a>
                 </li>
-                @auth
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ route('admin.dashboard') }}">Dashboard</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link text-white dropdown-toggle" href="#" id="pagesDropdown" role="button" data-bs-toggle="dropdown">
-                            Pages
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('admin.pages.index') }}">Pages</a></li>
-                            <li><a class="dropdown-item" href="{{ route('admin.changelog') }}">Changelog</a></li>
-                        </ul>
-                    </li>
-                @endauth
+                
+                <!-- Nouveau bouton paramétrable -->
+                @php
+                    $externalUrl = \App\Models\Setting::getValue('external_link_url');
+                    $externalText = \App\Models\Setting::getValue('external_link_text', 'Lien externe');
+                @endphp
+                @if($externalUrl)
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ $externalUrl }}" target="_blank">{{ $externalText }}</a>
+                </li>
+                @endif
             </ul>
             
-            <ul class="navbar-nav">
-                @guest
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ route('login') }}">Connexion</a>
-                    </li>
-                    @if (Route::has('register'))
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ route('register') }}">Inscription</a>
-                    </li>
-                    @endif
-                @else
-                    <li class="nav-item dropdown">
-                        <a class="nav-link text-white dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown">
-                            Admin
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Déconnexion</a></li>
+            <!-- Icônes des stores et menu utilisateur -->
+            <div class="d-flex align-items-center gap-3">
+                @php
+                    $appStoreUrl = \App\Models\Setting::getValue('app_store_url');
+                    $playStoreUrl = \App\Models\Setting::getValue('play_store_url');
+                @endphp
+                
+                @if($appStoreUrl)
+                <a href="{{ $appStoreUrl }}" target="_blank" title="Télécharger sur l'App Store">
+                    <img src="{{ asset('images/app-store-badge.svg') }}" alt="App Store" height="30">
+                </a>
+                @endif
+                
+                @if($playStoreUrl)
+                <a href="{{ $playStoreUrl }}" target="_blank" title="Télécharger sur Google Play">
+                    <img src="{{ asset('images/google-play-badge.svg') }}" alt="Google Play" height="30">
+                </a>
+                @endif
+                
+                <!-- Menu utilisateur -->
+                @auth
+                    <div class="dropdown ms-3">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ Auth::user()->name }}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}"><i class="fas fa-cogs me-2"></i>Administration</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item"><i class="fas fa-sign-out-alt me-2"></i>Déconnexion</button>
+                                </form>
+                            </li>
                         </ul>
-                    </li>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                        @csrf
-                    </form>
-                @endguest
-            </ul>
+                    </div>
+                @else
+                    <a href="{{ route('login') }}" class="btn btn-light ms-3"><i class="fas fa-sign-in-alt me-2"></i>Connexion</a>
+                @endauth
+            </div>
         </div>
     </div>
 </nav>

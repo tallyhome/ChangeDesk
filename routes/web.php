@@ -71,4 +71,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::delete('/bug-reports/{bugReport}', [BugReportController::class, 'destroy'])->name('bug_reports.destroy');
     // Correction: utilisation du contrôleur TodoItemController au lieu de TodoController
     Route::delete('/todos/{id}', [TodoItemController::class, 'destroy'])->name('todos.destroy');
+    
+    // Routes pour les paramètres
+    Route::get('/settings', [App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
+    Route::post('/settings', [App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
 });

@@ -1,24 +1,4 @@
-@extends('layouts.app')
-
-@section('title', 'Dashboard')
-
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
-                <div class="card-body">
-                    <h2>Bienvenue dans l'administration</h2>
-                    <p>Utilisez le menu de navigation pour gérer votre site.</p>
-                    
-                    <!-- Suppression de la référence à $pages qui cause l'erreur -->
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@endsection
+@extends('layouts.admin')
 
 @section('title', 'Administration')
 
@@ -31,7 +11,10 @@
                     <h2>Dashboard</h2>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
+                    <h2>Bienvenue dans l'administration</h2>
+                    <p>Utilisez le menu de navigation pour gérer votre site.</p>
+                    
+                    <div class="table-responsive mt-4">
                         <table class="table">
                             <thead>
                                 <tr>
