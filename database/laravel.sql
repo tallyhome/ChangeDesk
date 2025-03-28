@@ -184,7 +184,7 @@ CREATE TABLE `pages` (
 
 INSERT INTO `pages` (`id`, `title`, `content`, `slug`, `created_at`, `updated_at`) VALUES
 (1, 'Accueil', 'Bienvenue sur notre site web...', 'home', '2025-03-19 02:00:22', '2025-03-19 02:00:22'),
-(2, 'Changelog', 'Version 1.0.0 - Lancement initial...', 'changelog', '2025-03-19 02:00:22', '2025-03-19 02:00:22'),
+
 (3, 'Conditions d\'utilisation', 'En utilisant ce site...', 'terms', '2025-03-19 02:00:22', '2025-03-19 02:00:22'),
 (4, 'Politique de confidentialité', 'Protection de vos données...', 'privacy', '2025-03-19 02:00:22', '2025-03-19 02:00:22');
 
