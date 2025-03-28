@@ -1,8 +1,8 @@
 #     ChangeDesk v1.1.1
 
-## À propos de ChanLog
+## À propos de ChangeDesk
 
-ChanLog est une application web développée avec Laravel permettant de gérer les versions et les rapports de bugs d'un projet. Cette application offre une interface conviviale pour suivre l'évolution de votre projet et gérer les problèmes signalés par les utilisateurs.
+ChangeDesk est une application web développée avec Laravel permettant de gérer les versions et les rapports de bugs d'un projet. Cette application offre une interface conviviale pour suivre l'évolution de votre projet et gérer les problèmes signalés par les utilisateurs.
 
 ## Prérequis
 
@@ -118,9 +118,9 @@ L'application sera accessible à l'adresse http://127.0.0.1:8000
 ### Screen 
 # Aperçu du projet
 
-| ChanLog | Todolist | Report Bug |
+| ChangeDesk | Todolist | Report Bug |
 |---------|---------|------------|
-| ![ChanLog](https://github.com/user-attachments/assets/fbb8276f-f467-4992-870d-887a50c23f07) | ![Todolist](https://github.com/user-attachments/assets/25ff9e3e-4ea2-4f6c-ba85-38990468a802) | ![Report_Bug](https://github.com/user-attachments/assets/43ef171a-d5c3-4b88-955c-a004f535a889) |
+| ![ChangeDesk](https://github.com/user-attachments/assets/fbb8276f-f467-4992-870d-887a50c23f07) | ![Todolist](https://github.com/user-attachments/assets/25ff9e3e-4ea2-4f6c-ba85-38990468a802) | ![Report_Bug](https://github.com/user-attachments/assets/43ef171a-d5c3-4b88-955c-a004f535a889) |
 
 | Admin Todolist News | Admin Report Bug News | Admin Report Bug Edit |
 |---------------------|----------------------|----------------------|
@@ -132,7 +132,7 @@ L'application sera accessible à l'adresse http://127.0.0.1:8000
 
 | Admin ChangeLog News | Admin ChangeLog Edit | Admin ChangeLog |
 |---------------------|---------------------|----------------|
-| ![Admin_ChanLog_news](https://github.com/user-attachments/assets/7b59ef04-2e0d-4032-a4b9-6f7993987e17) | ![Admin_ChanLog_edit](https://github.com/user-attachments/assets/4d9f79fa-bcc4-4f99-bc92-8f0d40cb8b34) | ![Admin_ChanLog](https://github.com/user-attachments/assets/7c8eeead-3db6-424f-afa3-f663063dcafe) |
+| ![Admin_ChangeDesk_news](https://github.com/user-attachments/assets/7b59ef04-2e0d-4032-a4b9-6f7993987e17) | ![Admin_ChangeDesk_edit](https://github.com/user-attachments/assets/4d9f79fa-bcc4-4f99-bc92-8f0d40cb8b34) | ![Admin_ChangeDesk](https://github.com/user-attachments/assets/7c8eeead-3db6-424f-afa3-f663063dcafe) |
 
 | Admin Todolist Edit | Admin Todolist |
 |--------------------|---------------|
