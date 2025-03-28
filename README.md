@@ -1,4 +1,4 @@
-# ChanLog-1.0
+#     ChangeDesk v1.1.1
 
 ## À propos de ChanLog
 
@@ -6,7 +6,7 @@ ChanLog est une application web développée avec Laravel permettant de gérer l
 
 ## Prérequis
 
-- PHP 8.1 ou supérieur
+- PHP 8.2 ou supérieur
 - Composer
 - MySQL 5.7 ou supérieur
 - Node.js et NPM (pour les assets frontend)
