@@ -1,0 +1,61 @@
+:root[data-bs-theme="dark"] {
+    color-scheme: dark;
+    --bg-color: #1a1a1a;
+    --text-color: #ffffff;
+    --nav-bg: #0d47a1;
+    --nav-text: rgba(255, 255, 255, 0.9);
+    --footer-bg: #2d2d2d;
+    --footer-text: #ffffff;
+}
+
+/* Appliquer le thème sombre dès le début */
+html {
+    background-color: var(--bg-color, #ffffff);
+}
+
+body {
+    background-color: var(--bg-color, #ffffff);
+    color: var(--text-color, #000000);
+}
+
+/* Désactiver les transitions pendant le chargement de la page */
+.preload * {
+    transition: none !important;
+}
+
+/* Réactiver les transitions après le chargement */
+html:not(.preload) {
+    transition: background-color 0.2s ease;
+}
+
+body:not(.preload) {
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* S'assurer que le fond reste sombre pendant les transitions */
+html[data-bs-theme="dark"],
+html[data-bs-theme="dark"] body {
+    background-color: var(--bg-color) !important;
+}
+
+/* Prévenir les flashs blancs pendant les transitions de page */
+@media (prefers-color-scheme: dark) {
+    html:not([data-bs-theme="light"]) {
+        background-color: #1a1a1a !important;
+    }
+}
+
+/* Appliquer immédiatement le thème sombre lors des transitions */
+html[data-bs-theme="dark"] * {
+    background-color: inherit;
+}
+
+/* Optimiser les transitions entre les pages */
+.page-transition {
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+
+.page-transition.loading {
+    opacity: 0.8;
+}

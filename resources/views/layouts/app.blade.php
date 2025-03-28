@@ -10,6 +10,7 @@
     <!-- Styles -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/dark-mode.css') }}">
     <style>
         :root {
             --bg-color: #ffffff;
@@ -32,7 +33,21 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: all 0.3s ease-in-out;
+        }
+
+        body.page-transition {
+            opacity: 1;
+            transition: opacity 0.15s ease-out;
+        }
+
+        body.page-transition.loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .preload * {
+            transition: none !important;
         }
 
         .navbar-dark {
@@ -128,9 +143,21 @@
             bottom: 0;
             width: 100%;
             padding: 0.5rem 0 !important;
-            background-color: #f8f9fa !important;
+            background-color: var(--footer-bg) !important;
+            color: var(--footer-text) !important;
             font-size: 0.85rem;
             z-index: 1030;
+        }
+
+        footer a {
+            color: var(--footer-text) !important;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        footer a:hover {
+            opacity: 1;
+            text-decoration: underline !important;
         }
 
         /* Style pour le menu déroulant Admin */
@@ -141,8 +168,55 @@
     </style>
     @yield('head')
     @stack('styles')
+    <script>
+    // Gérer la classe preload pour les transitions fluides
+    document.documentElement.classList.add('preload');
+    window.addEventListener('load', () => {
+        document.documentElement.classList.remove('preload');
+    });
+
+    // Appliquer le thème sombre avant le chargement de la page
+    const darkMode = localStorage.getItem('darkMode') === 'true';
+    if (darkMode) {
+        document.documentElement.setAttribute('data-bs-theme', 'dark');
+    }
+
+    // Gérer les transitions de page
+    document.addEventListener('DOMContentLoaded', () => {
+        const links = document.querySelectorAll('a[href]:not([target="_blank"])');
+        links.forEach(link => {
+            link.addEventListener('click', (e) => {
+                if (link.href && link.href.startsWith(window.location.origin)) {
+                    e.preventDefault();
+                    document.body.style.transition = 'opacity 0.15s ease-out';
+                    document.body.style.opacity = '0.7';
+                    document.body.style.pointerEvents = 'none';
+                    requestAnimationFrame(() => {
+                        window.location.href = link.href;
+                    });
+                }
+            });
+        });
+        
+        // Réinitialiser l'opacité après le chargement de la page
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                document.body.style.opacity = '1';
+                document.body.style.pointerEvents = 'auto';
+            }
+        });
+    }
+    });
+    </script>
 </head>
-<body>
+<body class="{{ request()->is('*') ? 'page-transition' : '' }}">
+    <script>
+    // Appliquer immédiatement le thème sombre si nécessaire
+    if (localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.setAttribute('data-bs-theme', 'dark');
+        document.body.style.backgroundColor = '#1a1a1a';
+    }
+    </script>
     <div id="app">
         <!-- Navigation -->
         @include('layouts.navigation')
@@ -156,7 +230,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <p class="mb-0">&copy; {{ date('Y') }} MyVcard MyPredict. Tous droits réservés. <span class="text-muted">v{{ $appVersion }}</span></p>
+                    <p class="mb-0">&copy; {{ date('Y') }} MyVcard MyPredict. Tous droits réservés. <span style="opacity: 0.8; color: var(--footer-text);">v{{ $appVersion }}</span></p>
                 </div>
                 <div class="col-md-6 text-md-end">
                     <a href="{{ route('terms') }}" class="text-decoration-none me-3">Conditions d'utilisation</a>

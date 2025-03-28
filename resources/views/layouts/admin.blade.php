@@ -36,7 +36,21 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: all 0.3s ease-in-out;
+        }
+
+        body.page-transition {
+            opacity: 1;
+            transition: opacity 0.15s ease-out;
+        }
+
+        body.page-transition.loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .preload * {
+            transition: none !important;
         }
 
         .navbar-dark {
@@ -93,21 +107,29 @@
     @yield('head')
     @stack('styles')
 </head>
-<body>
+<body class="{{ request()->is('*') ? 'page-transition' : '' }}">
+    <script>
+    // Appliquer immédiatement le thème sombre si nécessaire
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.documentElement.setAttribute('data-bs-theme', 'dark');
+        document.body.setAttribute('data-bs-theme', 'dark');
+    } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        document.documentElement.setAttribute('data-bs-theme', 'light');
+        document.body.setAttribute('data-bs-theme', 'light');
+    }
+    </script>
     <div id="app">
         <script>
-            // Initialiser le thème au chargement de la page
-            document.addEventListener('DOMContentLoaded', () => {
-                const theme = localStorage.getItem('theme') || 'light';
-                document.documentElement.setAttribute('data-theme', theme);
-                updateThemeIcon(theme);
-            });
-
             // Fonction pour basculer le thème
             function toggleTheme() {
                 const currentTheme = document.documentElement.getAttribute('data-theme');
                 const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
                 document.documentElement.setAttribute('data-theme', newTheme);
+                document.documentElement.setAttribute('data-bs-theme', newTheme);
+                document.body.setAttribute('data-bs-theme', newTheme);
                 localStorage.setItem('theme', newTheme);
                 updateThemeIcon(newTheme);
             }
@@ -119,6 +141,39 @@
                     icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
                 }
             }
+
+            // Initialiser le thème au chargement de la page
+            document.addEventListener('DOMContentLoaded', () => {
+                const theme = localStorage.getItem('theme') || 'light';
+                document.documentElement.setAttribute('data-theme', theme);
+                document.documentElement.setAttribute('data-bs-theme', theme);
+                document.body.setAttribute('data-bs-theme', theme);
+                updateThemeIcon(theme);
+
+                // Gérer les transitions de page
+                const links = document.querySelectorAll('a[href]:not([target="_blank"])');
+                links.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        if (link.href && link.href.startsWith(window.location.origin)) {
+                            e.preventDefault();
+                            document.body.style.transition = 'opacity 0.15s ease-out';
+                            document.body.style.opacity = '0.7';
+                            document.body.style.pointerEvents = 'none';
+                            requestAnimationFrame(() => {
+                                window.location.href = link.href;
+                            });
+                        }
+                    });
+                });
+
+                // Réinitialiser l'opacité après le chargement de la page
+                window.addEventListener('pageshow', (event) => {
+                    if (event.persisted) {
+                        document.body.style.opacity = '1';
+                        document.body.style.pointerEvents = 'auto';
+                    }
+                });
+            });
         </script>
         @include('layouts.partials.admin-navbar')
         
