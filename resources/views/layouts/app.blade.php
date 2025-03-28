@@ -82,6 +82,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            padding-bottom: 80px; /* Ajout d'un padding pour éviter que le footer ne chevauche le contenu */
         }
         
         main {
@@ -89,9 +90,13 @@
         }
         
         footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
             padding: 0.5rem 0 !important;
             background-color: #f8f9fa !important;
             font-size: 0.85rem;
+            z-index: 1030;
         }
 
         /* Style pour le menu déroulant Admin */
@@ -122,10 +127,10 @@
                 <div class="col-md-6 text-md-end">
                     <a href="{{ route('terms') }}" class="text-decoration-none me-3">Conditions d'utilisation</a>
                     <a href="{{ route('privacy') }}" class="text-decoration-none me-3">Politique de confidentialité</a>
-                    <a href="https://play.google.com/store/apps/details?id=com.myvcard.mypredict" target="_blank" class="me-2">
+                    <a href="{{ \App\Models\Setting::getValue('play_store_url', 'https://play.google.com/store/apps/details?id=com.myvcard.mypredict') }}" target="_blank" class="me-2">
                         <img src="{{ asset('images/google-play-badge.svg') }}" alt="Disponible sur Google Play" style="height: 40px;">
                     </a>
-                    <a href="https://apps.apple.com/app/myvcard-mypredict" target="_blank">
+                    <a href="{{ \App\Models\Setting::getValue('app_store_url', 'https://apps.apple.com/app/myvcard-mypredict') }}" target="_blank">
                         <img src="{{ asset('images/app-store-badge.svg') }}" alt="Disponible sur l'App Store" style="height: 40px;">
                     </a>
                 </div>

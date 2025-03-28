@@ -16,7 +16,27 @@ class Setting extends Model
      */
     public static function getValue($key, $default = null)
     {
-        $setting = self::where('key', $key)->first();
-        return $setting ? $setting->value : $default;
+        $cacheKey = 'setting_' . $key;
+        $value = cache()->get($cacheKey);
+        
+        if ($value === null) {
+            $setting = self::where('key', $key)->first();
+            $value = $setting ? $setting->value : $default;
+            cache()->put($cacheKey, $value, now()->addDay());
+        }
+        
+        return $value;
+    }
+    
+    /**
+     * Vide le cache après la mise à jour d'un paramètre
+     */
+    public static function boot()
+    {
+        parent::boot();
+        
+        static::saved(function ($setting) {
+            cache()->forget('setting_' . $setting->key);
+        });
     }
 }
