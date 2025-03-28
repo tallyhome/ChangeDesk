@@ -33,24 +33,8 @@
                 @endif
             </ul>
             
-            <!-- Icônes des stores et menu utilisateur -->
+            <!-- Menu utilisateur -->
             <div class="d-flex align-items-center gap-3">
-                @php
-                    $appStoreUrl = \App\Models\Setting::getValue('app_store_url');
-                    $playStoreUrl = \App\Models\Setting::getValue('play_store_url');
-                @endphp
-                
-                @if($appStoreUrl)
-                <a href="{{ $appStoreUrl }}" target="_blank" title="Télécharger sur l'App Store">
-                    <img src="{{ asset('images/app-store-badge.svg') }}" alt="App Store" height="30">
-                </a>
-                @endif
-                
-                @if($playStoreUrl)
-                <a href="{{ $playStoreUrl }}" target="_blank" title="Télécharger sur Google Play">
-                    <img src="{{ asset('images/google-play-badge.svg') }}" alt="Google Play" height="30">
-                </a>
-                @endif
                 
                 <!-- Menu utilisateur -->
                 @auth

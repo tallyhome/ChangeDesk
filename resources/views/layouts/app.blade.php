@@ -94,7 +94,13 @@
                 </div>
                 <div class="col-md-6 text-md-end">
                     <a href="{{ route('terms') }}" class="text-decoration-none me-3">Conditions d'utilisation</a>
-                    <a href="{{ route('privacy') }}" class="text-decoration-none">Politique de confidentialité</a>
+                    <a href="{{ route('privacy') }}" class="text-decoration-none me-3">Politique de confidentialité</a>
+                    <a href="https://play.google.com/store/apps/details?id=com.myvcard.mypredict" target="_blank" class="me-2">
+                        <img src="{{ asset('images/google-play-badge.svg') }}" alt="Disponible sur Google Play" style="height: 40px;">
+                    </a>
+                    <a href="https://apps.apple.com/app/myvcard-mypredict" target="_blank">
+                        <img src="{{ asset('images/app-store-badge.svg') }}" alt="Disponible sur l'App Store" style="height: 40px;">
+                    </a>
                 </div>
             </div>
         </div>
