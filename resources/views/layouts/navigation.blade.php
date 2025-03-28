@@ -21,7 +21,6 @@
                     <a class="nav-link {{ request()->routeIs('bug-report') ? 'active' : '' }}" href="{{ route('bug-report') }}">Signaler un bug</a>
                 </li>
                 
-                <!-- Nouveau bouton paramétrable -->
                 @php
                     $externalUrl = \App\Models\Setting::getValue('external_link_url');
                     $externalText = \App\Models\Setting::getValue('external_link_text', 'Lien externe');
@@ -35,14 +34,12 @@
             
             <!-- Menu utilisateur -->
             <div class="d-flex align-items-center gap-3">
-                
-                <!-- Menu utilisateur -->
                 @auth
                     <div class="dropdown ms-3">
-                        <button class="btn btn-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="btn btn-light dropdown-toggle w-100" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             {{ Auth::user()->name }}
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <ul class="dropdown-menu dropdown-menu-end w-100" aria-labelledby="userDropdown">
                             <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}"><i class="fas fa-cogs me-2"></i>Administration</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
@@ -54,7 +51,7 @@
                         </ul>
                     </div>
                 @else
-                    <a href="{{ route('login') }}" class="btn btn-light ms-3"><i class="fas fa-sign-in-alt me-2"></i>Connexion</a>
+                    <a href="{{ route('login') }}" class="btn btn-light w-100"><i class="fas fa-sign-in-alt me-2"></i>Connexion</a>
                 @endauth
             </div>
         </div>

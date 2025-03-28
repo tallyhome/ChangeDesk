@@ -10,6 +10,7 @@
     <!-- Styles -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        /* Styles existants */
         .navbar-dark .navbar-nav .nav-link {
             color: rgba(255, 255, 255, 0.9);
             background-color: transparent !important;
@@ -19,6 +20,32 @@
             margin: 0 2px;
             border-radius: 4px;
             transition: all 0.3s ease;
+        }
+        
+        /* Styles responsives pour la navigation */
+        @media (max-width: 991.98px) {
+            .navbar-nav {
+                padding: 1rem 0;
+            }
+            .navbar-nav .nav-item {
+                margin-bottom: 0.5rem;
+            }
+            .dropdown-menu {
+                border: none;
+                background-color: rgba(0, 0, 0, 0.05);
+                margin-top: 0.5rem;
+            }
+            .btn-light {
+                width: 100%;
+                margin: 0.5rem 0;
+            }
+            .d-flex.align-items-center.gap-3 {
+                width: 100%;
+                flex-direction: column;
+            }
+            .dropdown {
+                width: 100%;
+            }
         }
         .navbar-dark .navbar-nav .nav-link:hover {
             color: #fff;
