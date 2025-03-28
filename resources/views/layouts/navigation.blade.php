@@ -32,8 +32,26 @@
                 @endif
             </ul>
             
-            <!-- Menu utilisateur -->
+            <!-- Bouton Jour/Nuit -->
             <div class="d-flex align-items-center gap-3">
+                <style>
+                    #theme-icon {
+                        font-size: 1.2rem;
+                        color: var(--nav-text) !important;
+                        transition: all 0.3s ease;
+                        display: inline-block;
+                        text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+                    }
+                    #theme-icon:hover {
+                        transform: rotate(360deg);
+                        color: var(--nav-text) !important;
+                        text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+                    }
+                </style>
+                <button class="nav-link" onclick="toggleTheme()" style="background: none; border: none; cursor: pointer;">
+                    <i id="theme-icon" class="fas fa-moon"></i>
+                </button>
+                <!-- Menu utilisateur -->
                 @auth
                     <div class="dropdown ms-3">
                         <button class="btn btn-light dropdown-toggle w-100" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">

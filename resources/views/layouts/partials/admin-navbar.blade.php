@@ -7,6 +7,11 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
+                    <button class="nav-link" onclick="toggleTheme()" style="background: none; border: none; cursor: pointer;">
+                        <i id="theme-icon" class="fas fa-moon"></i>
+                    </button>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin.profile.edit') }}">
                         <i class="fas fa-user-cog"></i> Mon Profil
                     </a>

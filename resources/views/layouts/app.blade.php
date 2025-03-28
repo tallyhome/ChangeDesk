@@ -9,7 +9,41 @@
 
     <!-- Styles -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #000000;
+            --nav-bg: #0d6efd;
+            --nav-text: rgba(255, 255, 255, 0.9);
+            --footer-bg: #f8f9fa;
+            --footer-text: #000000;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #ffffff;
+            --nav-bg: #0d47a1;
+            --nav-text: rgba(255, 255, 255, 0.9);
+            --footer-bg: #2d2d2d;
+            --footer-text: #ffffff;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .navbar-dark {
+            background-color: var(--nav-bg) !important;
+        }
+
+        footer {
+            background-color: var(--footer-bg) !important;
+            color: var(--footer-text) !important;
+        }
+
         /* Styles existants */
         .navbar-dark .navbar-nav .nav-link {
             color: rgba(255, 255, 255, 0.9);
@@ -140,6 +174,28 @@
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const theme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+            updateThemeIcon(theme);
+        });
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        }
+
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-icon');
+            if (icon) {
+                icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            }
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- TinyMCE est chargé dans le fichier partials/tinymce.blade.php -->
     @yield('scripts')

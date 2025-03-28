@@ -1,0 +1,49 @@
+.theme-toggle {
+    background: transparent !important;
+    border: none !important;
+    padding: 8px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    position: relative;
+}
+
+.theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    transform: scale(1.1);
+}
+
+.theme-toggle i {
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    position: absolute;
+}
+
+.theme-toggle:hover i {
+    transform: rotate(30deg);
+}
+
+[data-bs-theme="dark"] .theme-toggle i.fa-sun {
+    opacity: 0;
+    transform: rotate(-180deg) scale(0);
+}
+
+[data-bs-theme="dark"] .theme-toggle i.fa-moon {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+}
+
+[data-bs-theme="light"] .theme-toggle i.fa-sun {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+}
+
+[data-bs-theme="light"] .theme-toggle i.fa-moon {
+    opacity: 0;
+    transform: rotate(180deg) scale(0);
+}
