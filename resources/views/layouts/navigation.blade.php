@@ -24,8 +24,9 @@
                 @php
                     $externalUrl = \App\Models\Setting::getValue('external_link_url');
                     $externalText = \App\Models\Setting::getValue('external_link_text', 'Lien externe');
+                    $externalActive = \App\Models\Setting::getValue('external_link_active', '1');
                 @endphp
-                @if($externalUrl)
+                @if($externalUrl && $externalActive == '1')
                 <li class="nav-item">
                     <a class="nav-link" href="{{ $externalUrl }}" target="_blank">{{ $externalText }}</a>
                 </li>

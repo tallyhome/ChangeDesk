@@ -75,4 +75,5 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     // Routes pour les paramètres
     Route::get('/settings', [App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
+    Route::post('/settings/toggle', [App\Http\Controllers\Admin\SettingController::class, 'toggle'])->name('settings.toggle');
 });
