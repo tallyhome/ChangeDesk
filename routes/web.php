@@ -38,8 +38,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/profile', [\App\Http\Controllers\AdminProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [\App\Http\Controllers\AdminProfileController::class, 'update'])->name('profile.update');
     Route::get('/pages', [AdminController::class, 'index'])->name('pages.index');
-    Route::get('/pages/{id}/edit', [AdminController::class, 'edit'])->name('pages.edit');
-    Route::put('/pages/{id}', [AdminController::class, 'update'])->name('pages.update');
+    Route::get('/pages/{page}/edit', [AdminController::class, 'edit'])->name('pages.edit');
+    Route::put('/pages/{page}', [AdminController::class, 'update'])->name('pages.update');
     
     // Routes pour le changelog - toutes avec VersionController
     Route::get('/changelog', [VersionController::class, 'index'])->name('changelog');
