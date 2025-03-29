@@ -1,3 +1,35 @@
+/* Variables CSS pour le mode sombre */
+:root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --nav-bg: #0d6efd;
+    --nav-text: rgba(255, 255, 255, 0.9);
+    --footer-bg: #f8f9fa;
+    --footer-text: #000000;
+    --card-bg: #ffffff;
+    --card-border: #dee2e6;
+    --input-bg: #ffffff;
+    --input-border: #ced4da;
+    --input-text: #212529;
+    --link-color: #0d6efd;
+    --link-hover-color: #0a58ca;
+    --table-bg: #ffffff;
+    --table-border: #dee2e6;
+    --table-hover-bg: #f8f9fa;
+    --changelog-header-bg: #f8f9fa;
+    --changelog-header-text: #212529;
+    --changelog-card-bg: #ffffff;
+    --changelog-text: #212529;
+    --changelog-muted: #6c757d;
+    --changelog-link: #0d6efd;
+    --changelog-border: #dee2e6;
+    --changelog-list-item-bg: #ffffff;
+    --changelog-list-item-hover: #f8f9fa;
+    --changelog-section-title: #ffffff;
+    --changelog-section-border: #404040;
+}
+
+/* Mode sombre */
 :root[data-bs-theme="dark"] {
     color-scheme: dark;
     --bg-color: #1a1a1a;
@@ -6,51 +38,282 @@
     --nav-text: rgba(255, 255, 255, 0.9);
     --footer-bg: #2d2d2d;
     --footer-text: #ffffff;
+    --card-bg: #2d2d2d;
+    --card-border: #404040;
+    --input-bg: #2d2d2d;
+    --input-border: #404040;
+    --input-text: #ffffff;
+    --link-color: #66b0ff;
+    --link-hover-color: #99ccff;
+    --table-bg: #2d2d2d;
+    --table-border: #404040;
+    --table-hover-bg: #363636;
+    --changelog-header-bg: #2d2d2d;
+    --changelog-header-text: #ffffff;
+    --changelog-card-bg: #1a1a1a;
+    --changelog-text: #ffffff;
+    --changelog-muted: #cccccc;
+    --changelog-link: #66b0ff;
+    --changelog-border: #404040;
+    --changelog-list-item-bg: #2d2d2d;
+    --changelog-list-item-hover: #363636;
+    --changelog-section-title: #ffffff;
+    --changelog-section-border: #404040;
 }
 
-/* Appliquer le thème sombre dès le début */
+/* Optimisation des performances */
 html {
-    background-color: var(--bg-color, #ffffff);
+    background-color: var(--bg-color);
+    transition: background-color 0.2s ease;
 }
 
 body {
-    background-color: var(--bg-color, #ffffff);
-    color: var(--text-color, #000000);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Désactiver les transitions pendant le chargement de la page */
+/* Styles pour les composants */
+.navbar-dark {
+    background-color: var(--nav-bg) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: var(--nav-text) !important;
+}
+
+footer {
+    background-color: var(--footer-bg) !important;
+    color: var(--footer-text) !important;
+}
+
+/* Styles pour les cartes */
+.card {
+    background-color: var(--card-bg);
+    border-color: var(--card-border);
+    color: var(--text-color);
+}
+
+/* Styles pour les formulaires */
+.form-control {
+    background-color: var(--input-bg);
+    border-color: var(--input-border);
+    color: var(--input-text);
+}
+
+.form-control:focus {
+    background-color: var(--input-bg);
+    border-color: var(--input-border);
+    color: var(--input-text);
+}
+
+/* Styles pour les liens */
+a {
+    color: var(--link-color);
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--link-hover-color);
+}
+
+/* Styles pour les tableaux */
+.table {
+    color: var(--text-color);
+    background-color: var(--table-bg);
+}
+
+.table td,
+.table th {
+    border-color: var(--table-border);
+}
+
+.table-hover tbody tr:hover {
+    background-color: var(--table-hover-bg);
+}
+
+/* Styles spécifiques pour le changelog en mode sombre */
+[data-bs-theme="dark"] .container h1 {
+    color: var(--changelog-header-text);
+}
+
+[data-bs-theme="dark"] .card {
+    background-color: var(--changelog-card-bg);
+    border-color: var(--changelog-border);
+}
+
+[data-bs-theme="dark"] .card-header {
+    background-color: var(--changelog-header-bg) !important;
+    border-bottom-color: var(--changelog-border);
+}
+
+[data-bs-theme="dark"] .card-header h2,
+[data-bs-theme="dark"] .card-header h5 {
+    color: var(--changelog-header-text);
+}
+
+[data-bs-theme="dark"] .text-muted {
+    color: var(--changelog-muted) !important;
+}
+
+[data-bs-theme="dark"] .card-body {
+    color: var(--changelog-text);
+    background-color: var(--changelog-card-bg);
+}
+
+/* Styles pour les sections de changelog */
+[data-bs-theme="dark"] .card-body .Caractéristiques,
+[data-bs-theme="dark"] .card-body .Améliorations,
+[data-bs-theme="dark"] .card-body .Corrections,
+[data-bs-theme="dark"] .card-body h3 {
+    color: #ffffff !important;
+    font-weight: 600;
+    font-size: 1.2rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+[data-bs-theme="dark"] .card-body ul {
+    color: var(--changelog-text);
+    padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+[data-bs-theme="dark"] .card-body li {
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+}
+
+/* Version number styling */
+[data-bs-theme="dark"] .card-header h2 {
+    color: #ffffff;
+}
+
+/* Styles pour la colonne Versions disponibles en mode sombre */
+[data-bs-theme="dark"] .sticky-top .card {
+    background-color: #2d2d2d;
+    border: none;
+}
+
+[data-bs-theme="dark"] .sticky-top .card-header {
+    background-color: #2d2d2d;
+    padding: 0.5rem 1rem !important;
+    margin: 0 !important;
+    border-bottom: 1px solid #404040;
+}
+
+[data-bs-theme="dark"] .sticky-top .card-header h5 {
+    color: #ffffff;
+    font-weight: bold;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Liste des versions disponibles */
+[data-bs-theme="dark"] .sticky-top .list-group {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+}
+
+[data-bs-theme="dark"] .sticky-top .list-group-item {
+    background-color: #2d2d2d;
+    border-color: #404040;
+    padding: 0.75rem 1rem !important;
+    margin: 0 !important;
+    border-width: 1px !important;
+    border-style: solid !important;
+    border-radius: 0 !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+[data-bs-theme="dark"] .sticky-top .list-group-item:first-child {
+    border-top-left-radius: 0.25rem !important;
+    border-top-right-radius: 0.25rem !important;
+}
+
+[data-bs-theme="dark"] .sticky-top .list-group-item:last-child {
+    border-bottom-left-radius: 0.25rem !important;
+    border-bottom-right-radius: 0.25rem !important;
+}
+
+[data-bs-theme="dark"] .sticky-top .list-group-item a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    text-decoration: none !important;
+    color: #4da6ff;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+[data-bs-theme="dark"] .sticky-top .list-group-item a:hover {
+    background-color: #363636;
+    text-decoration: underline;
+}
+
+[data-bs-theme="dark"] .sticky-top .list-group-item a div {
+    display: flex;
+    flex-direction: column;
+}
+
+[data-bs-theme="dark"] .sticky-top .list-group-item a strong {
+    color: #ffffff;
+    display: block;
+    font-size: 1.1rem;
+}
+
+[data-bs-theme="dark"] .sticky-top .list-group-item a small {
+    color: #bbbbbb;
+    font-size: 0.85rem;
+}
+
+[data-bs-theme="dark"] .sticky-top .list-group-item a i {
+    color: #4da6ff;
+    font-size: 1.2rem;
+}
+
+/* Style du scroll dans la liste des versions */
+[data-bs-theme="dark"] .sticky-top .card-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+[data-bs-theme="dark"] .sticky-top .card-body::-webkit-scrollbar-track {
+    background: #2d2d2d;
+}
+
+[data-bs-theme="dark"] .sticky-top .card-body::-webkit-scrollbar-thumb {
+    background-color: #404040;
+    border-radius: 3px;
+}
+
+/* Optimisation des transitions */
 .preload * {
     transition: none !important;
 }
 
-/* Réactiver les transitions après le chargement */
-html:not(.preload) {
-    transition: background-color 0.2s ease;
-}
-
-body:not(.preload) {
-    transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-/* S'assurer que le fond reste sombre pendant les transitions */
+/* Prévention des flashs */
 html[data-bs-theme="dark"],
 html[data-bs-theme="dark"] body {
     background-color: var(--bg-color) !important;
 }
 
-/* Prévenir les flashs blancs pendant les transitions de page */
+/* Support des préférences système */
 @media (prefers-color-scheme: dark) {
     html:not([data-bs-theme="light"]) {
-        background-color: #1a1a1a !important;
+        background-color: var(--bg-color) !important;
     }
 }
 
-/* Appliquer immédiatement le thème sombre lors des transitions */
-html[data-bs-theme="dark"] * {
+/* Optimisation des performances */
+.dark-mode * {
     background-color: inherit;
 }
 
-/* Optimiser les transitions entre les pages */
+/* Transitions de page optimisées */
 .page-transition {
     opacity: 1;
     transition: opacity 0.2s ease;

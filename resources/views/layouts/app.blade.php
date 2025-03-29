@@ -168,55 +168,30 @@
     </style>
     @yield('head')
     @stack('styles')
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/dark-mode.js') }}" defer></script>
     <script>
-    // Gérer la classe preload pour les transitions fluides
-    document.documentElement.classList.add('preload');
-    window.addEventListener('load', () => {
-        document.documentElement.classList.remove('preload');
-    });
+    // Initialisation immédiate pour éviter les flashs
+    (function() {
+        document.documentElement.classList.add('preload');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+        const storedTheme = localStorage.getItem('darkMode');
+        const shouldUseDark = storedTheme === 'true' || (!storedTheme && prefersDark.matches);
 
-    // Appliquer le thème sombre avant le chargement de la page
-    const darkMode = localStorage.getItem('darkMode') === 'true';
-    if (darkMode) {
-        document.documentElement.setAttribute('data-bs-theme', 'dark');
-    }
+        if (shouldUseDark) {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+        }
 
-    // Gérer les transitions de page
-    document.addEventListener('DOMContentLoaded', () => {
-        const links = document.querySelectorAll('a[href]:not([target="_blank"])');
-        links.forEach(link => {
-            link.addEventListener('click', (e) => {
-                if (link.href && link.href.startsWith(window.location.origin)) {
-                    e.preventDefault();
-                    document.body.style.transition = 'opacity 0.15s ease-out';
-                    document.body.style.opacity = '0.7';
-                    document.body.style.pointerEvents = 'none';
-                    requestAnimationFrame(() => {
-                        window.location.href = link.href;
-                    });
-                }
+        window.addEventListener('load', () => {
+            requestAnimationFrame(() => {
+                document.documentElement.classList.remove('preload');
             });
         });
-        
-        // Réinitialiser l'opacité après le chargement de la page
-        window.addEventListener('pageshow', (event) => {
-            if (event.persisted) {
-                document.body.style.opacity = '1';
-                document.body.style.pointerEvents = 'auto';
-            }
-        });
-    }
-    });
+    })();
     </script>
 </head>
 <body class="{{ request()->is('*') ? 'page-transition' : '' }}">
-    <script>
-    // Appliquer immédiatement le thème sombre si nécessaire
-    if (localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.setAttribute('data-bs-theme', 'dark');
-        document.body.style.backgroundColor = '#1a1a1a';
-    }
-    </script>
     <div id="app">
         <!-- Navigation -->
         @include('layouts.navigation')
@@ -255,32 +230,7 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const theme = localStorage.getItem('theme') || 'light';
-            document.documentElement.setAttribute('data-theme', theme);
-            updateThemeIcon(theme);
-        });
-
-        function toggleTheme() {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateThemeIcon(newTheme);
-        }
-
-        function updateThemeIcon(theme) {
-            const icon = document.getElementById('theme-icon');
-            if (icon) {
-                icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-            }
-        }
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- TinyMCE est chargé dans le fichier partials/tinymce.blade.php -->
-    @yield('scripts')
     @stack('scripts')
 </body>
 </html>
