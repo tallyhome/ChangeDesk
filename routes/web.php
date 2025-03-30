@@ -9,6 +9,22 @@ use App\Http\Controllers\Admin\ImageUploadController;
 use App\Http\Controllers\Admin\TodoItemController;
 use App\Http\Controllers\Admin\BugReportController;
 use App\Http\Controllers\WikiController;
+use App\Http\Controllers\Admin\AdminWikiController;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
+Route::get('/', function () {
+    return view('welcome');
+});
 
 // Routes principales
 Route::get('/', [PageController::class, 'index'])->name('home');
@@ -20,8 +36,36 @@ Route::get('/bug-report', [PageController::class, 'bugReport'])->name('bug-repor
 Route::post('/bug-report', [PageController::class, 'storeBugReport'])->name('bug-report.store');
 Route::get('/bug-report/{id}', [PageController::class, 'showBugReport'])->name('bug-report.show');
 
-// Inclusion des routes du wiki
-require __DIR__.'/wiki.php';
+// Routes publiques du wiki
+Route::prefix('wiki')->group(function () {
+    Route::get('/', [WikiController::class, 'index'])->name('wiki');
+    Route::get('/search', [WikiController::class, 'search'])->name('wiki.search');
+    Route::get('/category/{slug}', [WikiController::class, 'category'])->name('wiki.category');
+    Route::get('/{slug}', [WikiController::class, 'show'])->name('wiki.show');
+});
+
+// Routes d'administration du wiki
+Route::middleware(['auth'])->prefix('admin/wiki')->name('admin.wiki.')->group(function () {
+    // Gestion des catégories (placées avant les routes avec paramètres)
+    Route::get('/categories', [AdminWikiController::class, 'categories'])->name('categories');
+    Route::get('/categories/create', [AdminWikiController::class, 'createCategory'])->name('categories.create');
+    Route::post('/categories', [AdminWikiController::class, 'storeCategory'])->name('categories.store');
+    Route::get('/categories/{category}/edit', [AdminWikiController::class, 'editCategory'])->name('categories.edit');
+    Route::put('/categories/{category}', [AdminWikiController::class, 'updateCategory'])->name('categories.update');
+    Route::delete('/categories/{category}', [AdminWikiController::class, 'destroyCategory'])->name('categories.destroy');
+
+    // Gestion des articles
+    Route::get('/', [AdminWikiController::class, 'index'])->name('index');
+    Route::get('/create', [AdminWikiController::class, 'create'])->name('create');
+    Route::post('/', [AdminWikiController::class, 'store'])->name('store');
+    Route::post('/preview', [AdminWikiController::class, 'preview'])->name('preview');
+    
+    // Routes avec paramètres en dernier
+    Route::get('/{article}/edit', [AdminWikiController::class, 'edit'])->name('edit');
+    Route::put('/{article}', [AdminWikiController::class, 'update'])->name('update');
+    Route::delete('/{article}', [AdminWikiController::class, 'destroy'])->name('destroy');
+    Route::get('/{article}', [AdminWikiController::class, 'show'])->name('show');
+});
 
 // Routes d'authentification
 Route::middleware('guest')->group(function () {

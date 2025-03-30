@@ -49,6 +49,11 @@ class AdminWikiController extends Controller
             ->with('success', 'Article créé avec succès.');
     }
 
+    public function show(WikiArticle $article)
+    {
+        return view('admin.wiki.show', compact('article'));
+    }
+
     public function edit(WikiArticle $article)
     {
         $categories = WikiCategory::orderBy('order')->get();
