@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" style="z-index: 1030; height: 56px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ route('home') }}">MyVcard MyPredict - Administration <span class="badge bg-danger">v{{ $appVersion }}</span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

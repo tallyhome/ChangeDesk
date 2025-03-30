@@ -37,6 +37,7 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             transition: all 0.3s ease-in-out;
+            padding-top: 56px;
         }
 
         body.page-transition {
@@ -177,10 +178,10 @@
         </script>
         @include('layouts.partials.admin-navbar')
         
-        <div class="container-fluid py-4">
+        <div class="container-fluid" style="margin-top: 56px;">
             <div class="row">
                 <div class="col-12">
-                    <ul class="nav admin-tabs">
+                    <ul class="nav admin-tabs" style="z-index: 1000; position: fixed; top: 56px; left: 0; right: 0; margin: 0; padding: 5px 20px; background-color: var(--tab-bg); box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
                                 <i class="fas fa-tachometer-alt"></i> Dashboard
@@ -207,12 +208,17 @@
                                 <i class="fas fa-cog"></i> Liens externes
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.wiki.*') ? 'active' : '' }}" href="{{ route('admin.wiki.index') }}">
+                                <i class="fas fa-book"></i> Wiki
+                            </a>
+                        </li>
 
                     </ul>
                 </div>
             </div>
             
-            <div class="row">
+            <div class="row" style="margin-top: 20px;">
                 <div class="col-12">
                     @yield('content')
                 </div>
@@ -223,7 +229,7 @@
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- TinyMCE est chargé dans le fichier partials/tinymce.blade.php -->
+    @include('partials.tinymce')
     @yield('scripts')
     @stack('scripts')
 </body>

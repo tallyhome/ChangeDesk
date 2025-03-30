@@ -8,6 +8,7 @@ use App\Http\Controllers\VersionController;
 use App\Http\Controllers\Admin\ImageUploadController;
 use App\Http\Controllers\Admin\TodoItemController;
 use App\Http\Controllers\Admin\BugReportController;
+use App\Http\Controllers\WikiController;
 
 // Routes principales
 Route::get('/', [PageController::class, 'index'])->name('home');
@@ -19,10 +20,13 @@ Route::get('/bug-report', [PageController::class, 'bugReport'])->name('bug-repor
 Route::post('/bug-report', [PageController::class, 'storeBugReport'])->name('bug-report.store');
 Route::get('/bug-report/{id}', [PageController::class, 'showBugReport'])->name('bug-report.show');
 
+// Inclusion des routes du wiki
+require __DIR__.'/wiki.php';
+
 // Routes d'authentification
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
-    Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login');
+    Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 });
 
 Route::middleware('auth')->group(function () {

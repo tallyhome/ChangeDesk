@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('versions', function (Blueprint $table) {
-            $table->string('image_path')->nullable()->after('content');
+            $table->string('image_path')->nullable()->after('changes');
         });
     }
 
