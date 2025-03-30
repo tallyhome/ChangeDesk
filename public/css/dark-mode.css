@@ -322,3 +322,124 @@ html[data-bs-theme="dark"] body {
 .page-transition.loading {
     opacity: 0.8;
 }
+
+/* Styles pour les articles du wiki en mode sombre */
+[data-bs-theme="dark"] .wiki-content {
+    color: var(--text-color);
+}
+
+[data-bs-theme="dark"] .wiki-content h1,
+[data-bs-theme="dark"] .wiki-content h2,
+[data-bs-theme="dark"] .wiki-content h3,
+[data-bs-theme="dark"] .wiki-content h4,
+[data-bs-theme="dark"] .wiki-content h5,
+[data-bs-theme="dark"] .wiki-content h6 {
+    color: var(--text-color);
+}
+
+[data-bs-theme="dark"] .wiki-content p {
+    color: var(--text-color);
+}
+
+[data-bs-theme="dark"] .wiki-content a {
+    color: var(--link-color);
+}
+
+[data-bs-theme="dark"] .wiki-content a:hover {
+    color: var(--link-hover-color);
+}
+
+[data-bs-theme="dark"] .wiki-content pre {
+    background-color: #2d2d2d;
+    border: 1px solid #404040;
+    color: #f8f9fa;
+}
+
+[data-bs-theme="dark"] .wiki-content code {
+    background-color: #2d2d2d;
+    color: #f8f9fa;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+}
+
+[data-bs-theme="dark"] .wiki-content blockquote {
+    border-left: 4px solid var(--link-color);
+    background-color: rgba(102, 176, 255, 0.1);
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+[data-bs-theme="dark"] .wiki-content table {
+    color: var(--text-color);
+    border-color: var(--table-border);
+}
+
+[data-bs-theme="dark"] .wiki-content th,
+[data-bs-theme="dark"] .wiki-content td {
+    border-color: var(--table-border);
+}
+
+[data-bs-theme="dark"] .wiki-content img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--table-border);
+    border-radius: 0.25rem;
+}
+
+[data-bs-theme="dark"] .wiki-content ul,
+[data-bs-theme="dark"] .wiki-content ol {
+    color: var(--text-color);
+}
+
+[data-bs-theme="dark"] .wiki-content hr {
+    border-color: var(--table-border);
+}
+
+/* Styles pour la navigation du wiki en mode sombre */
+[data-bs-theme="dark"] .wiki-nav {
+    background-color: var(--card-bg);
+}
+
+[data-bs-theme="dark"] .wiki-nav .nav-link {
+    color: var(--text-color);
+}
+
+[data-bs-theme="dark"] .wiki-nav .nav-link:hover {
+    background-color: rgba(102, 176, 255, 0.1);
+}
+
+[data-bs-theme="dark"] .wiki-nav .nav-link.active {
+    background-color: rgba(102, 176, 255, 0.2);
+    color: var(--link-color);
+}
+
+/* Styles pour le fil d'Ariane en mode sombre */
+[data-bs-theme="dark"] .breadcrumb {
+    background-color: transparent;
+}
+
+[data-bs-theme="dark"] .breadcrumb-item {
+    color: var(--text-color);
+}
+
+[data-bs-theme="dark"] .breadcrumb-item a {
+    color: var(--link-color);
+}
+
+[data-bs-theme="dark"] .breadcrumb-item.active {
+    color: var(--text-muted);
+}
+
+/* Styles pour les articles similaires en mode sombre */
+[data-bs-theme="dark"] .list-group-item {
+    background-color: var(--card-bg);
+    border-color: var(--card-border);
+}
+
+[data-bs-theme="dark"] .list-group-item a {
+    color: var(--link-color);
+}
+
+[data-bs-theme="dark"] .list-group-item:hover {
+    background-color: rgba(102, 176, 255, 0.1);
+}

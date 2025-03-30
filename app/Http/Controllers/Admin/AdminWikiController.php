@@ -32,7 +32,7 @@ class AdminWikiController extends Controller
             'content' => 'required|string',
             'wiki_category_id' => 'nullable|exists:wiki_categories,id',
             'order' => 'nullable|integer',
-            'is_published' => 'boolean'
+            'is_published' => 'required|boolean'
         ]);
 
         $article = new WikiArticle();
@@ -41,7 +41,7 @@ class AdminWikiController extends Controller
         $article->content = $validated['content'];
         $article->wiki_category_id = $validated['wiki_category_id'];
         $article->order = $validated['order'] ?? 0;
-        $article->is_published = $request->has('is_published');
+        $article->is_published = $validated['is_published'];
         $article->save();
 
         return redirect()
@@ -67,7 +67,7 @@ class AdminWikiController extends Controller
             'content' => 'required|string',
             'wiki_category_id' => 'nullable|exists:wiki_categories,id',
             'order' => 'nullable|integer',
-            'is_published' => 'boolean'
+            'is_published' => 'required|boolean'
         ]);
 
         $article->title = $validated['title'];
@@ -75,7 +75,7 @@ class AdminWikiController extends Controller
         $article->content = $validated['content'];
         $article->wiki_category_id = $validated['wiki_category_id'];
         $article->order = $validated['order'] ?? 0;
-        $article->is_published = $request->has('is_published');
+        $article->is_published = $validated['is_published'];
         $article->save();
 
         return redirect()
@@ -129,7 +129,7 @@ class AdminWikiController extends Controller
         $category->save();
 
         return redirect()
-            ->route('admin.wiki.categories')
+            ->route('admin.wiki.categories.index')
             ->with('success', 'Catégorie créée avec succès.');
     }
 
@@ -153,7 +153,7 @@ class AdminWikiController extends Controller
         $category->save();
 
         return redirect()
-            ->route('admin.wiki.categories')
+            ->route('admin.wiki.categories.index')
             ->with('success', 'Catégorie mise à jour avec succès.');
     }
 
@@ -161,14 +161,14 @@ class AdminWikiController extends Controller
     {
         if ($category->articles()->count() > 0) {
             return redirect()
-                ->route('admin.wiki.categories')
+                ->route('admin.wiki.categories.index')
                 ->with('error', 'Impossible de supprimer une catégorie contenant des articles.');
         }
 
         $category->delete();
 
         return redirect()
-            ->route('admin.wiki.categories')
+            ->route('admin.wiki.categories.index')
             ->with('success', 'Catégorie supprimée avec succès.');
     }
 }

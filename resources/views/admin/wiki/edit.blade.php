@@ -2,6 +2,36 @@
 
 @section('title', 'Modifier un article Wiki')
 
+@push('styles')
+<style>
+    .tox-tinymce {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+    [data-bs-theme="dark"] .tox-tinymce {
+        border-color: #404040;
+    }
+    [data-bs-theme="dark"] .tox {
+        background-color: #2d2d2d !important;
+    }
+    [data-bs-theme="dark"] .tox .tox-toolbar,
+    [data-bs-theme="dark"] .tox .tox-toolbar__primary,
+    [data-bs-theme="dark"] .tox .tox-toolbar__overflow,
+    [data-bs-theme="dark"] .tox .tox-edit-area__iframe,
+    [data-bs-theme="dark"] .tox .tox-statusbar {
+        background-color: #2d2d2d !important;
+        border-color: #404040 !important;
+    }
+    [data-bs-theme="dark"] .tox .tox-mbtn,
+    [data-bs-theme="dark"] .tox .tox-tbtn {
+        color: #ffffff !important;
+    }
+    [data-bs-theme="dark"] .tox .tox-tbtn svg {
+        fill: #ffffff !important;
+    }
+</style>
+@endpush
+
 @section('content')
 <div class="container-fluid py-4">
     <nav aria-label="breadcrumb" class="mb-4">
@@ -60,9 +90,10 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-check mt-4">
-                            <input class="form-check-input" type="checkbox" id="is_published" name="is_published" {{ old('is_published', $article->is_published) ? 'checked' : '' }}>
+                            <input type="hidden" name="is_published" value="0">
+                            <input type="checkbox" class="form-check-input" id="is_published" name="is_published" value="1" {{ old('is_published', $article->is_published) ? 'checked' : '' }}>
                             <label class="form-check-label" for="is_published">
-                                Publié
+                                Publier l'article
                             </label>
                         </div>
                     </div>
@@ -85,23 +116,33 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.3/tinymce.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         tinymce.init({
             selector: '.tinymce',
             height: 500,
-            menubar: true,
+            skin: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'oxide-dark' : 'oxide',
+            content_css: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'default',
+            menubar: 'file edit view insert format tools table help',
             plugins: [
-                'advlist autolink lists link image charmap print preview anchor',
-                'searchreplace visualblocks code fullscreen',
-                'insertdatetime media table paste code help wordcount'
+                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview', 'anchor',
+                'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
             ],
-            toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
-            content_css: [
-                '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-                '//www.tiny.cloud/css/codepen.min.css'
-            ],
+            toolbar: 'undo redo | styles | bold italic | alignleft aligncenter alignright alignjustify | ' +
+                'bullist numlist outdent indent | link image | print preview media fullscreen | ' +
+                'forecolor backcolor emoticons | help',
+            menu: {
+                file: { title: 'File', items: 'newdocument restoredraft | preview | print' },
+                edit: { title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall | searchreplace' },
+                view: { title: 'View', items: 'code | visualaid visualchars visualblocks | spellchecker | preview fullscreen' },
+                insert: { title: 'Insert', items: 'image link media template codesample inserttable | charmap emoticons hr | pagebreak nonbreaking anchor toc | insertdatetime' },
+                format: { title: 'Format', items: 'bold italic underline strikethrough superscript subscript codeformat | formats blockformats fontformats fontsizes align lineheight | forecolor backcolor | removeformat' },
+                tools: { title: 'Tools', items: 'spellchecker spellcheckerlanguage | code wordcount' },
+                table: { title: 'Table', items: 'inserttable | cell row column | advtablesort | tableprops deletetable' }
+            },
+            content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-size: 16px; }',
             setup: function(editor) {
                 editor.on('init', function() {
                     this.getContainer().style.visibility = 'visible';
@@ -112,6 +153,22 @@
                     editor.save();
                 });
             }
+        });
+
+        // Mise à jour du thème lors du changement de mode sombre/clair
+        const darkModeObserver = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.attributeName === 'data-bs-theme') {
+                    const isDarkMode = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+                    tinymce.activeEditor.setOption('skin', isDarkMode ? 'oxide-dark' : 'oxide');
+                    tinymce.activeEditor.setOption('content_css', isDarkMode ? 'dark' : 'default');
+                }
+            });
+        });
+
+        darkModeObserver.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['data-bs-theme']
         });
     });
 </script>

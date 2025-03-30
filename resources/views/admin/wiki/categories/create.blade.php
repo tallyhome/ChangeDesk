@@ -8,7 +8,7 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Tableau de bord</a></li>
             <li class="breadcrumb-item"><a href="{{ route('admin.wiki.index') }}">Wiki</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('admin.wiki.categories') }}">Catégories</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.wiki.categories.index') }}">Catégories</a></li>
             <li class="breadcrumb-item active" aria-current="page">Créer une catégorie</li>
         </ol>
     </nav>
@@ -46,7 +46,7 @@
                 </div>
                 
                 <div class="d-flex justify-content-end gap-2">
-                    <a href="{{ route('admin.wiki.categories') }}" class="btn btn-secondary">Annuler</a>
+                    <a href="{{ route('admin.wiki.categories.index') }}" class="btn btn-secondary">Annuler</a>
                     <button type="submit" class="btn btn-primary">Enregistrer</button>
                 </div>
             </form>

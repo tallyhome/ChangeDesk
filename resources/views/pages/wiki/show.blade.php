@@ -140,4 +140,55 @@
         overflow-x: auto;
     }
     
-    [data-theme="dark"] .wiki
+    [data-theme="dark"] .wiki-content pre {
+        background-color: #2d2d2d;
+        color: #f8f9fa;
+    }
+
+    [data-theme="dark"] .wiki-content h2 {
+        border-bottom-color: rgba(255,255,255,0.1);
+    }
+
+    [data-theme="dark"] .card {
+        background-color: #2d2d2d;
+        border-color: rgba(255,255,255,0.1);
+    }
+
+    [data-theme="dark"] .card-header {
+        background-color: #222;
+        border-bottom-color: rgba(255,255,255,0.1);
+    }
+
+    [data-theme="dark"] .card-footer {
+        background-color: #222;
+        border-top-color: rgba(255,255,255,0.1);
+    }
+
+    [data-theme="dark"] .list-group-item {
+        background-color: #2d2d2d;
+        border-color: rgba(255,255,255,0.1);
+    }
+
+    [data-theme="dark"] .list-group-item a {
+        color: #66b0ff;
+    }
+
+    [data-theme="dark"] .breadcrumb-item a {
+        color: #66b0ff;
+    }
+
+    [data-theme="dark"] .breadcrumb-item.active {
+        color: #adb5bd;
+    }
+
+    [data-theme="dark"] .wiki-nav .nav-link:hover {
+        background-color: rgba(102, 176, 255, 0.1);
+        border-left-color: rgba(102, 176, 255, 0.5);
+    }
+
+    [data-theme="dark"] .wiki-nav .nav-link.active {
+        background-color: rgba(102, 176, 255, 0.1);
+        border-left-color: #66b0ff;
+    }
+</style>
+@endpush

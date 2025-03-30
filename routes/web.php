@@ -47,7 +47,7 @@ Route::prefix('wiki')->group(function () {
 // Routes d'administration du wiki
 Route::middleware(['auth'])->prefix('admin/wiki')->name('admin.wiki.')->group(function () {
     // Gestion des catégories (placées avant les routes avec paramètres)
-    Route::get('/categories', [AdminWikiController::class, 'categories'])->name('categories');
+    Route::get('/categories', [AdminWikiController::class, 'categories'])->name('categories.index');
     Route::get('/categories/create', [AdminWikiController::class, 'createCategory'])->name('categories.create');
     Route::post('/categories', [AdminWikiController::class, 'storeCategory'])->name('categories.store');
     Route::get('/categories/{category}/edit', [AdminWikiController::class, 'editCategory'])->name('categories.edit');

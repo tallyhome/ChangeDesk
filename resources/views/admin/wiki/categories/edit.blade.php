@@ -8,7 +8,7 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Tableau de bord</a></li>
             <li class="breadcrumb-item"><a href="{{ route('admin.wiki.index') }}">Wiki</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('admin.wiki.categories') }}">Catégories</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.wiki.categories.index') }}">Catégories</a></li>
             <li class="breadcrumb-item active" aria-current="page">Modifier une catégorie</li>
         </ol>
     </nav>
@@ -29,5 +29,29 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                
-                <div class="mb
+
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="3">{{ old('description', $category->description) }}</textarea>
+                    @error('description')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="order" class="form-label">Ordre d'affichage</label>
+                    <input type="number" class="form-control @error('order') is-invalid @enderror" id="order" name="order" value="{{ old('order', $category->order) }}">
+                    @error('order')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="d-flex justify-content-end gap-2">
+                    <a href="{{ route('admin.wiki.categories.index') }}" class="btn btn-secondary">Annuler</a>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endsection

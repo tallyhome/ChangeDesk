@@ -7,7 +7,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h2">Gestion des articles Wiki</h1>
         <div>
-            <a href="{{ route('admin.wiki.categories') }}" class="btn btn-outline-primary me-2">
+            <a href="{{ route('admin.wiki.categories.index') }}" class="btn btn-outline-primary me-2">
                 <i class="fas fa-folder me-1"></i> Gérer les catégories
             </a>
             <a href="{{ route('admin.wiki.create') }}" class="btn btn-primary">
