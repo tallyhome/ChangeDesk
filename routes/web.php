@@ -59,12 +59,14 @@ Route::middleware(['auth'])->prefix('admin/wiki')->name('admin.wiki.')->group(fu
     Route::get('/create', [AdminWikiController::class, 'create'])->name('create');
     Route::post('/', [AdminWikiController::class, 'store'])->name('store');
     Route::post('/preview', [AdminWikiController::class, 'preview'])->name('preview');
+    Route::post('/toggle-status', [AdminWikiController::class, 'toggleWikiStatus'])->name('toggle-status');
     
     // Routes avec paramètres en dernier
     Route::get('/{article}/edit', [AdminWikiController::class, 'edit'])->name('edit');
     Route::put('/{article}', [AdminWikiController::class, 'update'])->name('update');
     Route::delete('/{article}', [AdminWikiController::class, 'destroy'])->name('destroy');
     Route::get('/{article}', [AdminWikiController::class, 'show'])->name('show');
+    Route::post('/{article}/toggle-publication', [AdminWikiController::class, 'togglePublication'])->name('toggle-publication');
 });
 
 // Routes d'authentification

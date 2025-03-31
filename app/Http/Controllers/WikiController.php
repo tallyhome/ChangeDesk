@@ -9,6 +9,14 @@ use Illuminate\Support\Str;
 
 class WikiController extends Controller
 {
+    public function __construct()
+    {
+        $wikiEnabled = \App\Models\Setting::where('key', 'wiki_enabled')->value('value') ?? true;
+        if (!$wikiEnabled) {
+            abort(404, 'Le wiki est actuellement désactivé.');
+        }
+    }
+
     /**
      * Affiche la page d'accueil du wiki
      */

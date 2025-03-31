@@ -7,16 +7,27 @@ use App\Models\WikiArticle;
 use App\Models\WikiCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\Models\Setting;
 
 class AdminWikiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $articles = WikiArticle::with('category')
-            ->orderBy('order')
-            ->paginate(15);
+        $query = WikiArticle::with('category')
+            ->orderBy('order');
 
-        return view('admin.wiki.index', compact('articles'));
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('content', 'like', "%{$search}%");
+            });
+        }
+
+        $articles = $query->paginate(10);
+        $wikiEnabled = \App\Models\Setting::where('key', 'wiki_enabled')->value('value') ?? true;
+
+        return view('admin.wiki.index', compact('articles', 'wikiEnabled'));
     }
 
     public function create()
@@ -98,6 +109,31 @@ class AdminWikiController extends Controller
         return response()->json(['preview' => $content]);
     }
 
+    public function togglePublication(WikiArticle $article)
+    {
+        try {
+            \Log::info('Tentative de basculement de publication pour l\'article: ' . $article->id);
+            \Log::info('État actuel: ' . ($article->is_published ? 'publié' : 'non publié'));
+
+            $article->is_published = !$article->is_published;
+            $article->save();
+
+            \Log::info('Nouvel état: ' . ($article->is_published ? 'publié' : 'non publié'));
+
+            return response()->json([
+                'success' => true,
+                'is_published' => $article->is_published,
+                'message' => $article->is_published ? 'Article publié' : 'Article dépublié'
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Erreur lors du basculement de publication: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Une erreur est survenue lors de la modification du statut'
+            ], 500);
+        }
+    }
+
     // Gestion des catégories
     public function categories()
     {
@@ -170,5 +206,31 @@ class AdminWikiController extends Controller
         return redirect()
             ->route('admin.wiki.categories.index')
             ->with('success', 'Catégorie supprimée avec succès.');
+    }
+
+    public function toggleWikiStatus()
+    {
+        try {
+            $currentValue = Setting::getValue('wiki_enabled', true);
+            $newValue = !$currentValue;
+            
+            $setting = Setting::firstOrCreate(['key' => 'wiki_enabled']);
+            $setting->value = $newValue;
+            $setting->save();
+
+            \Log::info('Statut du wiki modifié: ' . ($newValue ? 'activé' : 'désactivé'));
+
+            return response()->json([
+                'success' => true,
+                'is_enabled' => $newValue,
+                'message' => $newValue ? 'Wiki activé' : 'Wiki désactivé'
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Erreur lors de la modification du statut du wiki: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Une erreur est survenue lors de la modification du statut'
+            ], 500);
+        }
     }
 }

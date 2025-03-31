@@ -1,4 +1,4 @@
-#     ChangeDesk v1.1.1
+#     ChangeDesk v2.1.0
 
 ## À propos de ChangeDesk
 
@@ -83,10 +83,14 @@ L'application sera accessible à l'adresse http://127.0.0.1:8000
 
 ## Fonctionnalités principales
 
-- Gestion des versions (changelog)
-- Suivi des rapports de bugs
-- Liste de tâches (todo)
-- Gestion de pages de contenu
+- Gestion des versions (changelog) avec support des images
+- Suivi des rapports de bugs avec système de progression et statuts colorés
+- Liste de tâches (todo) avec gestion des priorités
+- Gestion de pages de contenu dynamique
+- Système de wiki avec catégories et articles
+- Interface d'administration complète
+- Thème sombre/clair
+- Gestion des paramètres système
 
 ## Structure de la base de données
 
@@ -109,9 +113,30 @@ L'application sera accessible à l'adresse http://127.0.0.1:8000
 - progress (progression en pourcentage)
 - color (couleur associée au statut)
 - severity (gravité du bug)
-- expected_fix_date (date prévue de correction)!
-
+- expected_fix_date (date prévue de correction)
 - admin_notes (notes de l'administrateur)
+- timestamps (created_at, updated_at)
+
+### Table wiki_categories
+- id
+- name (nom de la catégorie)
+- description
+- slug (URL conviviale)
+- timestamps (created_at, updated_at)
+
+### Table wiki_articles
+- id
+- category_id (référence à la catégorie)
+- title (titre de l'article)
+- content (contenu de l'article)
+- slug (URL conviviale)
+- timestamps (created_at, updated_at)
+
+### Table settings
+- id
+- key (clé du paramètre)
+- value (valeur du paramètre)
+- is_active (état d'activation)
 - timestamps (created_at, updated_at)
 
 
