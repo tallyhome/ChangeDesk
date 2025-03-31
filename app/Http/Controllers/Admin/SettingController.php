@@ -17,13 +17,8 @@ class SettingController extends Controller
     public function update(Request $request)
     {
         $validated = $request->validate([
-            'external_link_url' => 'nullable|url',
-            'external_link_text' => 'nullable|string|max:255',
-            'external_link_active' => 'nullable|boolean',
-            'app_store_url' => 'nullable|url',
-            'app_store_active' => 'nullable|boolean',
-            'play_store_url' => 'nullable|url',
-            'play_store_active' => 'nullable|boolean',
+            'external_link_url' => 'required|url',
+            'external_link_text' => 'required|string|max:255',
         ]);
         
         foreach ($validated as $key => $value) {
@@ -33,24 +28,32 @@ class SettingController extends Controller
             );
         }
         
-        return redirect()->route('admin.settings.index')->with('success', 'Paramètres mis à jour avec succès');
+        return redirect()->route('admin.settings.index')
+            ->with('success', 'Paramètres mis à jour avec succès.');
     }
     
     /**
      * Met à jour un paramètre individuel via AJAX
      */
-    public function toggle(Request $request)
+    public function toggle($key)
     {
-        $validated = $request->validate([
-            'key' => 'required|string',
-            'value' => 'required',
+        $setting = Setting::where('key', $key)->first();
+        
+        if (!$setting) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Paramètre non trouvé'
+            ], 404);
+        }
+        
+        $newValue = $setting->value == '1' ? '0' : '1';
+        $setting->value = $newValue;
+        $setting->save();
+        
+        return response()->json([
+            'success' => true,
+            'value' => $newValue,
+            'message' => $newValue == '1' ? 'Fonctionnalité activée' : 'Fonctionnalité désactivée'
         ]);
-        
-        Setting::updateOrCreate(
-            ['key' => $validated['key']],
-            ['value' => $validated['value']]
-        );
-        
-        return response()->json(['success' => true]);
     }
 }

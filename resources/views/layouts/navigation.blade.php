@@ -11,22 +11,40 @@
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Accueil</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('changelog') ? 'active' : '' }}" href="{{ route('changelog') }}">Changelog</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('todolist') ? 'active' : '' }}" href="{{ route('todolist') }}">Prochaines fonctionnalités</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('bug-report') ? 'active' : '' }}" href="{{ route('bug-report') }}">Signaler un bug</a>
-                </li>
                 
                 @php
+                    $changelogEnabled = \App\Models\Setting::getValue('changelog_enabled', true);
+                    $todoEnabled = \App\Models\Setting::getValue('todo_enabled', true);
+                    $bugReportEnabled = \App\Models\Setting::getValue('bug_report_enabled', true);
                     $wikiEnabled = \App\Models\Setting::getValue('wiki_enabled', true);
                     $externalUrl = \App\Models\Setting::getValue('external_link_url');
                     $externalText = \App\Models\Setting::getValue('external_link_text', 'Lien externe');
                     $externalActive = \App\Models\Setting::getValue('external_link_active', '1');
                 @endphp
+                
+                @if($changelogEnabled)
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('changelog') ? 'active' : '' }}" href="{{ route('changelog') }}">
+                        <i class="fas fa-history me-1"></i>Changelog
+                    </a>
+                </li>
+                @endif
+                
+                @if($todoEnabled)
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('todolist') ? 'active' : '' }}" href="{{ route('todolist') }}">
+                        <i class="fas fa-tasks me-1"></i>Prochaines fonctionnalités
+                    </a>
+                </li>
+                @endif
+                
+                @if($bugReportEnabled)
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('bug-report.*') ? 'active' : '' }}" href="{{ route('bug-report') }}">
+                        <i class="fas fa-bug me-1"></i>Signaler un bug
+                    </a>
+                </li>
+                @endif
                 
                 @if($wikiEnabled)
                 <li class="nav-item">

@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\TodoItemController;
 use App\Http\Controllers\Admin\BugReportController;
 use App\Http\Controllers\WikiController;
 use App\Http\Controllers\Admin\AdminWikiController;
+use App\Http\Controllers\Admin\SettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -98,6 +99,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/changelog/{version}/edit', [VersionController::class, 'edit'])->name('changelog.edit');
     Route::put('/changelog/{version}', [VersionController::class, 'update'])->name('changelog.update');
     Route::delete('/changelog/{version}', [VersionController::class, 'destroy'])->name('changelog.destroy');
+    Route::post('/changelog/toggle-status', [VersionController::class, 'toggleChangelogStatus'])->name('changelog.toggle-status');
     
     // Upload d'image - Correction de la route
     Route::post('/upload/image', [App\Http\Controllers\Admin\ImageUploadController::class, 'store'])
@@ -110,8 +112,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/todolist/{todoItem}/edit', [TodoItemController::class, 'edit'])->name('todolist.edit');
     Route::put('/todolist/{todoItem}', [TodoItemController::class, 'update'])->name('todolist.update');
     Route::delete('/todolist/{todoItem}', [TodoItemController::class, 'destroy'])->name('todolist.destroy');
+    Route::post('/todolist/toggle-status', [TodoItemController::class, 'toggleTodoStatus'])->name('todolist.toggle-status');
     
-    // Routes pour les rapports de bugs
     // Routes pour les rapports de bugs
     Route::get('/bug-reports', [BugReportController::class, 'index'])->name('bug_reports');
     Route::get('/bug-reports/create', [BugReportController::class, 'create'])->name('bug_reports.create');
@@ -119,11 +121,12 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/bug-reports/{bugReport}/edit', [BugReportController::class, 'edit'])->name('bug_reports.edit');
     Route::put('/bug-reports/{bugReport}', [BugReportController::class, 'update'])->name('bug_reports.update');
     Route::delete('/bug-reports/{bugReport}', [BugReportController::class, 'destroy'])->name('bug_reports.destroy');
+    Route::post('/bug-reports/toggle-status', [BugReportController::class, 'toggleBugReportStatus'])->name('bug_reports.toggle-status');
     // Correction: utilisation du contrôleur TodoItemController au lieu de TodoController
     Route::delete('/todos/{id}', [TodoItemController::class, 'destroy'])->name('todos.destroy');
     
     // Routes pour les paramètres
     Route::get('/settings', [App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
-    Route::post('/settings/toggle', [App\Http\Controllers\Admin\SettingController::class, 'toggle'])->name('settings.toggle');
+    Route::post('/settings/toggle/{key}', [SettingController::class, 'toggle'])->name('settings.toggle');
 });

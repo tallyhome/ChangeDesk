@@ -60,6 +60,23 @@
                     <label class="form-check-label" for="play_store_active">Afficher l'icône Play Store dans le footer</label>
                 </div>
                 
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Rapports de Bugs</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <h6 class="mb-0">Activer/Désactiver les rapports de bugs</h6>
+                                <small class="text-muted">Permet aux utilisateurs de signaler des bugs</small>
+                            </div>
+                            <i class="fas fa-toggle-{{ ($settings['bug_report_enabled']->value ?? '1') == '1' ? 'on text-success' : 'off text-danger' }} toggle-icon" 
+                               style="font-size: 1.5rem; cursor: pointer;" 
+                               data-key="bug_report_enabled"></i>
+                        </div>
+                    </div>
+                </div>
+                
                 <button type="submit" class="btn btn-primary">Enregistrer</button>
             </form>
         </div>
@@ -78,38 +95,65 @@
         });
         
         // Gérer les interrupteurs d'activation/désactivation
-        $('.toggle-setting').on('change', function() {
+        $('.toggle-setting, .toggle-icon').on('change click', function(e) {
+            if (e.type === 'click' && $(this).hasClass('toggle-icon')) {
+                e.preventDefault();
+            }
+            
             const key = $(this).data('key');
-            const value = this.checked ? '1' : '0';
+            const value = $(this).hasClass('toggle-icon') 
+                ? ($(this).hasClass('fa-toggle-on') ? '0' : '1')
+                : (this.checked ? '1' : '0');
             
             // Afficher un indicateur de chargement
-            const label = $(this).next('label');
-            const originalText = label.text();
-            label.html('<i class="fas fa-spinner fa-spin"></i> ' + originalText);
+            if ($(this).hasClass('toggle-icon')) {
+                $(this).addClass('fa-spinner fa-spin');
+            } else {
+                const label = $(this).next('label');
+                const originalText = label.text();
+                label.html('<i class="fas fa-spinner fa-spin"></i> ' + originalText);
+            }
             
             // Envoyer la requête AJAX
             $.ajax({
-                url: '{{ route("admin.settings.toggle") }}',
+                url: `{{ route('admin.settings.toggle', '') }}/${key}`,
                 method: 'POST',
-                data: {
-                    key: key,
-                    value: value
-                },
+                data: { value: value },
                 success: function(response) {
-                    // Afficher un message de succès temporaire
-                    label.html('<i class="fas fa-check text-success"></i> ' + originalText);
-                    setTimeout(function() {
-                        label.text(originalText);
-                    }, 2000);
-                },
+                    if ($(this).hasClass('toggle-icon')) {
+                        $(this).removeClass('fa-spinner fa-spin');
+                        $(this).removeClass('fa-toggle-on fa-toggle-off text-success text-danger');
+                        $(this).addClass(response.value == '1' ? 'fa-toggle-on text-success' : 'fa-toggle-off text-danger');
+                    } else {
+                        const label = $(this).next('label');
+                        const originalText = label.text();
+                        label.html('<i class="fas fa-check text-success"></i> ' + originalText);
+                        setTimeout(function() {
+                            label.text(originalText);
+                        }, 2000);
+                    }
+                    
+                    // Afficher un message de succès
+                    const message = $('<div class="alert alert-success alert-dismissible fade show mt-3">' +
+                        response.message +
+                        '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                        '</div>');
+                    $('.container').prepend(message);
+                    setTimeout(() => message.remove(), 3000);
+                }.bind(this),
                 error: function(xhr) {
-                    // Rétablir l'état précédent en cas d'erreur
-                    label.html('<i class="fas fa-times text-danger"></i> ' + originalText);
-                    setTimeout(function() {
-                        label.text(originalText);
-                    }, 2000);
+                    if ($(this).hasClass('toggle-icon')) {
+                        $(this).removeClass('fa-spinner fa-spin');
+                    } else {
+                        const label = $(this).next('label');
+                        const originalText = label.text();
+                        label.html('<i class="fas fa-times text-danger"></i> ' + originalText);
+                        setTimeout(function() {
+                            label.text(originalText);
+                        }, 2000);
+                    }
                     console.error('Erreur lors de la mise à jour du paramètre:', xhr.responseText);
-                }
+                }.bind(this)
             });
         });
     });

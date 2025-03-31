@@ -89,4 +89,24 @@ class VersionController extends Controller
         $version->delete();
         return redirect()->route('admin.changelog')->with('success', 'Version supprimée avec succès.');
     }
+
+    public function toggleChangelogStatus()
+    {
+        $setting = \App\Models\Setting::where('key', 'changelog_enabled')->first();
+        
+        if (!$setting) {
+            $setting = new \App\Models\Setting();
+            $setting->key = 'changelog_enabled';
+            $setting->value = '1';
+        }
+        
+        $setting->value = $setting->value === '1' ? '0' : '1';
+        $setting->save();
+        
+        return response()->json([
+            'success' => true,
+            'value' => $setting->value,
+            'message' => $setting->value === '1' ? 'Changelog activé' : 'Changelog désactivé'
+        ]);
+    }
 }

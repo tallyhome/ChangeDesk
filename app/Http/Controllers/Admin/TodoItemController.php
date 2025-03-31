@@ -66,4 +66,24 @@ class TodoItemController extends Controller
         $todoItem->delete();
         return redirect()->route('admin.todolist')->with('success', 'Fonctionnalité supprimée avec succès.');
     }
+
+    public function toggleTodoStatus()
+    {
+        $setting = \App\Models\Setting::where('key', 'todo_enabled')->first();
+        
+        if (!$setting) {
+            $setting = new \App\Models\Setting();
+            $setting->key = 'todo_enabled';
+            $setting->value = '1';
+        }
+        
+        $setting->value = $setting->value === '1' ? '0' : '1';
+        $setting->save();
+        
+        return response()->json([
+            'success' => true,
+            'value' => $setting->value,
+            'message' => $setting->value === '1' ? 'Fonctionnalités à venir activées' : 'Fonctionnalités à venir désactivées'
+        ]);
+    }
 }

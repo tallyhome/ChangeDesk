@@ -80,4 +80,24 @@ class BugReportController extends Controller
         
         return redirect()->route('admin.bug_reports')->with('success', 'Rapport de bug supprimé avec succès.');
     }
+
+    public function toggleBugReportStatus()
+    {
+        $setting = \App\Models\Setting::where('key', 'bug_report_enabled')->first();
+        
+        if (!$setting) {
+            $setting = new \App\Models\Setting();
+            $setting->key = 'bug_report_enabled';
+            $setting->value = '1';
+        }
+        
+        $setting->value = $setting->value === '1' ? '0' : '1';
+        $setting->save();
+        
+        return response()->json([
+            'success' => true,
+            'value' => $setting->value,
+            'message' => $setting->value === '1' ? 'Système de rapports de bugs activé' : 'Système de rapports de bugs désactivé'
+        ]);
+    }
 }
