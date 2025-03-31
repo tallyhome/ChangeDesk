@@ -204,8 +204,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}" href="{{ route('admin.settings.index') }}">
-                                <i class="fas fa-cog"></i> Liens externes
+                            <a href="{{ route('admin.settings.index') }}" class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
+                                <i class="fas fa-link me-2"></i>Liens externes
                             </a>
                         </li>
                         <li class="nav-item">

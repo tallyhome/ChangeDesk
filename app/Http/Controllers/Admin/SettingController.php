@@ -10,50 +10,82 @@ class SettingController extends Controller
 {
     public function index()
     {
-        $settings = Setting::all()->keyBy('key');
+        $defaultSettings = [
+            'external_link_enabled' => '0',
+            'external_link_text' => '',
+            'external_link_url' => '',
+            'app_store_enabled' => '0',
+            'app_store_url' => '',
+            'play_store_enabled' => '0',
+            'play_store_url' => ''
+        ];
+
+        $settings = Setting::pluck('value', 'key')->all();
+        $settings = array_merge($defaultSettings, $settings);
+
         return view('admin.settings.index', compact('settings'));
     }
     
     public function update(Request $request)
     {
         $validated = $request->validate([
-            'external_link_url' => 'required|url',
-            'external_link_text' => 'required|string|max:255',
+            'external_link_text' => 'nullable|string|max:255',
+            'external_link_url' => 'nullable|url|max:255',
+            'app_store_url' => 'nullable|url|max:255',
+            'play_store_url' => 'nullable|url|max:255'
         ]);
-        
+
+        // Mettre à jour les paramètres textuels
         foreach ($validated as $key => $value) {
             Setting::updateOrCreate(
                 ['key' => $key],
                 ['value' => $value]
             );
         }
-        
+
+        // Mettre à jour les états des toggles
+        $toggles = [
+            'external_link_enabled',
+            'app_store_enabled',
+            'play_store_enabled'
+        ];
+
+        foreach ($toggles as $key) {
+            Setting::updateOrCreate(
+                ['key' => $key],
+                ['value' => $request->has($key) ? '1' : '0']
+            );
+        }
+
         return redirect()->route('admin.settings.index')
-            ->with('success', 'Paramètres mis à jour avec succès.');
+            ->with('success', 'Les paramètres ont été mis à jour avec succès.');
     }
     
     /**
      * Met à jour un paramètre individuel via AJAX
      */
-    public function toggle($key)
+    public function toggle(Request $request)
     {
-        $setting = Setting::where('key', $key)->first();
-        
-        if (!$setting) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Paramètre non trouvé'
-            ], 404);
-        }
-        
+        $key = $request->input('key');
+        $setting = Setting::firstOrCreate(
+            ['key' => $key],
+            ['value' => '0']
+        );
+
         $newValue = $setting->value == '1' ? '0' : '1';
         $setting->value = $newValue;
         $setting->save();
-        
+
+        $messages = [
+            'external_link_enabled' => $newValue == '1' ? 'Lien externe activé' : 'Lien externe désactivé',
+            'app_store_enabled' => $newValue == '1' ? 'Icône App Store activée' : 'Icône App Store désactivée',
+            'play_store_enabled' => $newValue == '1' ? 'Icône Play Store activée' : 'Icône Play Store désactivée'
+        ];
+
         return response()->json([
             'success' => true,
             'value' => $newValue,
-            'message' => $newValue == '1' ? 'Fonctionnalité activée' : 'Fonctionnalité désactivée'
+            'message' => $messages[$key] ?? 'Paramètre mis à jour avec succès'
         ]);
     }
 }

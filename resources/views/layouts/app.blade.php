@@ -211,16 +211,16 @@
                     <a href="{{ route('terms') }}" class="text-decoration-none me-3">Conditions d'utilisation</a>
                     <a href="{{ route('privacy') }}" class="text-decoration-none me-3">Politique de confidentialité</a>
                     @php
-                        $playStoreActive = \App\Models\Setting::getValue('play_store_active', '1');
-                        $appStoreActive = \App\Models\Setting::getValue('app_store_active', '1');
+                        $playStoreEnabled = \App\Models\Setting::getValue('play_store_enabled', '0');
+                        $appStoreEnabled = \App\Models\Setting::getValue('app_store_enabled', '0');
                     @endphp
-                    @if($playStoreActive == '1')
-                    <a href="{{ \App\Models\Setting::getValue('play_store_url', 'https://play.google.com/store/apps/details?id=com.myvcard.mypredict') }}" target="_blank" class="me-2">
+                    @if($playStoreEnabled == '1')
+                    <a href="{{ \App\Models\Setting::getValue('play_store_url', '#') }}" target="_blank" class="me-2">
                         <img src="{{ asset('images/google-play-badge.svg') }}" alt="Disponible sur Google Play" style="height: 40px;">
                     </a>
                     @endif
-                    @if($appStoreActive == '1')
-                    <a href="{{ \App\Models\Setting::getValue('app_store_url', 'https://apps.apple.com/app/myvcard-mypredict') }}" target="_blank">
+                    @if($appStoreEnabled == '1')
+                    <a href="{{ \App\Models\Setting::getValue('app_store_url', '#') }}" target="_blank">
                         <img src="{{ asset('images/app-store-badge.svg') }}" alt="Disponible sur l'App Store" style="height: 40px;">
                     </a>
                     @endif

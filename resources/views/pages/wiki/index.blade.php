@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Wiki')
+@section('title', $wikiTitle)
 
 @section('content')
 <div class="container-fluid py-5">
@@ -15,7 +15,7 @@
                     <ul class="nav flex-column wiki-nav">
                         <li class="nav-item">
                             <a href="{{ route('wiki') }}" class="nav-link {{ request()->routeIs('wiki') && !request()->route('slug') ? 'active' : '' }}">
-                                <i class="fas fa-home me-2"></i> Accueil du Wiki
+                                <i class="fas fa-home me-2"></i> Accueil du {{ $wikiTitle }}
                             </a>
                         </li>
                         @foreach($categories as $category)
@@ -32,15 +32,14 @@
         
         <!-- Contenu principal au centre -->
         <div class="col-md-6">
-            <h1 class="mb-4">Wiki</h1>
+            <h1 class="mb-4">{{ $wikiTitle }}</h1>
             
             <div class="card mb-4">
                 <div class="card-header bg-light">
-                    <h2 class="h4 mb-0">Bienvenue dans le Wiki</h2>
+                    <h2 class="h4 mb-0">{{ $welcomeTitle }}</h2>
                 </div>
                 <div class="card-body">
-                    <p>Bienvenue dans notre base de connaissances. Vous trouverez ici toutes les informations nécessaires organisées par catégories.</p>
-                    <p>Utilisez le menu de navigation à gauche pour parcourir les différentes catégories ou utilisez la barre de recherche pour trouver rapidement ce que vous cherchez.</p>
+                    {!! nl2br(e($welcomeText)) !!}
                 </div>
             </div>
             
@@ -70,7 +69,7 @@
             @endif
         </div>
         
-        <!-- Barre latérale droite pour la classification -->
+        <!-- Barre latérale droite pour la recherche -->
         <div class="col-md-3">
             <div class="card sticky-top" style="top: 20px;">
                 <div class="card-header bg-secondary text-white">

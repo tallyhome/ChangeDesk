@@ -28,7 +28,12 @@ class WikiController extends Controller
             ->take(5)
             ->get();
             
-        return view('pages.wiki.index', compact('categories', 'recentArticles'));
+        // Récupérer les paramètres du Wiki
+        $wikiTitle = \App\Models\Setting::getValue('wiki_title', 'Wiki');
+        $welcomeTitle = \App\Models\Setting::getValue('wiki_welcome_title', 'Bienvenue dans le Wiki');
+        $welcomeText = \App\Models\Setting::getValue('wiki_welcome_text', '');
+        
+        return view('pages.wiki.index', compact('categories', 'recentArticles', 'wikiTitle', 'welcomeTitle', 'welcomeText'));
     }
 
     /**

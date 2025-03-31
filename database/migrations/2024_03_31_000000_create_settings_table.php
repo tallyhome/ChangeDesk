@@ -18,36 +18,15 @@ return new class extends Migration
 
         // Insérer les paramètres par défaut
         DB::table('settings')->insert([
-            [
-                'key' => 'wiki_enabled',
-                'value' => '1',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'key' => 'bug_report_enabled',
-                'value' => '1',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'key' => 'external_link_url',
-                'value' => 'https://myvcard.fr',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'key' => 'external_link_text',
-                'value' => 'MyVcard',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'key' => 'external_link_active',
-                'value' => '1',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+            ['key' => 'bug_report_enabled', 'value' => '1'],
+            ['key' => 'wiki_enabled', 'value' => '1'],
+            ['key' => 'todo_enabled', 'value' => '1'],
+            ['key' => 'external_link_enabled', 'value' => '0'],
+            ['key' => 'external_link_url', 'value' => ''],
+            ['key' => 'external_link_text', 'value' => ''],
+            ['key' => 'wiki_title', 'value' => 'Wiki'],
+            ['key' => 'wiki_welcome_title', 'value' => 'Bienvenue dans le Wiki'],
+            ['key' => 'wiki_welcome_text', 'value' => "Bienvenue dans notre base de connaissances. Vous trouverez ici toutes les informations nécessaires organisées par catégories.\n\nUtilisez le menu de navigation à gauche pour parcourir les différentes catégories ou utilisez la barre de recherche pour trouver rapidement ce que vous cherchez."],
         ]);
     }
 

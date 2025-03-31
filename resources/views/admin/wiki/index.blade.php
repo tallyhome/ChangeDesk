@@ -58,8 +58,11 @@
             <a href="{{ route('admin.wiki.categories.index') }}" class="btn btn-outline-primary me-2">
                 <i class="fas fa-folder me-1"></i> Gérer les catégories
             </a>
+            <a href="{{ route('admin.wiki.settings') }}" class="btn btn-outline-secondary me-2">
+                <i class="fas fa-cog me-2"></i>Paramètres
+            </a>
             <a href="{{ route('admin.wiki.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus me-1"></i> Nouvel article
+                <i class="fas fa-plus me-2"></i>Nouvel article
             </a>
         </div>
     </div>

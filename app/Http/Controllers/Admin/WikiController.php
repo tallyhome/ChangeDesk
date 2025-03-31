@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\WikiArticle;
 use App\Models\WikiCategory;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -192,5 +193,11 @@ class WikiController extends Controller
         $category->delete();
         return redirect()->route('admin.wiki.categories')
             ->with('success', 'Catégorie supprimée avec succès.');
+    }
+
+    public function settings()
+    {
+        $settings = Setting::pluck('value', 'key')->all();
+        return view('admin.wiki.settings', compact('settings'));
     }
 }
