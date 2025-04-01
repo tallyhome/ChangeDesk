@@ -193,6 +193,35 @@ class AdminWikiController extends Controller
             ->with('success', 'Catégorie mise à jour avec succès.');
     }
 
+    public function settings()
+    {
+        $settings = Setting::whereIn('key', ['wiki_title', 'wiki_welcome_title', 'wiki_welcome_text', 'wiki_enabled'])
+            ->pluck('value', 'key')
+            ->toArray();
+
+        return view('admin.wiki.settings', compact('settings'));
+    }
+
+    public function updateSettings(Request $request)
+    {
+        $validatedData = $request->validate([
+            'wiki_title' => 'required|string|max:255',
+            'wiki_welcome_title' => 'required|string|max:255',
+            'wiki_welcome_text' => 'nullable|string'
+        ]);
+
+        foreach ($validatedData as $key => $value) {
+            Setting::updateOrCreate(
+                ['key' => $key],
+                ['value' => $value]
+            );
+        }
+
+        return redirect()
+            ->route('admin.wiki.settings')
+            ->with('success', 'Paramètres du wiki mis à jour avec succès.');
+    }
+
     public function destroyCategory(WikiCategory $category)
     {
         if ($category->articles()->count() > 0) {

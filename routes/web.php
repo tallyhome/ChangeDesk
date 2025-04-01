@@ -62,6 +62,10 @@ Route::middleware(['auth'])->prefix('admin/wiki')->name('admin.wiki.')->group(fu
     Route::post('/preview', [AdminWikiController::class, 'preview'])->name('preview');
     Route::post('/toggle-status', [AdminWikiController::class, 'toggleWikiStatus'])->name('toggle-status');
     
+    // Paramètres du wiki
+    Route::get('/settings', [AdminWikiController::class, 'settings'])->name('settings');
+    Route::post('/settings/update', [AdminWikiController::class, 'updateSettings'])->name('settings.update');
+
     // Routes avec paramètres en dernier
     Route::get('/{article}/edit', [AdminWikiController::class, 'edit'])->name('edit');
     Route::put('/{article}', [AdminWikiController::class, 'update'])->name('update');
@@ -130,7 +134,5 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::put('/settings', [App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
     Route::post('/settings/toggle', [SettingController::class, 'toggle'])->name('settings.toggle');
 
-    // ... existing code ...
-    Route::get('/wiki/settings', [AdminWikiController::class, 'settings'])->name('wiki.settings');
-    // ... existing code ...
+    // Autres routes admin si nécessaire
 });

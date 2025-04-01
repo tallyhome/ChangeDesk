@@ -22,9 +22,9 @@
             <h2 class="h5 mb-0">Configuration du Wiki</h2>
         </div>
         <div class="card-body">
-            <form action="{{ route('admin.settings.update') }}" method="POST">
+            <form action="{{ route('admin.wiki.settings.update') }}" method="POST">
                 @csrf
-                @method('PUT')
+                <!-- Suppression de la ligne @method('PUT') -->
 
                 <div class="mb-3">
                     <label for="wiki_title" class="form-label">Titre du Wiki</label>
@@ -116,4 +116,4 @@ $(document).ready(function() {
     });
 });
 </script>
-@endsection 
+@endsection
