@@ -218,6 +218,11 @@
                                 <i class="fas fa-book"></i> Wiki
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.backups.*') ? 'active' : '' }}" href="{{ route('admin.backups.index') }}">
+                                <i class="fas fa-database"></i> Base de données
+                            </a>
+                        </li>
 
                     </ul>
                 </div>

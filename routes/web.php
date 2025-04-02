@@ -102,6 +102,13 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/pages/{page}/edit', [AdminController::class, 'edit'])->name('pages.edit');
     Route::put('/pages/{page}', [AdminController::class, 'update'])->name('pages.update');
     
+    // Routes pour les sauvegardes de base de données
+    Route::get('/backups', [\App\Http\Controllers\Admin\DatabaseBackupController::class, 'index'])->name('backups.index');
+    Route::post('/backups', [\App\Http\Controllers\Admin\DatabaseBackupController::class, 'create'])->name('backups.create');
+    Route::get('/backups/{filename}/download', [\App\Http\Controllers\Admin\DatabaseBackupController::class, 'download'])->name('backups.download');
+    Route::post('/backups/{filename}/restore', [\App\Http\Controllers\Admin\DatabaseBackupController::class, 'restore'])->name('backups.restore');
+    Route::delete('/backups/{filename}', [\App\Http\Controllers\Admin\DatabaseBackupController::class, 'destroy'])->name('backups.destroy');
+    
     // Routes pour le changelog - toutes avec VersionController
     Route::get('/changelog', [VersionController::class, 'index'])->name('changelog');
     Route::get('/changelog/create', [VersionController::class, 'create'])->name('changelog.create');

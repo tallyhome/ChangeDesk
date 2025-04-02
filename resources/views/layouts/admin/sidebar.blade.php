@@ -51,6 +51,10 @@
                 <div class="sb-nav-link-icon"><i class="fas fa-cog"></i></div>
                 Paramètres
             </a>
+            <a class="nav-link" href="{{ route('admin.backups.index') }}">
+                <div class="sb-nav-link-icon"><i class="fas fa-database"></i></div>
+                Sauvegardes BDD
+            </a>
             <a class="nav-link" href="{{ route('admin.profile.edit') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                 Profil
