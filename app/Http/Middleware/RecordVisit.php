@@ -11,6 +11,7 @@ class RecordVisit
     public function handle(Request $request, Closure $next)
     {
         // Ne pas enregistrer les visites pour les assets et les requêtes AJAX
+        // Mais enregistrer toutes les autres visites, y compris celles des administrateurs et en local
         if (!$request->is('api/*') && 
             !$request->is('_debugbar/*') && 
             !$this->isAsset($request->path()) && 

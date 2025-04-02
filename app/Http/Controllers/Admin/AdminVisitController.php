@@ -15,12 +15,14 @@ class AdminVisitController extends Controller
         $visitsByRegion = $stats['by_region'];
         $visitsByCountry = $stats['by_country'];
         $recentVisits = $stats['recent_visits'];
+        $activeVisitors = $stats['active_visitors'];
 
         return view('admin.visits.index', compact(
             'totalVisits',
             'visitsByRegion',
             'visitsByCountry',
-            'recentVisits'
+            'recentVisits',
+            'activeVisitors'
         ));
     }
 
@@ -53,5 +55,16 @@ class AdminVisitController extends Controller
             'visitsByRegion' => $visitsByRegion,
             'visitsByDay' => $visitsByDay
         ]);
+    }
+    
+    /**
+     * Récupère le nombre de visiteurs actifs en temps réel
+     * 
+     * @return Illuminate\Http\JsonResponse
+     */
+    public function getActiveVisitors()
+    {
+        $activeVisitors = Visit::getActiveVisitors();
+        return response()->json(['active_visitors' => $activeVisitors]);
     }
 }

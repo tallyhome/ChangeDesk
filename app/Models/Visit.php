@@ -59,7 +59,24 @@ class Visit extends Model
                 ->get(),
             'recent_visits' => self::latest()
                 ->take(10)
-                ->get()
+                ->get(),
+            'active_visitors' => self::getActiveVisitors()
         ];
+    }
+    
+    /**
+     * Récupère le nombre de visiteurs actifs dans les dernières minutes
+     * 
+     * @param int $minutes Nombre de minutes à considérer pour les visiteurs actifs
+     * @return int Nombre de visiteurs actifs
+     */
+    public static function getActiveVisitors($minutes = 1)
+    {
+        $timestamp = now()->subMinutes($minutes);
+        
+        // Compter les adresses IP uniques des dernières minutes
+        return self::where('created_at', '>=', $timestamp)
+            ->distinct('ip_address')
+            ->count('ip_address');
     }
 }

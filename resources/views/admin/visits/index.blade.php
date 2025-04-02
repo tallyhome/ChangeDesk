@@ -13,6 +13,14 @@
                 </div>
             </div>
         </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-success text-white mb-4">
+                <div class="card-body">
+                    <h2 id="active-visitors-count">{{ $activeVisitors }}</h2>
+                    <div>Visiteurs actifs en temps réel</div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="row mt-4">
@@ -77,6 +85,19 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Fonction pour mettre à jour le compteur de visiteurs actifs
+    function updateActiveVisitors() {
+        fetch('/admin/visits/active-visitors')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('active-visitors-count').textContent = data.active_visitors;
+            })
+            .catch(error => console.error('Erreur lors de la récupération des visiteurs actifs:', error));
+    }
+    
+    // Mettre à jour le compteur toutes les 5 secondes
+    setInterval(updateActiveVisitors, 5000);
+    
     fetch('/admin/visits/chart-data')
         .then(response => response.json())
         .then(data => {

@@ -11,6 +11,17 @@ class IpGeolocationService
 
     public function getLocation($ip)
     {
+        // Pour les adresses IP locales, retourner des données fictives pour permettre le tracking en local
+        if ($ip == '127.0.0.1' || $ip == 'localhost' || $ip == '::1') {
+            $location = [
+                'location' => 'Local',
+                'country' => 'Local',
+                'region' => 'Développement',
+                'city' => 'Localhost'
+            ];
+            return $location;
+        }
+        
         // Vérifie si l'IP est déjà en cache
         $cacheKey = 'ip_location_' . $ip;
         if (Cache::has($cacheKey)) {
