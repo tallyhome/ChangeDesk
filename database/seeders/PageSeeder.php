@@ -15,11 +15,12 @@ class PageSeeder extends Seeder
             'slug' => 'home'
         ]);
 
-        Page::create([
-            'title' => 'Changelog',
-            'content' => 'Version 1.0.0 - Lancement initial...',
-            'slug' => 'changelog'
-        ]);
+//        Changelog a été remanier avec un system de version, donc plus besoin qu'il soit dans les pages        
+ //       Page::create([
+ //           'title' => 'Changelog',
+ //           'content' => 'Version 1.0.0 - Lancement initial...',
+ //           'slug' => 'changelog'
+ //       ]);
 
         Page::create([
             'title' => 'Conditions d\'utilisation',

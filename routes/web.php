@@ -89,6 +89,11 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
     
+    // Routes pour les statistiques de visites
+    Route::get('/visits', [\App\Http\Controllers\Admin\AdminVisitController::class, 'index'])->name('visits.index');
+    Route::get('/visits/analysis', [\App\Http\Controllers\Admin\AdminVisitController::class, 'analysis'])->name('visits.analysis');
+    Route::get('/visits/chart-data', [\App\Http\Controllers\Admin\AdminVisitController::class, 'getChartData'])->name('visits.chart-data');
+    
     // Routes pour le profil administrateur
     Route::get('/profile', [\App\Http\Controllers\AdminProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [\App\Http\Controllers\AdminProfileController::class, 'update'])->name('profile.update');

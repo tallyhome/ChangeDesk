@@ -209,6 +209,11 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.visits.*') ? 'active' : '' }}" href="{{ route('admin.visits.index') }}">
+                                <i class="fas fa-chart-line me-2"></i>Statistiques
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.wiki.*') ? 'active' : '' }}" href="{{ route('admin.wiki.index') }}">
                                 <i class="fas fa-book"></i> Wiki
                             </a>

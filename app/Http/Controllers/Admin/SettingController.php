@@ -51,9 +51,12 @@ class SettingController extends Controller
         ];
 
         foreach ($toggles as $key) {
+            // Utiliser input() au lieu de has() pour récupérer la valeur réelle du champ
+            // Cela prendra en compte les champs cachés avec value="0"
+            $value = $request->input($key, '0');
             Setting::updateOrCreate(
                 ['key' => $key],
-                ['value' => $request->has($key) ? '1' : '0']
+                ['value' => $value]
             );
         }
 

@@ -75,7 +75,7 @@
     @endif
 
     <div class="card">
-        <div class="card-header bg-light">
+        <div class="card-header bg-primary bg-opacity-10">
             <div class="row align-items-center">
                 <div class="col">
                     <h5 class="mb-0">Liste des articles</h5>
@@ -83,7 +83,7 @@
                 <div class="col-md-4">
                     <form action="{{ route('admin.wiki.index') }}" method="GET" class="d-flex">
                         <input type="text" name="search" class="form-control" placeholder="Rechercher..." value="{{ request('search') }}">
-                        <button type="submit" class="btn btn-outline-primary ms-2">
+                        <button type="submit" class="btn btn-outline-light ms-2">
                             <i class="fas fa-search"></i>
                         </button>
                     </form>

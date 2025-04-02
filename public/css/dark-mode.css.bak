@@ -23,7 +23,7 @@
     --changelog-muted: #6c757d;
     --changelog-link: #0d6efd;
     --changelog-border: #dee2e6;
-    --changelog-list-item-bg: #ffffff;
+    --changelog-list-item-bg: #1e1e1e;
     --changelog-list-item-hover: #f8f9fa;
     --changelog-section-title: #212529;
     --changelog-section-border: #dee2e6;
