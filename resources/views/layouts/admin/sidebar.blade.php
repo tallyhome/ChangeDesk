@@ -51,6 +51,14 @@
                 <div class="sb-nav-link-icon"><i class="fas fa-globe"></i></div>
                 Domaine
             </a>
+            <a class="nav-link" href="{{ route('admin.appearance.edit') }}">
+                <div class="sb-nav-link-icon"><i class="fas fa-palette"></i></div>
+                Apparence
+            </a>
+            <a class="nav-link" href="{{ route('admin.billing.index') }}">
+                <div class="sb-nav-link-icon"><i class="fas fa-credit-card"></i></div>
+                Facturation
+            </a>
             <a class="nav-link" href="{{ route('admin.settings.index') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-cog"></i></div>
                 Paramètres

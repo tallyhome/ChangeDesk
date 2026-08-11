@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends(\App\Support\ThemeView::layout())
 
 @section('title', 'Politique de confidentialité')
 

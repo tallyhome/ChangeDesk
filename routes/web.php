@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminWikiController;
+use App\Http\Controllers\Admin\AppearanceController;
+use App\Http\Controllers\Admin\BillingController as AdminBillingController;
 use App\Http\Controllers\Admin\BugReportController;
 use App\Http\Controllers\Admin\DomainController;
 use App\Http\Controllers\Admin\ImageUploadController;
@@ -10,37 +12,72 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ImpersonationController;
+use App\Http\Controllers\InstallController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ThemePreviewController;
+use App\Http\Controllers\SuperAdmin\AuditLogController;
+use App\Http\Controllers\SuperAdmin\BillingController as SuperAdminBillingController;
+use App\Http\Controllers\SuperAdmin\DashboardController as SuperAdminDashboardController;
+use App\Http\Controllers\SuperAdmin\PlanController as SuperAdminPlanController;
 use App\Http\Controllers\SuperAdmin\TenantController as SuperAdminTenantController;
+use App\Http\Controllers\SuperAdmin\UserController as SuperAdminUserController;
+use App\Http\Controllers\SuperAdmin\UpdateController as SuperAdminUpdateController;
 use App\Http\Controllers\VersionController;
+use App\Http\Controllers\Webhooks\PayPalWebhookController;
+use App\Http\Controllers\Webhooks\StripeWebhookController;
 use App\Http\Controllers\WikiController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
+Route::get('/theme-preview/{theme}', ThemePreviewController::class)->name('theme.preview');
 
-// Auth + inscription (domaine central uniquement)
-Route::middleware(['central', 'guest'])->group(function () {
+Route::prefix('install')->name('install.')->group(function () {
+    Route::get('/', [InstallController::class, 'welcome'])->name('welcome');
+    Route::get('/requirements', [InstallController::class, 'requirements'])->name('requirements');
+    Route::get('/database', [InstallController::class, 'databaseForm'])->name('database');
+    Route::post('/database', [InstallController::class, 'databaseStore'])->name('database.store');
+    Route::get('/done', [InstallController::class, 'done'])->name('done');
+});
+
+Route::post('/webhooks/stripe', StripeWebhookController::class)->name('webhooks.stripe');
+Route::post('/webhooks/paypal', PayPalWebhookController::class)->name('webhooks.paypal');
+
+// Login accessible aussi depuis un sous-domaine tenant (puis redirect admin central)
+Route::middleware(['guest'])->group(function () {
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+});
+
+Route::middleware(['central', 'guest'])->group(function () {
     Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
     Route::post('/register', [RegisteredUserController::class, 'store']);
 });
 
-Route::middleware(['central', 'auth'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
 
-// Contenu public du tenant (sous-domaine ou domaine custom vérifié)
-Route::middleware(['tenant.host'])->group(function () {
+Route::middleware(['central', 'auth'])->group(function () {
+    Route::post('/impersonation/leave', [ImpersonationController::class, 'leave'])->name('impersonation.leave');
+});
+
+Route::middleware(['tenant.host', 'tenant.notSuspended'])->group(function () {
     Route::get('/changelog', [PageController::class, 'changelog'])->name('changelog');
     Route::get('/terms', [PageController::class, 'terms'])->name('terms');
     Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
-    Route::get('/todolist', [PageController::class, 'todolist'])->name('todolist');
-    Route::get('/bug-report', [PageController::class, 'bugReport'])->name('bug-report');
-    Route::post('/bug-report', [PageController::class, 'storeBugReport'])->name('bug-report.store');
-    Route::get('/bug-report/{id}', [PageController::class, 'showBugReport'])->name('bug-report.show');
 
-    Route::prefix('wiki')->group(function () {
+    Route::middleware('module:todolist')->group(function () {
+        Route::get('/todolist', [PageController::class, 'todolist'])->name('todolist');
+    });
+
+    Route::middleware('module:bugs')->group(function () {
+        Route::get('/bug-report', [PageController::class, 'bugReport'])->name('bug-report');
+        Route::post('/bug-report', [PageController::class, 'storeBugReport'])->name('bug-report.store');
+        Route::get('/bug-report/{id}', [PageController::class, 'showBugReport'])->name('bug-report.show');
+    });
+
+    Route::middleware('module:wiki')->prefix('wiki')->group(function () {
         Route::get('/', [WikiController::class, 'index'])->name('wiki');
         Route::get('/search', [WikiController::class, 'search'])->name('wiki.search');
         Route::get('/category/{slug}', [WikiController::class, 'category'])->name('wiki.category');
@@ -48,7 +85,6 @@ Route::middleware(['tenant.host'])->group(function () {
     });
 });
 
-// Admin client (domaine central + tenant depuis l'utilisateur connecté)
 Route::middleware(['central', 'auth', 'client', 'tenant.fromAuth'])
     ->prefix('admin')
     ->name('admin.')
@@ -58,6 +94,13 @@ Route::middleware(['central', 'auth', 'client', 'tenant.fromAuth'])
         Route::get('/domain', [DomainController::class, 'edit'])->name('domain.edit');
         Route::put('/domain', [DomainController::class, 'update'])->name('domain.update');
         Route::post('/domain/verify', [DomainController::class, 'verify'])->name('domain.verify');
+
+        Route::get('/appearance', [AppearanceController::class, 'edit'])->name('appearance.edit');
+        Route::put('/appearance', [AppearanceController::class, 'update'])->name('appearance.update');
+
+        Route::get('/billing', [AdminBillingController::class, 'index'])->name('billing.index');
+        Route::post('/billing/checkout', [AdminBillingController::class, 'checkout'])->name('billing.checkout');
+        Route::get('/billing/success', [AdminBillingController::class, 'success'])->name('billing.success');
 
         Route::get('/visits', [\App\Http\Controllers\Admin\AdminVisitController::class, 'index'])->name('visits.index');
         Route::get('/visits/analysis', [\App\Http\Controllers\Admin\AdminVisitController::class, 'analysis'])->name('visits.analysis');
@@ -126,16 +169,44 @@ Route::middleware(['central', 'auth', 'client', 'tenant.fromAuth'])
         });
     });
 
-// Superadmin plateforme
 Route::middleware(['central', 'auth', 'superadmin'])
     ->prefix('superadmin')
     ->name('superadmin.')
     ->group(function () {
-        Route::get('/', [SuperAdminTenantController::class, 'index'])->name('tenants.index');
-        Route::get('/tenants/{tenant}', [SuperAdminTenantController::class, 'show'])->name('tenants.show');
-        Route::post('/tenants/{tenant}/toggle', [SuperAdminTenantController::class, 'toggle'])->name('tenants.toggle');
+        Route::get('/', SuperAdminDashboardController::class)->name('dashboard');
 
-        // Backups globaux (DB partagée) — réservés au superadmin
+        Route::get('/tenants', [SuperAdminTenantController::class, 'index'])->name('tenants.index');
+        Route::get('/tenants/{tenant}', [SuperAdminTenantController::class, 'show'])->name('tenants.show');
+        Route::get('/tenants/{tenant}/edit', [SuperAdminTenantController::class, 'edit'])->name('tenants.edit');
+        Route::put('/tenants/{tenant}', [SuperAdminTenantController::class, 'update'])->name('tenants.update');
+        Route::post('/tenants/{tenant}/toggle', [SuperAdminTenantController::class, 'toggle'])->name('tenants.toggle');
+        Route::post('/tenants/{tenant}/suspend', [SuperAdminTenantController::class, 'suspend'])->name('tenants.suspend');
+        Route::post('/tenants/{tenant}/unsuspend', [SuperAdminTenantController::class, 'unsuspend'])->name('tenants.unsuspend');
+        Route::post('/tenants/{tenant}/impersonate', [SuperAdminTenantController::class, 'impersonate'])->name('tenants.impersonate');
+
+        Route::get('/users', [SuperAdminUserController::class, 'index'])->name('users.index');
+        Route::get('/users/create', [SuperAdminUserController::class, 'create'])->name('users.create');
+        Route::post('/users', [SuperAdminUserController::class, 'store'])->name('users.store');
+        Route::get('/users/{user}/edit', [SuperAdminUserController::class, 'edit'])->name('users.edit');
+        Route::put('/users/{user}', [SuperAdminUserController::class, 'update'])->name('users.update');
+        Route::post('/users/{user}/reset', [SuperAdminUserController::class, 'resetPassword'])->name('users.reset');
+        Route::post('/users/{user}/toggle', [SuperAdminUserController::class, 'toggleActive'])->name('users.toggle');
+
+        Route::get('/plans', [SuperAdminPlanController::class, 'index'])->name('plans.index');
+        Route::get('/plans/create', [SuperAdminPlanController::class, 'create'])->name('plans.create');
+        Route::post('/plans', [SuperAdminPlanController::class, 'store'])->name('plans.store');
+        Route::get('/plans/{plan}/edit', [SuperAdminPlanController::class, 'edit'])->name('plans.edit');
+        Route::put('/plans/{plan}', [SuperAdminPlanController::class, 'update'])->name('plans.update');
+        Route::delete('/plans/{plan}', [SuperAdminPlanController::class, 'destroy'])->name('plans.destroy');
+
+        Route::get('/billing', [SuperAdminBillingController::class, 'index'])->name('billing.index');
+        Route::post('/billing/assign', [SuperAdminBillingController::class, 'assign'])->name('billing.assign');
+
+        Route::get('/audit', [AuditLogController::class, 'index'])->name('audit.index');
+
+        Route::get('/updates', [SuperAdminUpdateController::class, 'index'])->name('updates.index');
+        Route::post('/updates/apply', [SuperAdminUpdateController::class, 'apply'])->name('updates.apply');
+
         Route::get('/backups', [\App\Http\Controllers\Admin\DatabaseBackupController::class, 'index'])->name('backups.index');
         Route::post('/backups', [\App\Http\Controllers\Admin\DatabaseBackupController::class, 'create'])->name('backups.create');
         Route::get('/backups/{filename}/download', [\App\Http\Controllers\Admin\DatabaseBackupController::class, 'download'])->name('backups.download');

@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Models\Page;
+use App\Models\Plan;
 use App\Models\Setting;
+use App\Models\Subscription;
 use App\Models\Tenant;
 use Illuminate\Support\Str;
 
@@ -11,13 +13,28 @@ class TenantProvisioner
 {
     public function create(string $name, string $slug): Tenant
     {
+        $free = Plan::where('slug', 'free')->first();
+
         $tenant = Tenant::create([
             'name' => $name,
             'slug' => Str::slug($slug),
             'domain_status' => Tenant::DOMAIN_NONE,
             'domain_verification_token' => Str::random(40),
+            'visual_theme' => 'classic',
             'is_active' => true,
+            'plan_id' => $free?->id,
         ]);
+
+        if ($free) {
+            Subscription::create([
+                'tenant_id' => $tenant->id,
+                'plan_id' => $free->id,
+                'status' => 'active',
+                'provider' => 'manual',
+                'current_period_start' => now(),
+                'current_period_end' => now()->addYears(10),
+            ]);
+        }
 
         $this->seedDefaults($tenant);
 

@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title') - MyVcard MyPredict</title>
+    <title>@yield('title'){{ isset($currentTenant) && $currentTenant?->name ? ' — '.$currentTenant->name : '' }}</title>
+    @include('partials.favicon')
 
     <!-- Styles -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -205,7 +206,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <p class="mb-0">&copy; {{ date('Y') }} MyVcard MyPredict. Tous droits réservés. <span style="opacity: 0.8; color: var(--footer-text);">v{{ $appVersion }}</span></p>
+                    <p class="mb-0">&copy; {{ date('Y') }} {{ $currentTenant->name ?? config('app.name') }}. Tous droits réservés.</p>
                 </div>
                 <div class="col-md-6 text-md-end">
                     <a href="{{ route('terms') }}" class="text-decoration-none me-3">Conditions d'utilisation</a>

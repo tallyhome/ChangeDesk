@@ -2,30 +2,48 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
+use App\Models\Tenant;
 use App\Models\Visit;
+use Closure;
 use Illuminate\Http\Request;
 
 class RecordVisit
 {
     public function handle(Request $request, Closure $next)
     {
-        // Ne pas enregistrer les visites pour les assets et les requêtes AJAX
-        // Mais enregistrer toutes les autres visites, y compris celles des administrateurs et en local
-        if (!$request->is('api/*') && 
-            !$request->is('_debugbar/*') && 
-            !$this->isAsset($request->path()) && 
-            !$request->ajax()) {
-            Visit::recordVisit($request);
+        $response = $next($request);
+
+        // Uniquement sur les sites publics tenant (pas central / admin / install)
+        if (! Tenant::current()) {
+            return $response;
         }
 
-        return $next($request);
+        if ($request->is('admin*')
+            || $request->is('superadmin*')
+            || $request->is('install*')
+            || $request->is('login')
+            || $request->is('register')
+            || $request->is('api/*')
+            || $request->is('theme-preview/*')
+            || $request->is('_debugbar/*')
+            || $request->ajax()
+            || $this->isAsset($request->path())) {
+            return $response;
+        }
+
+        try {
+            Visit::recordVisit($request);
+        } catch (\Throwable $e) {
+            report($e);
+        }
+
+        return $response;
     }
 
-    private function isAsset($path)
+    private function isAsset(string $path): bool
     {
-        $assetExtensions = ['js', 'css', 'png', 'jpg', 'jpeg', 'gif', 'ico', 'svg'];
-        $extension = pathinfo($path, PATHINFO_EXTENSION);
-        return in_array(strtolower($extension), $assetExtensions);
+        $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+
+        return in_array($extension, ['js', 'css', 'png', 'jpg', 'jpeg', 'gif', 'ico', 'svg', 'woff', 'woff2', 'map'], true);
     }
 }

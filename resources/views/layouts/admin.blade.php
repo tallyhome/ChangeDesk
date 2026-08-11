@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title') - Administration</title>
+    <title>@yield('title'){{ isset($currentTenant) && $currentTenant?->name ? ' — '.$currentTenant->name : '' }}</title>
+    @include('partials.favicon')
 
     <!-- Styles -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -206,6 +207,16 @@
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.domain.*') ? 'active' : '' }}" href="{{ route('admin.domain.edit') }}">
                                 <i class="fas fa-globe"></i> Domaine
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.appearance.*') ? 'active' : '' }}" href="{{ route('admin.appearance.edit') }}">
+                                <i class="fas fa-palette"></i> Apparence
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.billing.*') ? 'active' : '' }}" href="{{ route('admin.billing.index') }}">
+                                <i class="fas fa-credit-card"></i> Facturation
                             </a>
                         </li>
                         <li class="nav-item">

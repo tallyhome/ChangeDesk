@@ -13,6 +13,14 @@ trait BelongsToTenant
         static::addGlobalScope('tenant', function (Builder $builder) {
             $tenant = Tenant::current();
 
+            // Filet de sécurité si le binding tourne avant SetTenantFromAuth
+            if (! $tenant && auth()->check() && auth()->user()?->tenant_id) {
+                $tenant = Tenant::query()->find(auth()->user()->tenant_id);
+                if ($tenant) {
+                    Tenant::setCurrent($tenant);
+                }
+            }
+
             if ($tenant) {
                 $builder->where($builder->getModel()->getTable().'.tenant_id', $tenant->id);
 

@@ -21,7 +21,12 @@
             <p class="mb-1">
                 <a href="{{ $tenant->subdomainUrl() }}" target="_blank" rel="noopener">{{ $tenant->subdomainUrl() }}</a>
             </p>
-            <p class="text-muted small mb-0">Disponible immédiatement après inscription.</p>
+            <p class="text-muted small mb-0">Disponible dès que le DNS wildcard <code>*.{{ $centralDomain }}</code> pointe vers ce serveur (à configurer une fois chez l’hébergeur).</p>
+            <div class="alert alert-warning mt-3 mb-0 small">
+                Si le lien affiche «&nbsp;site inaccessible&nbsp;», le sous-domaine n’arrive pas jusqu’à l’application.
+                Il faut un enregistrement DNS <strong>wildcard</strong> <code>*.{{ $centralDomain }}</code> (A ou CNAME)
+                et, idéalement, un certificat SSL wildcard — ce n’est pas un réglage dans ChanLog.
+            </div>
         </div>
     </div>
 

@@ -1,11 +1,13 @@
-
 <IfModule mod_rewrite.c>
     RewriteEngine On
+    RewriteRule ^(public)($|/) - [L]
+    RewriteRule ^install/?$ public/install/index.php [L]
     RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>
 
+Options -Indexes
+
 # php -- BEGIN cPanel-generated handler, do not edit
-# Définissez le package « ea-php82 » comme langage de programmation « PHP » par défaut.
 <IfModule mime_module>
   AddHandler application/x-httpd-ea-php82 .php .php8 .phtml
 </IfModule>

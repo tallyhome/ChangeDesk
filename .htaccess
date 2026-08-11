@@ -1,0 +1,21 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Ne pas réécrire si on est déjà dans /public
+    RewriteRule ^(public)($|/) - [L]
+
+    # Installer accessible à la racine
+    RewriteRule ^install/?$ public/install/index.php [L]
+
+    # Tout le reste vers public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# Empêcher le listing des dossiers
+Options -Indexes
+
+# php -- BEGIN cPanel-generated handler, do not edit
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php82 .php .php8 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit

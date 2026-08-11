@@ -32,7 +32,7 @@
                             <label for="external_link_url" class="form-label">URL du lien externe</label>
                             <input type="url" class="form-control" id="external_link_url" name="external_link_url" 
                                    value="{{ $settings['external_link_url'] ?? '' }}">
-                            <div class="form-text">Exemple: https://myvcard.fr/</div>
+                            <div class="form-text">Exemple: https://play.google.com/store/apps/details?id=…</div>
                         </div>
                         
                         <div class="mb-3 d-flex align-items-center">

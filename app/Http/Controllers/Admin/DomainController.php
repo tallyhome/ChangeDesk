@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AuditLog;
 use App\Models\Tenant;
 use App\Services\DomainVerificationService;
+use App\Services\PlanGate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -24,7 +26,7 @@ class DomainController extends Controller
         ]);
     }
 
-    public function update(Request $request)
+    public function update(Request $request, PlanGate $gate)
     {
         $tenant = Tenant::current() ?: $request->user()->tenant;
         abort_unless($tenant, 404);
@@ -58,6 +60,12 @@ class DomainController extends Controller
             ? strtolower(trim($validated['custom_domain']))
             : null;
 
+        if ($customDomain && ! $gate->can($tenant, 'custom_domain')) {
+            throw ValidationException::withMessages([
+                'custom_domain' => 'Le domaine personnalisé nécessite le plan Business.',
+            ]);
+        }
+
         $domainChanged = $customDomain !== $tenant->custom_domain;
 
         $tenant->fill([
@@ -74,16 +82,22 @@ class DomainController extends Controller
         }
 
         $tenant->save();
+        AuditLog::record('tenant.domain_updated', $tenant, $validated);
 
         return redirect()
             ->route('admin.domain.edit')
             ->with('success', 'Paramètres de domaine enregistrés.');
     }
 
-    public function verify(Request $request, DomainVerificationService $verifier)
+    public function verify(Request $request, DomainVerificationService $verifier, PlanGate $gate)
     {
         $tenant = Tenant::current() ?: $request->user()->tenant;
         abort_unless($tenant, 404);
+
+        if (! $gate->can($tenant, 'custom_domain')) {
+            return redirect()->route('admin.domain.edit')
+                ->withErrors(['custom_domain' => 'Le domaine personnalisé nécessite le plan Business.']);
+        }
 
         if (! $tenant->custom_domain) {
             return redirect()
@@ -92,6 +106,7 @@ class DomainController extends Controller
         }
 
         $ok = $verifier->verify($tenant->fresh());
+        AuditLog::record($ok ? 'tenant.domain_verified' : 'tenant.domain_verify_failed', $tenant);
 
         return redirect()
             ->route('admin.domain.edit')

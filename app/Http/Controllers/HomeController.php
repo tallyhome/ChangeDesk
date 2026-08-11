@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Plan;
 use App\Models\Tenant;
 
 class HomeController extends Controller
@@ -12,6 +13,8 @@ class HomeController extends Controller
             return app(PageController::class)->index();
         }
 
-        return view('central.landing');
+        $plans = Plan::where('is_active', true)->orderBy('sort_order')->get();
+
+        return view('central.landing', compact('plans'));
     }
 }

@@ -27,13 +27,25 @@ class AuthenticatedSessionController extends Controller
             ])->withInput();
         }
 
-        $request->session()->regenerate();
         $user = Auth::user();
+        if (! $user->is_active) {
+            Auth::logout();
+
+            return back()->withErrors([
+                'email' => 'Ce compte est désactivé.',
+            ]);
+        }
+
+        $request->session()->regenerate();
+
+        $central = strtolower((string) config('tenancy.central_domain'));
+        $scheme = parse_url(config('app.url'), PHP_URL_SCHEME) ?: $request->getScheme();
+        $adminBase = "{$scheme}://{$central}";
 
         if ($user->isSuperAdmin()) {
             Tenant::forgetCurrent();
 
-            return redirect()->intended(route('superadmin.tenants.index'));
+            return redirect()->away($adminBase.'/superadmin');
         }
 
         if ($user->isClient() && $user->tenant) {
@@ -47,7 +59,7 @@ class AuthenticatedSessionController extends Controller
 
             Tenant::setCurrent($user->tenant);
 
-            return redirect()->intended(route('admin.dashboard'));
+            return redirect()->away($adminBase.'/admin');
         }
 
         Auth::logout();
@@ -64,6 +76,9 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
         Tenant::forgetCurrent();
 
-        return redirect('/');
+        $central = strtolower((string) config('tenancy.central_domain'));
+        $scheme = parse_url(config('app.url'), PHP_URL_SCHEME) ?: 'https';
+
+        return redirect()->away("{$scheme}://{$central}/");
     }
 }

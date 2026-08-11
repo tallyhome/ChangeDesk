@@ -19,7 +19,7 @@ return new class extends Migration
         // Insérer le paramètre pour le lien externe
         DB::table('settings')->insert([
             'key' => 'external_link_url',
-            'value' => 'https://myvcard.fr/',
+            'value' => 'https://play.google.com/store/apps/details?id=com.example.app',
             'created_at' => now(),
             'updated_at' => now()
         ]);

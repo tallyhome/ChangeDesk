@@ -65,6 +65,12 @@ class AdminVisitController extends Controller
     public function getActiveVisitors()
     {
         $activeVisitors = Visit::getActiveVisitors();
+
         return response()->json(['active_visitors' => $activeVisitors]);
+    }
+
+    public function analysis()
+    {
+        return redirect()->route('admin.visits.index');
     }
 }
