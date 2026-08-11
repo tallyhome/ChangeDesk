@@ -11,9 +11,9 @@ use Illuminate\Support\Str;
 
 class TenantProvisioner
 {
-    public function create(string $name, string $slug): Tenant
+    public function create(string $name, string $slug, ?Plan $plan = null): Tenant
     {
-        $free = Plan::where('slug', 'free')->first();
+        $plan ??= Plan::where('slug', 'free')->first();
 
         $tenant = Tenant::create([
             'name' => $name,
@@ -22,17 +22,17 @@ class TenantProvisioner
             'domain_verification_token' => Str::random(40),
             'visual_theme' => 'classic',
             'is_active' => true,
-            'plan_id' => $free?->id,
+            'plan_id' => $plan?->id,
         ]);
 
-        if ($free) {
+        if ($plan) {
             Subscription::create([
                 'tenant_id' => $tenant->id,
-                'plan_id' => $free->id,
+                'plan_id' => $plan->id,
                 'status' => 'active',
                 'provider' => 'manual',
                 'current_period_start' => now(),
-                'current_period_end' => now()->addYears(10),
+                'current_period_end' => $plan->slug === 'free' ? now()->addYears(10) : now()->addMonth(),
             ]);
         }
 

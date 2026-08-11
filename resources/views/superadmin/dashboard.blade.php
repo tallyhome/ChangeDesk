@@ -11,19 +11,20 @@
 
 <div class="row g-3 mb-4">
 @foreach([
-  ['Tenants', $stats['tenants'], 'fa-building'],
-  ['Actifs', $stats['active_tenants'], 'fa-circle-check'],
-  ['Clients', $stats['users'], 'fa-users'],
-  ['Versions', $stats['versions'], 'fa-code-branch'],
-  ['Bugs', $stats['bugs'], 'fa-bug'],
-  ['Visites', $stats['visits'], 'fa-chart-line'],
-  ['Abonnements', $stats['subscriptions'], 'fa-receipt'],
-  ['MRR', number_format($stats['mrr']/100, 2, ',', ' ').' €', 'fa-euro-sign'],
-] as [$label,$value,$icon])
+  ['Tenants', $stats['tenants'], 'fa-building', 'Projets clients'],
+  ['Actifs', $stats['active_tenants'], 'fa-circle-check', 'Non suspendus'],
+  ['Clients', $stats['users'], 'fa-users', 'Comptes admin projet'],
+  ['Entrées changelog', $stats['versions'], 'fa-code-branch', 'Versions publiées (tous tenants)'],
+  ['Bugs', $stats['bugs'], 'fa-bug', 'Signalements cumulés'],
+  ['Visites', $stats['visits'], 'fa-chart-line', 'Hits enregistrés'],
+  ['Abonnements', $stats['subscriptions'], 'fa-receipt', 'Actifs / essai'],
+  ['MRR', number_format($stats['mrr']/100, 2, ',', ' ').' €', 'fa-euro-sign', 'Revenu mensuel estimé'],
+] as [$label,$value,$icon,$hint])
   <div class="col-6 col-lg-3">
     <div class="sa-card sa-stat h-100">
       <div class="label"><i class="fas {{ $icon }} me-1"></i> {{ $label }}</div>
       <div class="value">{{ $value }}</div>
+      <div class="small text-muted mt-1">{{ $hint }}</div>
     </div>
   </div>
 @endforeach

@@ -48,18 +48,23 @@ class AuthenticatedSessionController extends Controller
             return redirect()->away($adminBase.'/superadmin');
         }
 
-        if ($user->isClient() && $user->tenant) {
-            if (! $user->tenant->is_active) {
-                Auth::logout();
+        if ($user->isClient()) {
+            if ($user->tenant_id) {
+                if (! $user->tenant || ! $user->tenant->is_active) {
+                    Auth::logout();
 
-                return back()->withErrors([
-                    'email' => 'Votre projet est désactivé. Contactez le support.',
-                ]);
+                    return back()->withErrors([
+                        'email' => 'Votre projet est désactivé. Contactez le support.',
+                    ]);
+                }
+
+                Tenant::setCurrent($user->tenant);
+
+                return redirect()->away($adminBase.'/admin');
             }
 
-            Tenant::setCurrent($user->tenant);
-
-            return redirect()->away($adminBase.'/admin');
+            // Compte créé par superadmin sans projet : onboarding
+            return redirect()->away($adminBase.'/admin/onboarding');
         }
 
         Auth::logout();

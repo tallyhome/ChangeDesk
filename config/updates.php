@@ -1,10 +1,7 @@
 <?php
 
 return [
-    /*
-    | Version locale (mise à jour après une MAJ réussie).
-    */
-    'number' => '2.4.0',
+    'number' => '2.6.0',
 
     'github_api' => \App\Support\GithubUpdateAuth::API,
 
@@ -12,9 +9,6 @@ return [
 
     'github_token' => \App\Support\GithubUpdateAuth::token(),
 
-    /*
-    | Chemins jamais écrasés lors d'une mise à jour.
-    */
     'preserve' => [
         '.env',
         'storage/app',

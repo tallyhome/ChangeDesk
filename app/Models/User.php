@@ -22,6 +22,7 @@ class User extends Authenticatable
         'password',
         'role',
         'tenant_id',
+        'preferred_plan_id',
         'is_active',
     ];
 
@@ -42,6 +43,11 @@ class User extends Authenticatable
     public function tenant(): BelongsTo
     {
         return $this->belongsTo(Tenant::class);
+    }
+
+    public function preferredPlan(): BelongsTo
+    {
+        return $this->belongsTo(Plan::class, 'preferred_plan_id');
     }
 
     public function isSuperAdmin(): bool

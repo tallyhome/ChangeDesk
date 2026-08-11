@@ -13,7 +13,15 @@ class SetTenantFromAuth
     {
         $user = $request->user();
 
-        if ($user && $user->isClient() && $user->tenant_id) {
+        if ($user && $user->isClient()) {
+            if (! $user->tenant_id) {
+                if ($request->routeIs('admin.onboarding.*')) {
+                    return $next($request);
+                }
+
+                return redirect()->route('admin.onboarding.create');
+            }
+
             $tenant = $user->tenant ?: Tenant::find($user->tenant_id);
             if (! $tenant || ! $tenant->is_active) {
                 abort(403, 'Votre projet est indisponible.');

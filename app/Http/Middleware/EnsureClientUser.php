@@ -12,7 +12,7 @@ class EnsureClientUser
     {
         $user = $request->user();
 
-        if (! $user || ! $user->isClient() || ! $user->tenant_id) {
+        if (! $user || ! $user->isClient()) {
             abort(403);
         }
 

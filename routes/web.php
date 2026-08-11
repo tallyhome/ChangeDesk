@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\BillingController as AdminBillingController;
 use App\Http\Controllers\Admin\BugReportController;
 use App\Http\Controllers\Admin\DomainController;
 use App\Http\Controllers\Admin\ImageUploadController;
+use App\Http\Controllers\Admin\ProjectOnboardingController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\TodoItemController;
 use App\Http\Controllers\AdminController;
@@ -84,6 +85,14 @@ Route::middleware(['tenant.host', 'tenant.notSuspended'])->group(function () {
         Route::get('/{slug}', [WikiController::class, 'show'])->name('wiki.show');
     });
 });
+
+Route::middleware(['central', 'auth', 'client'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::get('/onboarding', [ProjectOnboardingController::class, 'create'])->name('onboarding.create');
+        Route::post('/onboarding', [ProjectOnboardingController::class, 'store'])->name('onboarding.store');
+    });
 
 Route::middleware(['central', 'auth', 'client', 'tenant.fromAuth'])
     ->prefix('admin')

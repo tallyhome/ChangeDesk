@@ -1,6 +1,9 @@
 @extends('superadmin.layout')
 @section('title', $user->exists ? 'Éditer utilisateur' : 'Nouvel utilisateur')
 @section('content')
+@php
+  $currentPlanId = old('plan_id', $user->tenant?->plan_id ?? $user->preferred_plan_id);
+@endphp
 <div class="sa-top">
   <div>
     <h1>{{ $user->exists ? $user->name : 'Nouvel utilisateur' }}</h1>
@@ -33,10 +36,22 @@
             <option value="superadmin" @selected(old('role', $user->role)==='superadmin')>Superadmin</option>
           </select>
         </div>
-        <div class="col-md-6" id="tenant_wrap">
-          <label class="form-label fw-semibold">Tenant rattaché</label>
+        <div class="col-md-6" id="plan_wrap">
+          <label class="form-label fw-semibold">Plan d'abonnement</label>
+          <select name="plan_id" class="form-select @error('plan_id') is-invalid @enderror">
+            @foreach($plans as $plan)
+              <option value="{{ $plan->id }}" @selected((string)$currentPlanId === (string)$plan->id)>
+                {{ $plan->name }} — {{ $plan->formattedPrice() }}
+              </option>
+            @endforeach
+          </select>
+          <div class="form-text">Si aucun projet n'est rattaché, ce plan sera appliqué à la création du projet par le client.</div>
+          @error('plan_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+        </div>
+        <div class="col-md-12" id="tenant_wrap">
+          <label class="form-label fw-semibold">Projet / tenant (optionnel)</label>
           <select name="tenant_id" class="form-select @error('tenant_id') is-invalid @enderror">
-            <option value="">— Aucun —</option>
+            <option value="">— Aucun (le client créera son projet) —</option>
             @foreach($tenants as $t)
               <option value="{{ $t->id }}" @selected(old('tenant_id', $user->tenant_id)==$t->id)>{{ $t->name }} ({{ $t->slug }})</option>
             @endforeach
@@ -45,12 +60,12 @@
         </div>
         <div class="col-md-6">
           <label class="form-label fw-semibold">{{ $user->exists ? 'Nouveau mot de passe (optionnel)' : 'Mot de passe' }}</label>
-          <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" {{ $user->exists ? '' : 'required' }}>
+          <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" autocomplete="new-password" {{ $user->exists ? '' : 'required' }}>
           @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
         </div>
         <div class="col-md-6">
-          <label class="form-label fw-semibold">Confirmation</label>
-          <input type="password" name="password_confirmation" class="form-control" {{ $user->exists ? '' : 'required' }}>
+          <label class="form-label fw-semibold">Confirmation du mot de passe</label>
+          <input type="password" name="password_confirmation" class="form-control" autocomplete="new-password" {{ $user->exists ? '' : 'required' }}>
         </div>
       </div>
 
@@ -81,7 +96,10 @@
       <div class="small text-muted">Créé : {{ $user->created_at }}</div>
       <div class="small text-muted">MAJ : {{ $user->updated_at }}</div>
       @if($user->tenant)
+        <div class="small mt-2">Plan actuel : <strong>{{ $user->tenant->plan?->name ?? '—' }}</strong></div>
         <a class="d-inline-block mt-2" href="{{ route('superadmin.tenants.show', $user->tenant) }}">Voir le tenant →</a>
+      @elseif($user->preferredPlan)
+        <div class="small mt-2">Plan prévu : <strong>{{ $user->preferredPlan->name }}</strong> (en attente de projet)</div>
       @endif
     </div>
   </div>
@@ -90,8 +108,13 @@
 
 <script>
 const role = document.getElementById('role');
-const wrap = document.getElementById('tenant_wrap');
-function sync(){ wrap.style.opacity = role.value === 'superadmin' ? '.45' : '1'; }
+const tenantWrap = document.getElementById('tenant_wrap');
+const planWrap = document.getElementById('plan_wrap');
+function sync(){
+  const isSa = role.value === 'superadmin';
+  tenantWrap.style.display = isSa ? 'none' : '';
+  planWrap.style.display = isSa ? 'none' : '';
+}
 role.addEventListener('change', sync); sync();
 </script>
 @endsection

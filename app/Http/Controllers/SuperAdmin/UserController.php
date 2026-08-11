@@ -4,8 +4,10 @@ namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
 use App\Models\AuditLog;
+use App\Models\Plan;
 use App\Models\Tenant;
 use App\Models\User;
+use App\Services\Billing\StripeBilling;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -17,7 +19,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $users = User::query()
-            ->with('tenant')
+            ->with(['tenant.plan', 'preferredPlan'])
             ->when($request->q, fn ($q) => $q->where(function ($qq) use ($request) {
                 $qq->where('name', 'like', '%'.$request->q.'%')
                     ->orWhere('email', 'like', '%'.$request->q.'%');
@@ -34,11 +36,10 @@ class UserController extends Controller
 
     public function create()
     {
-        $tenants = Tenant::orderBy('name')->get();
-
         return view('superadmin.users.form', [
             'user' => new User(['role' => User::ROLE_CLIENT, 'is_active' => true]),
-            'tenants' => $tenants,
+            'tenants' => Tenant::orderBy('name')->get(),
+            'plans' => Plan::where('is_active', true)->orderBy('sort_order')->get(),
         ]);
     }
 
@@ -49,14 +50,33 @@ class UserController extends Controller
             'email' => ['required', 'email', 'unique:users,email'],
             'role' => ['required', Rule::in([User::ROLE_CLIENT, User::ROLE_SUPERADMIN])],
             'tenant_id' => ['nullable', 'exists:tenants,id'],
+            'plan_id' => ['nullable', 'exists:plans,id'],
             'password' => ['required', 'confirmed', Password::defaults()],
             'is_active' => ['nullable', 'boolean'],
+        ], [
+            'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
         ]);
 
+        $tenantId = null;
+        $preferredPlanId = null;
+
         if ($validated['role'] === User::ROLE_SUPERADMIN) {
-            $validated['tenant_id'] = null;
-        } elseif (empty($validated['tenant_id'])) {
-            return back()->withErrors(['tenant_id' => 'Un client doit être rattaché à un tenant.'])->withInput();
+            $tenantId = null;
+            $preferredPlanId = null;
+        } else {
+            $tenantId = $validated['tenant_id'] ?? null;
+            $planId = $validated['plan_id'] ?? Plan::where('slug', 'free')->value('id');
+
+            if ($tenantId) {
+                $tenant = Tenant::findOrFail($tenantId);
+                if ($planId) {
+                    $plan = Plan::findOrFail($planId);
+                    app(StripeBilling::class)->activate($tenant, $plan, 'manual', 'manual-user-'.Str::uuid());
+                }
+            } else {
+                // Client sans projet : le plan est stocké pour l'onboarding
+                $preferredPlanId = $planId;
+            }
         }
 
         $user = User::create([
@@ -64,20 +84,28 @@ class UserController extends Controller
             'email' => $validated['email'],
             'password' => $validated['password'],
             'role' => $validated['role'],
-            'tenant_id' => $validated['tenant_id'] ?? null,
+            'tenant_id' => $tenantId,
+            'preferred_plan_id' => $preferredPlanId,
             'is_active' => $request->boolean('is_active', true),
         ]);
 
-        AuditLog::record('user.created', $user->tenant, ['user_id' => $user->id]);
+        AuditLog::record('user.created', $user->tenant, [
+            'user_id' => $user->id,
+            'preferred_plan_id' => $preferredPlanId,
+        ]);
 
         return redirect()->route('superadmin.users.edit', $user)->with('success', 'Utilisateur créé.');
     }
 
     public function edit(User $user)
     {
-        $tenants = Tenant::orderBy('name')->get();
+        $user->load(['tenant.plan', 'preferredPlan']);
 
-        return view('superadmin.users.form', compact('user', 'tenants'));
+        return view('superadmin.users.form', [
+            'user' => $user,
+            'tenants' => Tenant::orderBy('name')->get(),
+            'plans' => Plan::where('is_active', true)->orderBy('sort_order')->get(),
+        ]);
     }
 
     public function update(Request $request, User $user)
@@ -87,21 +115,41 @@ class UserController extends Controller
             'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
             'role' => ['required', Rule::in([User::ROLE_CLIENT, User::ROLE_SUPERADMIN])],
             'tenant_id' => ['nullable', 'exists:tenants,id'],
+            'plan_id' => ['nullable', 'exists:plans,id'],
             'is_active' => ['nullable', 'boolean'],
             'password' => ['nullable', 'confirmed', Password::defaults()],
+        ], [
+            'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
         ]);
 
+        $tenantId = null;
+        $preferredPlanId = $user->preferred_plan_id;
+
         if ($validated['role'] === User::ROLE_SUPERADMIN) {
-            $validated['tenant_id'] = null;
-        } elseif (empty($validated['tenant_id'])) {
-            return back()->withErrors(['tenant_id' => 'Un client doit être rattaché à un tenant.'])->withInput();
+            $tenantId = null;
+            $preferredPlanId = null;
+        } else {
+            $tenantId = $validated['tenant_id'] ?? null;
+            $planId = $validated['plan_id'] ?? null;
+
+            if ($tenantId && $planId) {
+                $tenant = Tenant::findOrFail($tenantId);
+                $plan = Plan::findOrFail($planId);
+                app(StripeBilling::class)->activate($tenant, $plan, 'manual', 'manual-user-'.Str::uuid());
+                $preferredPlanId = null;
+            } elseif (! $tenantId && $planId) {
+                $preferredPlanId = $planId;
+            } elseif ($tenantId) {
+                $preferredPlanId = null;
+            }
         }
 
         $user->fill([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'role' => $validated['role'],
-            'tenant_id' => $validated['tenant_id'] ?? null,
+            'tenant_id' => $tenantId,
+            'preferred_plan_id' => $preferredPlanId,
             'is_active' => $request->boolean('is_active'),
         ]);
 
