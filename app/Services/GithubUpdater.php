@@ -16,8 +16,10 @@ class GithubUpdater
 {
     public function __construct(
         protected ?VersionComparator $versions = null,
+        protected ?UpdateProgress $progress = null,
     ) {
         $this->versions ??= new VersionComparator;
+        $this->progress ??= new UpdateProgress;
     }
 
     public function currentVersion(): string
@@ -52,7 +54,6 @@ class GithubUpdater
             }
         }
 
-        // Fallback Obiora-style : liste des releases puis tags
         $list = Http::withHeaders($this->headers())
             ->timeout(25)
             ->get("{$base}/repos/{$repo}/releases", ['per_page' => 10]);
@@ -145,68 +146,117 @@ class GithubUpdater
     }
 
     /**
-     * @return array{from:string,to:string,migrated:bool}
+     * @return array{from:string,to:string,commands:array<int,array{cmd:string,ok:bool,output?:string}>}
      */
     public function apply(array $release): array
     {
-        if (! $this->versions->isNewer($release['tag'] ?? '', $this->currentVersion())) {
-            throw new RuntimeException('Refus de downgrade / même version (comportement type Obiora).');
-        }
-
-        if (! class_exists(ZipArchive::class)) {
-            throw new RuntimeException('Extension PHP zip requise.');
-        }
-
         $from = $this->currentVersion();
-        $to = $this->versions->normalize($release['tag']);
+        $to = $this->versions->normalize($release['tag'] ?? '');
 
-        $tmpRoot = storage_path('app/updates/'.Str::random(8));
-        File::ensureDirectoryExists($tmpRoot);
-        $zipPath = $tmpRoot.'/release.zip';
+        $this->progress->start($from, $to);
 
-        $this->downloadReleaseArchive($release, $zipPath);
-
-        if (! File::exists($zipPath) || File::size($zipPath) < 1000) {
-            File::deleteDirectory($tmpRoot);
-            throw new RuntimeException('Téléchargement de la release impossible.');
-        }
-
-        $zip = new ZipArchive;
-        if ($zip->open($zipPath) !== true) {
-            File::deleteDirectory($tmpRoot);
-            throw new RuntimeException('Archive ZIP invalide.');
-        }
-
-        $extractTo = $tmpRoot.'/extract';
-        File::ensureDirectoryExists($extractTo);
-        $zip->extractTo($extractTo);
-        $zip->close();
-
-        $payload = $this->resolvePayloadRoot($extractTo);
-        $this->mirror($payload, base_path());
-        File::deleteDirectory($tmpRoot);
-
-        $this->writeVersion($to);
-        Cache::forget('chanlog:github:latest-release:'.md5(GithubUpdateAuth::REPO));
-
-        Artisan::call('optimize:clear');
-        $migrated = false;
         try {
-            Artisan::call('migrate', ['--force' => true]);
-            $migrated = true;
-        } catch (\Throwable $e) {
-            // Code déjà en place ; migrate manuel possible.
-        }
+            if (! $this->versions->isNewer($to, $from)) {
+                throw new RuntimeException('Refus de downgrade / même version.');
+            }
+            if (! class_exists(ZipArchive::class)) {
+                throw new RuntimeException('Extension PHP zip requise.');
+            }
 
-        return ['from' => $from, 'to' => $to, 'migrated' => $migrated];
+            $this->progress->step(8, 'Préparation', 'Création du dossier temporaire');
+            $tmpRoot = storage_path('app/updates/'.Str::random(8));
+            File::ensureDirectoryExists($tmpRoot);
+            $zipPath = $tmpRoot.'/release.zip';
+
+            $this->progress->step(18, 'Téléchargement', 'Récupération de la release GitHub…');
+            $this->downloadReleaseArchive($release, $zipPath, function (string $msg) {
+                $this->progress->step(30, 'Téléchargement', $msg);
+            });
+
+            if (! File::exists($zipPath) || File::size($zipPath) < 1000) {
+                throw new RuntimeException('Téléchargement de la release impossible.');
+            }
+
+            $sizeMb = round(File::size($zipPath) / 1048576, 2);
+            $this->progress->step(42, 'Extraction', "Archive {$sizeMb} Mo");
+
+            $zip = new ZipArchive;
+            if ($zip->open($zipPath) !== true) {
+                throw new RuntimeException('Archive ZIP invalide.');
+            }
+            $extractTo = $tmpRoot.'/extract';
+            File::ensureDirectoryExists($extractTo);
+            $zip->extractTo($extractTo);
+            $count = $zip->numFiles;
+            $zip->close();
+
+            $this->progress->step(55, 'Extraction', "{$count} fichiers extraits");
+            $payload = $this->resolvePayloadRoot($extractTo);
+
+            $this->progress->step(60, 'Installation des fichiers', 'Copie vers l’application…');
+            $copied = $this->mirror($payload, base_path(), function (int $done, int $total) {
+                $pct = 60 + (int) floor(($done / max(1, $total)) * 12);
+                $this->progress->step($pct, 'Installation des fichiers', "{$done}/{$total}");
+            });
+
+            File::deleteDirectory($tmpRoot);
+            $this->progress->step(74, 'Version', "Écriture v{$to}");
+            $this->writeVersion($to);
+            Cache::forget('chanlog:github:latest-release:'.md5(GithubUpdateAuth::REPO));
+
+            $this->progress->step(78, 'Post-déploiement', 'Commandes automatiques…');
+            $commands = $this->runPostDeployCommands();
+
+            $result = [
+                'from' => $from,
+                'to' => $to,
+                'files_copied' => $copied,
+                'commands' => $commands,
+            ];
+            $this->progress->complete($result);
+
+            return $result;
+        } catch (\Throwable $e) {
+            $this->progress->fail($e->getMessage());
+            throw $e;
+        }
     }
 
     /**
-     * Télécharge un asset privé ou un zipball (suit le redirect codeload sans perdre l'accès).
+     * @return array<int, array{cmd:string,ok:bool,output:string}>
      */
-    protected function downloadReleaseArchive(array $release, string $zipPath): void
+    protected function runPostDeployCommands(): array
+    {
+        $steps = [
+            ['migrate --force', fn () => Artisan::call('migrate', ['--force' => true]), 80],
+            ['optimize:clear', fn () => Artisan::call('optimize:clear'), 85],
+            ['storage:link', fn () => Artisan::call('storage:link'), 88],
+            ['config:cache', fn () => Artisan::call('config:cache'), 91],
+            ['route:cache', fn () => Artisan::call('route:cache'), 94],
+            ['view:cache', fn () => Artisan::call('view:cache'), 97],
+        ];
+
+        $results = [];
+        foreach ($steps as [$label, $fn, $pct]) {
+            $this->progress->step($pct, 'Post-déploiement', $label);
+            try {
+                $fn();
+                $out = trim(Artisan::output());
+                $results[] = ['cmd' => $label, 'ok' => true, 'output' => Str::limit($out, 400)];
+            } catch (\Throwable $e) {
+                // storage:link / caches peuvent échouer sans bloquer
+                $results[] = ['cmd' => $label, 'ok' => false, 'output' => $e->getMessage()];
+                $this->progress->step($pct, 'Post-déploiement', $label.' (avertissement)');
+            }
+        }
+
+        return $results;
+    }
+
+    protected function downloadReleaseArchive(array $release, string $zipPath, ?callable $onProgress = null): void
     {
         if (! empty($release['asset_zip'])) {
+            $onProgress && $onProgress('Asset ZIP de la release');
             $this->downloadAuthenticated($release['asset_zip'], $zipPath, [
                 'Accept' => 'application/octet-stream',
             ]);
@@ -218,6 +268,7 @@ class GithubUpdater
             throw new RuntimeException('URL archive manquante (ni asset zip, ni zipball).');
         }
 
+        $onProgress && $onProgress('Zipball GitHub');
         $this->downloadAuthenticated($release['zipball'], $zipPath, [
             'Accept' => 'application/vnd.github+json',
         ]);
@@ -225,11 +276,9 @@ class GithubUpdater
 
     protected function downloadAuthenticated(string $url, string $destination, array $extraHeaders = []): void
     {
-        // Ne pas suivre auto les redirects : Guzzle retire souvent Authorization
-        // quand l'hôte change (api.github.com → codeload.githubusercontent.com).
         $response = Http::withHeaders(array_merge($this->headers(), $extraHeaders))
             ->withOptions(['allow_redirects' => false])
-            ->timeout(120)
+            ->timeout(180)
             ->get($url);
 
         if (in_array($response->status(), [301, 302, 303, 307, 308], true)) {
@@ -238,9 +287,8 @@ class GithubUpdater
                 throw new RuntimeException('Redirect GitHub sans Location.');
             }
 
-            // L'URL signée codeload n'a en général pas besoin du Bearer
             $file = Http::withHeaders(['User-Agent' => 'ChanLog-Updater'])
-                ->timeout(180)
+                ->timeout(240)
                 ->sink($destination)
                 ->get($location);
 
@@ -291,12 +339,13 @@ class GithubUpdater
         return $headers;
     }
 
-    protected function mirror(string $source, string $destination): void
+    protected function mirror(string $source, string $destination, ?callable $onProgress = null): int
     {
         $preserve = collect(config('updates.preserve', []))
             ->map(fn ($p) => str_replace('\\', '/', $p))
             ->all();
 
+        $files = [];
         $iterator = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($source, \FilesystemIterator::SKIP_DOTS),
             \RecursiveIteratorIterator::SELF_FIRST
@@ -308,21 +357,30 @@ class GithubUpdater
             if ($relative === '' || $this->isPreserved($relative, $preserve)) {
                 continue;
             }
-
             if (str_starts_with($relative, 'vendor/') || $relative === 'vendor'
                 || str_starts_with($relative, 'node_modules/') || $relative === 'node_modules') {
                 continue;
             }
+            $files[] = [$file, $relative];
+        }
 
+        $total = count($files);
+        $done = 0;
+        foreach ($files as [$file, $relative]) {
             $target = $destination.DIRECTORY_SEPARATOR.str_replace('/', DIRECTORY_SEPARATOR, $relative);
-
             if ($file->isDir()) {
                 File::ensureDirectoryExists($target);
             } else {
                 File::ensureDirectoryExists(dirname($target));
                 File::copy($file->getPathname(), $target);
             }
+            $done++;
+            if ($onProgress && ($done % 25 === 0 || $done === $total)) {
+                $onProgress($done, $total);
+            }
         }
+
+        return $done;
     }
 
     protected function isPreserved(string $relative, array $preserve): bool

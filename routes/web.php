@@ -214,6 +214,7 @@ Route::middleware(['central', 'auth', 'superadmin'])
         Route::get('/audit', [AuditLogController::class, 'index'])->name('audit.index');
 
         Route::get('/updates', [SuperAdminUpdateController::class, 'index'])->name('updates.index');
+        Route::get('/updates/progress', [SuperAdminUpdateController::class, 'progress'])->name('updates.progress');
         Route::post('/updates/apply', [SuperAdminUpdateController::class, 'apply'])->name('updates.apply');
 
         Route::get('/backups', [\App\Http\Controllers\Admin\DatabaseBackupController::class, 'index'])->name('backups.index');

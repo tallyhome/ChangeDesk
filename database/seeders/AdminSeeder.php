@@ -6,6 +6,7 @@ use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AdminSeeder extends Seeder
 {
@@ -14,36 +15,51 @@ class AdminSeeder extends Seeder
         $tenant = Tenant::firstOrCreate(
             ['slug' => 'default'],
             [
-                'name' => 'Default Project',
+                'name' => 'Demo Product',
                 'domain_status' => Tenant::DOMAIN_NONE,
-                'domain_verification_token' => \Illuminate\Support\Str::random(40),
+                'domain_verification_token' => Str::random(40),
+                'visual_theme' => 'classic',
                 'is_active' => true,
             ]
         );
 
-        if (! User::where('email', 'admin@admin.com')->exists()) {
-            User::create([
-                'name' => 'Admin',
-                'email' => 'admin@admin.com',
+        if ($tenant->name === 'Default Project' || str_contains(strtolower($tenant->name), 'myvcard') || str_contains(strtolower($tenant->name), 'mypredict')) {
+            $tenant->update(['name' => 'Demo Product']);
+        }
+
+        User::updateOrCreate(
+            ['email' => 'demo@chanlog.app'],
+            [
+                'name' => 'Demo Admin',
                 'password' => Hash::make('password'),
                 'role' => User::ROLE_CLIENT,
                 'tenant_id' => $tenant->id,
-            ]);
-        } else {
-            User::where('email', 'admin@admin.com')->update([
+                'is_active' => true,
+            ]
+        );
+
+        // Compat anciens comptes démo
+        if ($legacy = User::where('email', 'admin@admin.com')->first()) {
+            $legacy->update([
+                'name' => 'Demo Admin',
                 'role' => User::ROLE_CLIENT,
                 'tenant_id' => $tenant->id,
             ]);
         }
 
-        if (! User::where('email', 'superadmin@changelog.fr')->exists()) {
-            User::create([
+        User::updateOrCreate(
+            ['email' => 'superadmin@chanlog.app'],
+            [
                 'name' => 'Super Admin',
-                'email' => 'superadmin@changelog.fr',
                 'password' => Hash::make('password'),
                 'role' => User::ROLE_SUPERADMIN,
                 'tenant_id' => null,
-            ]);
+                'is_active' => true,
+            ]
+        );
+
+        if ($oldSa = User::where('email', 'superadmin@changelog.fr')->first()) {
+            $oldSa->update(['role' => User::ROLE_SUPERADMIN, 'tenant_id' => null]);
         }
     }
 }

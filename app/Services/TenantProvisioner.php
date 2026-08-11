@@ -49,7 +49,7 @@ class TenantProvisioner
             [
                 'tenant_id' => $tenant->id,
                 'title' => 'Accueil',
-                'content' => 'Bienvenue sur notre changelog.',
+                'content' => '<p>Bienvenue sur le changelog de <strong>'.htmlspecialchars($tenant->name, ENT_QUOTES, 'UTF-8').'</strong>.</p><p>Personnalisez cette page depuis Administration → Pages.</p>',
                 'slug' => 'home',
                 'created_at' => now(),
                 'updated_at' => now(),

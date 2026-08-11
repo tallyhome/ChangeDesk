@@ -23,7 +23,7 @@ Causes fréquentes :
 
 Dans cPanel → Domaines → ton domaine :
 
-`/home/USER/changelog-dev.myvcard.fr/public`
+`/home/USER/changelog.votredomaine.fr/public`
 
 Puis ouvre `https://ton-domaine/`.
 

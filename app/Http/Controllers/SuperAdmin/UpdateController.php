@@ -5,13 +5,14 @@ namespace App\Http\Controllers\SuperAdmin;
 use App\Http\Controllers\Controller;
 use App\Models\AuditLog;
 use App\Services\GithubUpdater;
+use App\Services\UpdateProgress;
 use App\Support\GithubUpdateAuth;
 use Illuminate\Http\Request;
 use Throwable;
 
 class UpdateController extends Controller
 {
-    public function index(GithubUpdater $updater)
+    public function index(GithubUpdater $updater, UpdateProgress $progress)
     {
         $current = $updater->currentVersion();
         $release = null;
@@ -33,7 +34,13 @@ class UpdateController extends Controller
             'error' => $error,
             'repo' => GithubUpdateAuth::REPO,
             'hasToken' => GithubUpdateAuth::hasToken(),
+            'progress' => $progress->read(),
         ]);
+    }
+
+    public function progress(UpdateProgress $progress)
+    {
+        return response()->json($progress->read());
     }
 
     public function apply(Request $request, GithubUpdater $updater)
@@ -42,23 +49,29 @@ class UpdateController extends Controller
             'confirm' => ['accepted'],
         ]);
 
+        // Libère le lock de session pour que le polling progress fonctionne en parallèle
+        if (function_exists('session_write_close')) {
+            session()->save();
+            session_write_close();
+        }
+
         try {
-            $release = $updater->latestRelease();
+            $release = $updater->latestRelease(true);
             if (! $updater->isUpdateAvailable($release)) {
-                return back()->with('error', 'Aucune mise à jour disponible.');
+                return response()->json(['ok' => false, 'error' => 'Aucune mise à jour disponible.'], 422);
             }
 
+            set_time_limit(600);
             $result = $updater->apply($release);
             AuditLog::record('platform.updated', null, $result);
 
-            $msg = "Mise à jour {$result['from']} → {$result['to']} appliquée.";
-            if (! $result['migrated']) {
-                $msg .= ' Relancez manuellement : php artisan migrate --force';
-            }
-
-            return redirect()->route('superadmin.updates.index')->with('success', $msg);
+            return response()->json([
+                'ok' => true,
+                'message' => "Mise à jour {$result['from']} → {$result['to']} appliquée. Migrations et caches exécutés automatiquement.",
+                'result' => $result,
+            ]);
         } catch (Throwable $e) {
-            return back()->with('error', 'Échec MAJ : '.$e->getMessage());
+            return response()->json(['ok' => false, 'error' => $e->getMessage()], 500);
         }
     }
 }

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Page;
 use App\Models\Tenant;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class PageSeeder extends Seeder
 {
@@ -13,8 +14,9 @@ class PageSeeder extends Seeder
         $tenant = Tenant::firstOrCreate(
             ['slug' => 'default'],
             [
-                'name' => 'Default Project',
+                'name' => 'Demo Product',
                 'domain_status' => Tenant::DOMAIN_NONE,
+                'domain_verification_token' => Str::random(40),
                 'is_active' => true,
             ]
         );
@@ -22,9 +24,21 @@ class PageSeeder extends Seeder
         Tenant::setCurrent($tenant);
 
         $pages = [
-            ['title' => 'Accueil', 'content' => 'Bienvenue sur notre site web...', 'slug' => 'home'],
-            ['title' => 'Conditions d\'utilisation', 'content' => 'En utilisant ce site...', 'slug' => 'terms'],
-            ['title' => 'Politique de confidentialité', 'content' => 'Protection de vos données...', 'slug' => 'privacy'],
+            [
+                'title' => 'Accueil',
+                'slug' => 'home',
+                'content' => '<p>Bienvenue sur le changelog de <strong>Demo Product</strong>.</p><p>Ceci est un contenu d’exemple — remplacez-le par le vôtre depuis l’administration.</p>',
+            ],
+            [
+                'title' => 'Conditions d\'utilisation',
+                'slug' => 'terms',
+                'content' => '<p>Exemple de conditions d’utilisation. À personnaliser.</p>',
+            ],
+            [
+                'title' => 'Politique de confidentialité',
+                'slug' => 'privacy',
+                'content' => '<p>Exemple de politique de confidentialité. À personnaliser.</p>',
+            ],
         ];
 
         foreach ($pages as $page) {
