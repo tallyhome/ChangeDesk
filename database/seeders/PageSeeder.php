@@ -2,36 +2,36 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Page;
+use App\Models\Tenant;
+use Illuminate\Database\Seeder;
 
 class PageSeeder extends Seeder
 {
     public function run()
     {
-        Page::create([
-            'title' => 'Accueil',
-            'content' => 'Bienvenue sur notre site web...',
-            'slug' => 'home'
-        ]);
+        $tenant = Tenant::firstOrCreate(
+            ['slug' => 'default'],
+            [
+                'name' => 'Default Project',
+                'domain_status' => Tenant::DOMAIN_NONE,
+                'is_active' => true,
+            ]
+        );
 
-//        Changelog a été remanier avec un system de version, donc plus besoin qu'il soit dans les pages        
- //       Page::create([
- //           'title' => 'Changelog',
- //           'content' => 'Version 1.0.0 - Lancement initial...',
- //           'slug' => 'changelog'
- //       ]);
+        Tenant::setCurrent($tenant);
 
-        Page::create([
-            'title' => 'Conditions d\'utilisation',
-            'content' => 'En utilisant ce site...',
-            'slug' => 'terms'
-        ]);
+        $pages = [
+            ['title' => 'Accueil', 'content' => 'Bienvenue sur notre site web...', 'slug' => 'home'],
+            ['title' => 'Conditions d\'utilisation', 'content' => 'En utilisant ce site...', 'slug' => 'terms'],
+            ['title' => 'Politique de confidentialité', 'content' => 'Protection de vos données...', 'slug' => 'privacy'],
+        ];
 
-        Page::create([
-            'title' => 'Politique de confidentialité',
-            'content' => 'Protection de vos données...',
-            'slug' => 'privacy'
-        ]);
+        foreach ($pages as $page) {
+            Page::withoutGlobalScope('tenant')->updateOrCreate(
+                ['tenant_id' => $tenant->id, 'slug' => $page['slug']],
+                $page + ['tenant_id' => $tenant->id]
+            );
+        }
     }
 }

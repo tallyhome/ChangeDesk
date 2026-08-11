@@ -136,11 +136,11 @@ class DatabaseBackupController extends Controller
             }
             
             $backupType = $request->has('user_data_only') ? 'des données utilisateur' : 'complète';
-            return redirect()->route('admin.backups.index')
+            return redirect()->route('superadmin.backups.index')
                 ->with('success', "Sauvegarde {$backupType} créée avec succès.");
                 
         } catch (\Exception $e) {
-            return redirect()->route('admin.backups.index')
+            return redirect()->route('superadmin.backups.index')
                 ->with('error', 'Erreur: ' . $e->getMessage());
         }
     }
@@ -156,7 +156,7 @@ class DatabaseBackupController extends Controller
             return response()->download($path);
         }
         
-        return redirect()->route('admin.backups.index')
+        return redirect()->route('superadmin.backups.index')
             ->with('error', 'Le fichier de sauvegarde n\'existe pas.');
     }
 
@@ -169,11 +169,11 @@ class DatabaseBackupController extends Controller
         
         if (file_exists($path)) {
             unlink($path);
-            return redirect()->route('admin.backups.index')
+            return redirect()->route('superadmin.backups.index')
                 ->with('success', 'Sauvegarde supprimée avec succès.');
         }
         
-        return redirect()->route('admin.backups.index')
+        return redirect()->route('superadmin.backups.index')
             ->with('error', 'Le fichier de sauvegarde n\'existe pas.');
     }
 
@@ -186,14 +186,14 @@ class DatabaseBackupController extends Controller
             $path = storage_path('app/backups/' . $filename);
             
             if (!file_exists($path)) {
-                return redirect()->route('admin.backups.index')
+                return redirect()->route('superadmin.backups.index')
                     ->with('error', 'Le fichier de sauvegarde n\'existe pas.');
             }
             
             // Lire le contenu du fichier SQL
             $sql = file_get_contents($path);
             if (!$sql) {
-                return redirect()->route('admin.backups.index')
+                return redirect()->route('superadmin.backups.index')
                     ->with('error', 'Impossible de lire le fichier de sauvegarde.');
             }
             
@@ -218,11 +218,11 @@ class DatabaseBackupController extends Controller
             // Réactiver les contraintes de clé étrangère
             DB::statement('SET FOREIGN_KEY_CHECKS=1');
             
-            return redirect()->route('admin.backups.index')
+            return redirect()->route('superadmin.backups.index')
                 ->with('success', 'Base de données restaurée avec succès.');
                 
         } catch (\Exception $e) {
-            return redirect()->route('admin.backups.index')
+            return redirect()->route('superadmin.backups.index')
                 ->with('error', 'Erreur: ' . $e->getMessage());
         }
     }

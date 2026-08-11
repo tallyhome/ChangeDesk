@@ -35,29 +35,18 @@ class SettingController extends Controller
             'play_store_url' => 'nullable|url|max:255'
         ]);
 
-        // Mettre à jour les paramètres textuels
         foreach ($validated as $key => $value) {
-            Setting::updateOrCreate(
-                ['key' => $key],
-                ['value' => $value]
-            );
+            Setting::setValue($key, $value);
         }
 
-        // Mettre à jour les états des toggles
         $toggles = [
             'external_link_enabled',
             'app_store_enabled',
-            'play_store_enabled'
+            'play_store_enabled',
         ];
 
         foreach ($toggles as $key) {
-            // Utiliser input() au lieu de has() pour récupérer la valeur réelle du champ
-            // Cela prendra en compte les champs cachés avec value="0"
-            $value = $request->input($key, '0');
-            Setting::updateOrCreate(
-                ['key' => $key],
-                ['value' => $value]
-            );
+            Setting::setValue($key, $request->input($key, '0'));
         }
 
         return redirect()->route('admin.settings.index')
@@ -70,14 +59,9 @@ class SettingController extends Controller
     public function toggle(Request $request)
     {
         $key = $request->input('key');
-        $setting = Setting::firstOrCreate(
-            ['key' => $key],
-            ['value' => '0']
-        );
-
-        $newValue = $setting->value == '1' ? '0' : '1';
-        $setting->value = $newValue;
-        $setting->save();
+        $current = Setting::getValue($key, '0');
+        $newValue = $current == '1' ? '0' : '1';
+        $setting = Setting::setValue($key, $newValue);
 
         $messages = [
             'external_link_enabled' => $newValue == '1' ? 'Lien externe activé' : 'Lien externe désactivé',

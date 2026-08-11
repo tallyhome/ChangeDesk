@@ -211,10 +211,7 @@ class AdminWikiController extends Controller
         ]);
 
         foreach ($validatedData as $key => $value) {
-            Setting::updateOrCreate(
-                ['key' => $key],
-                ['value' => $value]
-            );
+            Setting::setValue($key, $value);
         }
 
         return redirect()
@@ -240,19 +237,16 @@ class AdminWikiController extends Controller
     public function toggleWikiStatus()
     {
         try {
-            $currentValue = Setting::getValue('wiki_enabled', true);
-            $newValue = !$currentValue;
-            
-            $setting = Setting::firstOrCreate(['key' => 'wiki_enabled']);
-            $setting->value = $newValue;
-            $setting->save();
+            $currentValue = Setting::getValue('wiki_enabled', '1');
+            $newValue = ($currentValue == '1' || $currentValue === true) ? '0' : '1';
+            Setting::setValue('wiki_enabled', $newValue);
 
-            \Log::info('Statut du wiki modifié: ' . ($newValue ? 'activé' : 'désactivé'));
+            \Log::info('Statut du wiki modifié: ' . ($newValue === '1' ? 'activé' : 'désactivé'));
 
             return response()->json([
                 'success' => true,
-                'is_enabled' => $newValue,
-                'message' => $newValue ? 'Wiki activé' : 'Wiki désactivé'
+                'is_enabled' => $newValue === '1',
+                'message' => $newValue === '1' ? 'Wiki activé' : 'Wiki désactivé'
             ]);
         } catch (\Exception $e) {
             \Log::error('Erreur lors de la modification du statut du wiki: ' . $e->getMessage());

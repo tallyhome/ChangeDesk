@@ -92,21 +92,14 @@ class VersionController extends Controller
 
     public function toggleChangelogStatus()
     {
-        $setting = \App\Models\Setting::where('key', 'changelog_enabled')->first();
-        
-        if (!$setting) {
-            $setting = new \App\Models\Setting();
-            $setting->key = 'changelog_enabled';
-            $setting->value = '1';
-        }
-        
-        $setting->value = $setting->value === '1' ? '0' : '1';
-        $setting->save();
-        
+        $current = \App\Models\Setting::getValue('changelog_enabled', '1');
+        $value = $current === '1' ? '0' : '1';
+        \App\Models\Setting::setValue('changelog_enabled', $value);
+
         return response()->json([
             'success' => true,
-            'value' => $setting->value,
-            'message' => $setting->value === '1' ? 'Changelog activé' : 'Changelog désactivé'
+            'value' => $value,
+            'message' => $value === '1' ? 'Changelog activé' : 'Changelog désactivé',
         ]);
     }
 }

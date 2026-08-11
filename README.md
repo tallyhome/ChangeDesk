@@ -1,8 +1,25 @@
-#     ChangeDesk v2.1.0
+<p align="center">
+  <img src=".github/banner.png" alt="ChanLog / ChangeDesk" width="100%"/>
+</p>
 
-## À propos de ChangeDesk
+<p align="center">
+  <img src="logo.png" alt="ChanLog icon" width="96"/>
+</p>
 
-ChangeDesk est une application web développée avec Laravel permettant de gérer les versions et les rapports de bugs d'un projet. Cette application offre une interface conviviale pour suivre l'évolution de votre projet et gérer les problèmes signalés par les utilisateurs.
+# ChangeDesk / ChanLog v2.1.0
+
+<p align="center">
+  <strong>SaaS multi-tenant</strong> — Changelog · Roadmap · Bugs · Wiki<br/>
+  <code>changelog.monsite.fr</code>
+</p>
+
+## À propos de ChangeDesk (ChanLog)
+
+ChangeDesk (aussi appelé **ChanLog**) est une application web développée avec Laravel permettant de gérer les versions et les rapports de bugs d'un projet. Cette application offre une interface conviviale pour suivre l'évolution de votre projet et gérer les problèmes signalés par les utilisateurs.
+
+Chaque compte client pourra créer son propre espace changelog sous un domaine dédié (ex. `changelog.monsite.fr`), avec changelog, roadmap, signalement de bugs et wiki.
+
+**Identité visuelle :** `logo.png`, `logo.svg`, `icon.svg`, `assets/logo/`, `Promo/`
 
 ## Prérequis
 

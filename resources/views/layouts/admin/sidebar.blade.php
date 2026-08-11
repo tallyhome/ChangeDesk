@@ -37,23 +37,23 @@
             </a>
 
             <div class="sb-sidenav-menu-heading">Gestion</div>
-            <a class="nav-link" href="{{ route('admin.bug-reports.index') }}">
+            <a class="nav-link" href="{{ route('admin.bug_reports') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-bug"></i></div>
                 Rapports de bugs
             </a>
-            <a class="nav-link" href="{{ route('admin.todo-items.index') }}">
+            <a class="nav-link" href="{{ route('admin.todolist') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-tasks"></i></div>
                 Todo List
             </a>
 
             <div class="sb-sidenav-menu-heading">Configuration</div>
+            <a class="nav-link" href="{{ route('admin.domain.edit') }}">
+                <div class="sb-nav-link-icon"><i class="fas fa-globe"></i></div>
+                Domaine
+            </a>
             <a class="nav-link" href="{{ route('admin.settings.index') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-cog"></i></div>
                 Paramètres
-            </a>
-            <a class="nav-link" href="{{ route('admin.backups.index') }}">
-                <div class="sb-nav-link-icon"><i class="fas fa-database"></i></div>
-                Sauvegardes BDD
             </a>
             <a class="nav-link" href="{{ route('admin.profile.edit') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>

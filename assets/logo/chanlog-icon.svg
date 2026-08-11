@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="ChanLog icon">
+  <defs>
+    <linearGradient id="chanlog-bg" x1="64" y1="32" x2="448" y2="480" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#15202B"/>
+      <stop offset="100%" stop-color="#0B1218"/>
+    </linearGradient>
+    <linearGradient id="chanlog-mark" x1="150" y1="120" x2="380" y2="400" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2DD4BF"/>
+      <stop offset="100%" stop-color="#0D9488"/>
+    </linearGradient>
+  </defs>
+
+  <!-- App tile -->
+  <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#chanlog-bg)"/>
+
+  <!-- Changelog timeline mark -->
+  <g fill="none" stroke="url(#chanlog-mark)" stroke-linecap="round" stroke-linejoin="round">
+    <!-- spine -->
+    <path d="M168 138v236" stroke-width="28"/>
+    <!-- nodes -->
+    <circle cx="168" cy="168" r="22" fill="#2DD4BF" stroke="none"/>
+    <circle cx="168" cy="256" r="22" fill="#14B8A6" stroke="none"/>
+    <circle cx="168" cy="344" r="22" fill="#0D9488" stroke="none"/>
+    <!-- version lines -->
+    <path d="M214 168h150" stroke-width="28"/>
+    <path d="M214 256h118" stroke-width="28"/>
+    <path d="M214 344h86" stroke-width="28"/>
+  </g>
+</svg>

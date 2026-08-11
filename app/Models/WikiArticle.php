@@ -2,36 +2,33 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class WikiArticle extends Model
 {
+    use BelongsToTenant;
     use HasFactory;
 
     protected $fillable = [
+        'tenant_id',
         'title',
         'content',
         'slug',
         'wiki_category_id',
         'order',
-        'is_published'
+        'is_published',
     ];
 
-    /**
-     * Get the category that owns the article.
-     */
     public function category()
     {
         return $this->belongsTo(WikiCategory::class, 'wiki_category_id');
     }
 
-    /**
-     * Get related articles from the same category.
-     */
     public function getRelatedArticlesAttribute()
     {
-        if (!$this->wiki_category_id) {
+        if (! $this->wiki_category_id) {
             return WikiArticle::where('id', '!=', $this->id)
                 ->where('is_published', true)
                 ->take(5)

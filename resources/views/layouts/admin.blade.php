@@ -204,6 +204,11 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.domain.*') ? 'active' : '' }}" href="{{ route('admin.domain.edit') }}">
+                                <i class="fas fa-globe"></i> Domaine
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ route('admin.settings.index') }}" class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
                                 <i class="fas fa-link me-2"></i>Liens externes
                             </a>
@@ -218,12 +223,6 @@
                                 <i class="fas fa-book"></i> Wiki
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.backups.*') ? 'active' : '' }}" href="{{ route('admin.backups.index') }}">
-                                <i class="fas fa-database"></i> Base de données
-                            </a>
-                        </li>
-
                     </ul>
                 </div>
             </div>

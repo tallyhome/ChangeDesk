@@ -2,21 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Concerns\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Visit extends Model
 {
+    use BelongsToTenant;
     use HasFactory;
 
     protected $fillable = [
+        'tenant_id',
         'ip_address',
         'location',
         'page_url',
         'user_agent',
         'country',
         'region',
-        'city'
+        'city',
     ];
 
     public static function recordVisit($request)
@@ -25,7 +28,6 @@ class Visit extends Model
         $userAgent = $request->userAgent();
         $pageUrl = $request->fullUrl();
 
-        // Utilisation d'un service de géolocalisation IP (à implémenter)
         $location = self::getLocationFromIp($ip);
 
         return self::create([
@@ -35,13 +37,14 @@ class Visit extends Model
             'user_agent' => $userAgent,
             'country' => $location['country'] ?? null,
             'region' => $location['region'] ?? null,
-            'city' => $location['city'] ?? null
+            'city' => $location['city'] ?? null,
         ]);
     }
 
     protected static function getLocationFromIp($ip)
     {
         $geoService = new \App\Services\IpGeolocationService();
+
         return $geoService->getLocation($ip);
     }
 
@@ -60,21 +63,14 @@ class Visit extends Model
             'recent_visits' => self::latest()
                 ->take(10)
                 ->get(),
-            'active_visitors' => self::getActiveVisitors()
+            'active_visitors' => self::getActiveVisitors(),
         ];
     }
-    
-    /**
-     * Récupère le nombre de visiteurs actifs dans les dernières minutes
-     * 
-     * @param int $minutes Nombre de minutes à considérer pour les visiteurs actifs
-     * @return int Nombre de visiteurs actifs
-     */
+
     public static function getActiveVisitors($minutes = 1)
     {
         $timestamp = now()->subMinutes($minutes);
-        
-        // Compter les adresses IP uniques des dernières minutes
+
         return self::where('created_at', '>=', $timestamp)
             ->distinct('ip_address')
             ->count('ip_address');

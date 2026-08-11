@@ -2,15 +2,18 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
 class BugReport extends Model
 {
+    use BelongsToTenant;
     use HasFactory;
-    
+
     protected $fillable = [
+        'tenant_id',
         'title',
         'description',
         'status',
@@ -21,12 +24,11 @@ class BugReport extends Model
         'reporter_name',
         'reporter_email',
     ];
-    
+
     protected $casts = [
         'expected_fix_date' => 'date',
     ];
-    
-    // Accesseur pour s'assurer que expected_fix_date est toujours un objet Carbon
+
     public function getExpectedFixDateAttribute($value)
     {
         return $value ? Carbon::parse($value) : null;

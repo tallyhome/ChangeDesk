@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Tenant;
 use App\Models\TodoItem;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,11 @@ class TodoItemSeeder extends Seeder
      */
     public function run(): void
     {
+        $tenant = Tenant::where('slug', 'default')->first();
+        if ($tenant) {
+            Tenant::setCurrent($tenant);
+        }
+
         TodoItem::create([
             'title' => 'Système de messagerie instantanée',
             'description' => 'Implémentation d\'un système de chat en temps réel entre les utilisateurs de la plateforme.',

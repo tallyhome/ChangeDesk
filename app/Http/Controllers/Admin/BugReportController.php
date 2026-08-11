@@ -83,21 +83,14 @@ class BugReportController extends Controller
 
     public function toggleBugReportStatus()
     {
-        $setting = \App\Models\Setting::where('key', 'bug_report_enabled')->first();
-        
-        if (!$setting) {
-            $setting = new \App\Models\Setting();
-            $setting->key = 'bug_report_enabled';
-            $setting->value = '1';
-        }
-        
-        $setting->value = $setting->value === '1' ? '0' : '1';
-        $setting->save();
-        
+        $current = \App\Models\Setting::getValue('bug_report_enabled', '1');
+        $value = $current === '1' ? '0' : '1';
+        \App\Models\Setting::setValue('bug_report_enabled', $value);
+
         return response()->json([
             'success' => true,
-            'value' => $setting->value,
-            'message' => $setting->value === '1' ? 'Système de rapports de bugs activé' : 'Système de rapports de bugs désactivé'
+            'value' => $value,
+            'message' => $value === '1' ? 'Système de rapports de bugs activé' : 'Système de rapports de bugs désactivé',
         ]);
     }
 }

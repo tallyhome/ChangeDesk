@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Tenant;
 use App\Models\Version;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,11 @@ class VersionSeeder extends Seeder
      */
     public function run(): void
     {
+        $tenant = Tenant::where('slug', 'default')->first();
+        if ($tenant) {
+            Tenant::setCurrent($tenant);
+        }
+
         Version::create([
             'version_number' => '1.0.0',  // Utilisation du nom correct de la colonne
             'release_date' => '2023-01-15',

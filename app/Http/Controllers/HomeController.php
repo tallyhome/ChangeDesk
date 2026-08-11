@@ -2,27 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Tenant;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function __invoke()
     {
-        $this->middleware('auth');
-    }
+        if (Tenant::current()) {
+            return app(PageController::class)->index();
+        }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
-    {
-        return view('home');
+        return view('central.landing');
     }
 }

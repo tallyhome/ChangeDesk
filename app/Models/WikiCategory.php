@@ -2,31 +2,28 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class WikiCategory extends Model
 {
+    use BelongsToTenant;
     use HasFactory;
 
     protected $fillable = [
+        'tenant_id',
         'name',
         'slug',
         'description',
-        'order'
+        'order',
     ];
 
-    /**
-     * Get the articles for the category.
-     */
     public function articles()
     {
         return $this->hasMany(WikiArticle::class, 'wiki_category_id');
     }
 
-    /**
-     * Get published articles for the category.
-     */
     public function publishedArticles()
     {
         return $this->hasMany(WikiArticle::class, 'wiki_category_id')

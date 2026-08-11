@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\BugReport;
+use App\Models\Tenant;
 use Illuminate\Database\Seeder;
 
 class BugReportSeeder extends Seeder
@@ -12,6 +13,11 @@ class BugReportSeeder extends Seeder
      */
     public function run(): void
     {
+        $tenant = Tenant::where('slug', 'default')->first();
+        if ($tenant) {
+            Tenant::setCurrent($tenant);
+        }
+
         BugReport::create([
             'title' => 'Erreur lors de la connexion',
             'description' => 'Lorsque je tente de me connecter avec des identifiants valides, je reçois parfois une erreur 500.',
