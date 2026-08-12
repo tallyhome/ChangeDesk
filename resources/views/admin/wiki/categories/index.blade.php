@@ -56,7 +56,7 @@
                                     <form action="{{ route('admin.wiki.categories.destroy', $category) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?')">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" data-confirm="Êtes-vous sûr de vouloir supprimer cette catégorie ?">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>

@@ -45,7 +45,7 @@
                             <form action="{{ route('admin.changelog.destroy', $version->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Confirmer la suppression ?')">Supprimer</button>
+                                <button type="submit" class="btn btn-sm btn-danger" data-confirm="Confirmer la suppression ?">Supprimer</button>
                             </form>
                         </td>
                     </tr>

@@ -1,6 +1,7 @@
 @extends('themes.midnight.layouts.app')
 @section('title', 'Bugs')
 @section('content')
+@php use App\Support\ThemeUi; @endphp
 <h1 class="md-title">Rapport de bugs</h1>
 <p class="md-muted">Signalez un problème et suivez sa résolution.</p>
 <div class="md-card">
@@ -17,6 +18,6 @@
 </div>
 <h2>Bugs récents</h2>
 @foreach($recentBugs as $bug)
-  <div class="md-card"><strong>{{ $bug->title }}</strong><div class="md-muted">{{ $bug->status }} · {{ $bug->severity }}</div></div>
+  <div class="md-card"><strong>{{ $bug->title }}</strong><div class="md-muted">{{ ThemeUi::statusLabel($bug->status) }} · {{ $bug->priority }}</div></div>
 @endforeach
 @endsection

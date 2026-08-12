@@ -43,7 +43,7 @@
                                 <a href="{{ route('admin.changelog') }}" class="btn btn-secondary">Retour</a>
                             </div>
                             @if(isset($version))
-                            <form action="{{ route('admin.changelog.destroy', $version->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette version?');">
+                            <form action="{{ route('admin.changelog.destroy', $version->id) }}" method="POST" class="d-inline" data-confirm="Êtes-vous sûr de vouloir supprimer cette version?">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">Supprimer</button>
@@ -66,7 +66,7 @@
                                 <a href="{{ route('admin.changelog.edit', $v->id) }}" class="nav-link">
                                     {{ $v->version_number }} ({{ $v->release_date->format('d/m/Y') }})
                                 </a>
-                                <form action="{{ route('admin.changelog.destroy', $v->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette version?');">
+                                <form action="{{ route('admin.changelog.destroy', $v->id) }}" method="POST" class="d-inline" data-confirm="Êtes-vous sûr de vouloir supprimer cette version?">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger">

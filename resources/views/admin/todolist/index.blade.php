@@ -76,7 +76,7 @@
                                             <form action="{{ route('admin.todolist.destroy', $item) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette fonctionnalité ?')">
+                                                <button type="submit" class="btn btn-sm btn-danger" data-confirm="Êtes-vous sûr de vouloir supprimer cette fonctionnalité ?">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </form>

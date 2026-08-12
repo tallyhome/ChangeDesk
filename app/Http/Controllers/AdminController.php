@@ -15,6 +15,11 @@ class AdminController extends Controller
         $tenant = Tenant::current()->load('plan');
         $pages = Page::select('id', 'title', 'updated_at', 'created_at')->get();
 
+        $domainReady = filled($tenant->slug)
+            || filled($tenant->custom_domain)
+            || $tenant->domain_status === Tenant::DOMAIN_PENDING
+            || $tenant->isCustomDomainVerified();
+
         $checklist = [
             [
                 'label' => 'Créer une première version changelog',
@@ -23,7 +28,7 @@ class AdminController extends Controller
             ],
             [
                 'label' => 'Configurer le domaine (slug ou custom)',
-                'done' => filled($tenant->slug) && ($tenant->domain_status !== 'none' || true),
+                'done' => $domainReady,
                 'url' => route('admin.domain.edit'),
             ],
             [
@@ -37,15 +42,6 @@ class AdminController extends Controller
                 'url' => route('admin.billing.index'),
             ],
         ];
-
-        // Domain config "done" if custom verified OR slug exists (always after signup)
-        $checklist[1]['done'] = $tenant->isCustomDomainVerified()
-            || $tenant->domain_status === 'pending'
-            || filled($tenant->custom_domain)
-            || Version::count() > 0; // soft: mark after first content OR domain work
-        if (! $tenant->custom_domain && $tenant->domain_status === 'none') {
-            $checklist[1]['done'] = false;
-        }
 
         return view('admin.dashboard', compact('pages', 'tenant', 'checklist'));
     }

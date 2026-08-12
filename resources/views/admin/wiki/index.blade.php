@@ -143,7 +143,7 @@
                                     <form action="{{ route('admin.wiki.destroy', $article) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?')" title="Supprimer">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" data-confirm="Êtes-vous sûr de vouloir supprimer cet article ?" title="Supprimer">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>

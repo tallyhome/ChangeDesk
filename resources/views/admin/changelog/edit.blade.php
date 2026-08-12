@@ -8,7 +8,7 @@
         <div class="col-md-8">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h1>Modifier la version</h1>
-                <form action="{{ route('admin.changelog.destroy', $version->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette version ?');">
+                <form action="{{ route('admin.changelog.destroy', $version->id) }}" method="POST" data-confirm="Êtes-vous sûr de vouloir supprimer cette version ?">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Supprimer</button>

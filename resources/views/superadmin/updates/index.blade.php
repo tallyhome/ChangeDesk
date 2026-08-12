@@ -13,6 +13,14 @@
   <div class="alert alert-warning">Impossible de contacter GitHub : {{ $error }}</div>
 @endif
 <div id="updateAlert" class="alert d-none"></div>
+<div id="updateSuccessBanner" class="alert alert-success border-0 shadow-sm d-none align-items-center gap-3 flex-wrap mb-4" style="background:linear-gradient(135deg,#ecfdf5,#d1fae5);border-left:5px solid #10b981!important">
+  <div class="display-6 mb-0">✓</div>
+  <div class="flex-grow-1">
+    <div class="fw-bold fs-5 mb-0" id="updateSuccessTitle">Mise à jour réussie</div>
+    <div class="small mb-0" id="updateSuccessText">Tout est en place. Aucune action SSH nécessaire.</div>
+  </div>
+  <span class="badge text-bg-success fs-6 px-3 py-2">OK</span>
+</div>
 
 <div class="row g-4">
   <div class="col-lg-5">
@@ -35,7 +43,7 @@
           @if($available)
             <span class="badge text-bg-success">Mise à jour disponible</span>
           @else
-            <span class="badge text-bg-secondary">À jour</span>
+            <span class="badge text-bg-success">À jour ✓</span>
           @endif
         </div>
 
@@ -97,8 +105,6 @@
 <script>
 (() => {
   const form = document.getElementById('updateForm');
-  if (!form) return;
-
   const bar = document.getElementById('progressBar');
   const pctEl = document.getElementById('progressPct');
   const stepEl = document.getElementById('progressStep');
@@ -106,9 +112,46 @@
   const logEl = document.getElementById('progressLog');
   const btn = document.getElementById('updateBtn');
   const alertBox = document.getElementById('updateAlert');
+  const banner = document.getElementById('updateSuccessBanner');
+  const bannerTitle = document.getElementById('updateSuccessTitle');
+  const bannerText = document.getElementById('updateSuccessText');
   const progressUrl = @json(route('superadmin.updates.progress'));
   const applyUrl = @json(route('superadmin.updates.apply'));
+  const currentVersion = @json($current);
   let timer = null;
+  let successShown = false;
+
+  function showSuccess(p, { celebrate = false, reload = false } = {}) {
+    const to = (p.result && p.result.to) || p.to || currentVersion;
+    const title = 'Mise à jour réussie';
+    const text = to
+      ? `La version v${to} est installée. Migrations et caches ont été appliqués.`
+      : (p.detail || 'Mise à jour appliquée avec succès.');
+    banner.classList.remove('d-none');
+    banner.classList.add('d-flex');
+    bannerTitle.textContent = title;
+    bannerText.textContent = text;
+    progressCardSuccess();
+    const key = 'chanlog_update_ok_' + (p.updated_at || to || 'done');
+    if (celebrate && !successShown && !sessionStorage.getItem(key)) {
+      successShown = true;
+      sessionStorage.setItem(key, '1');
+      const after = () => { if (reload) location.reload(); };
+      if (window.ChanSwal) {
+        window.ChanSwal.success(title, text).then(after);
+      } else {
+        setTimeout(after, 1200);
+      }
+    }
+  }
+
+  function progressCardSuccess() {
+    stepEl.classList.add('text-success');
+    detailEl.classList.remove('text-muted');
+    detailEl.classList.add('text-success', 'fw-semibold');
+    bar.classList.remove('progress-bar-animated');
+    bar.classList.add('bg-success');
+  }
 
   function paint(p) {
     const pct = Math.max(0, Math.min(100, parseInt(p.percent || 0, 10)));
@@ -127,8 +170,7 @@
       bar.classList.remove('progress-bar-animated');
     }
     if (p.status === 'done') {
-      bar.classList.add('bg-success');
-      bar.classList.remove('progress-bar-animated');
+      progressCardSuccess();
     }
   }
 
@@ -140,13 +182,13 @@
       if (p.status === 'done' || p.status === 'failed') {
         clearInterval(timer);
         timer = null;
-        btn.disabled = false;
-        alertBox.classList.remove('d-none', 'alert-success', 'alert-danger');
+        if (btn) btn.disabled = false;
         if (p.status === 'done') {
-          alertBox.classList.add('alert-success');
-          alertBox.textContent = 'Mise à jour terminée. Rechargement…';
-          setTimeout(() => location.reload(), 1200);
+          showSuccess(p, { celebrate: true, reload: true });
+        } else if (window.ChanSwal) {
+          window.ChanSwal.error('Échec de la mise à jour', p.error || 'Une erreur est survenue.');
         } else {
+          alertBox.classList.remove('d-none', 'alert-success');
           alertBox.classList.add('alert-danger');
           alertBox.textContent = p.error || 'Échec de la mise à jour';
         }
@@ -154,15 +196,34 @@
     } catch (e) {}
   }
 
+  @if(($progress['status'] ?? '') === 'done')
+    paint(@json($progress));
+    showSuccess(@json($progress), { celebrate: false, reload: false });
+  @elseif(($progress['status'] ?? '') === 'running')
+    timer = setInterval(poll, 600);
+    poll();
+  @endif
+
+  if (!form) return;
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!document.getElementById('confirm').checked) return;
-    if (!confirm('Lancer la mise à jour maintenant ?')) return;
+    const ok = window.ChanSwal
+      ? await window.ChanSwal.confirm('Lancer la mise à jour ?', 'Le code sera remplacé par la dernière release GitHub.', 'Installer')
+      : confirm('Lancer la mise à jour maintenant ?');
+    if (!ok) return;
 
+    successShown = false;
+    banner.classList.add('d-none');
+    banner.classList.remove('d-flex');
     btn.disabled = true;
     bar.classList.add('progress-bar-animated', 'bg-success');
     bar.classList.remove('bg-danger');
     alertBox.classList.add('d-none');
+    stepEl.classList.remove('text-success');
+    detailEl.classList.add('text-muted');
+    detailEl.classList.remove('text-success', 'fw-semibold');
     paint({ percent: 2, step: 'Démarrage', detail: 'Connexion au serveur…', logs: [], status: 'running' });
 
     timer = setInterval(poll, 600);
@@ -179,9 +240,9 @@
       const data = await res.json();
       await poll();
       if (!data.ok) {
-        alertBox.classList.remove('d-none', 'alert-success');
-        alertBox.classList.add('alert-danger');
-        alertBox.textContent = data.error || 'Échec';
+        if (window.ChanSwal) {
+          window.ChanSwal.error('Échec', data.error || 'Échec de la mise à jour');
+        }
         btn.disabled = false;
         clearInterval(timer);
       }
@@ -190,11 +251,6 @@
       btn.disabled = false;
     }
   });
-
-  @if(($progress['status'] ?? '') === 'running')
-    timer = setInterval(poll, 600);
-    poll();
-  @endif
 })();
 </script>
 @endsection

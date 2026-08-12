@@ -34,8 +34,17 @@ class UpdateProgress
         $data['percent'] = max(0, min(99, $percent));
         $data['step'] = $step;
         $data['detail'] = $detail;
-        $data['logs'][] = ['t' => now()->toDateTimeString(), 'm' => trim($step.($detail ? ' — '.$detail : ''))];
-        $data['logs'] = array_slice($data['logs'] ?? [], -40);
+        $msg = trim($step.($detail ? ' — '.$detail : ''));
+        $logs = $data['logs'] ?? [];
+        $lastKey = array_key_last($logs);
+        $lastMsg = is_int($lastKey) ? (string) ($logs[$lastKey]['m'] ?? '') : '';
+        // Même étape : on met à jour la dernière ligne (évite un journal tronqué type 100/637)
+        if ($lastKey !== null && str_starts_with($lastMsg, $step)) {
+            $logs[$lastKey] = ['t' => now()->toDateTimeString(), 'm' => $msg];
+        } else {
+            $logs[] = ['t' => now()->toDateTimeString(), 'm' => $msg];
+        }
+        $data['logs'] = array_slice($logs, -50);
         $data['updated_at'] = now()->toIso8601String();
         $this->write($data);
     }
@@ -56,13 +65,16 @@ class UpdateProgress
     public function complete(array $result = []): void
     {
         $data = $this->read();
+        $to = $result['to'] ?? ($data['to'] ?? null);
         $data['status'] = 'done';
         $data['percent'] = 100;
-        $data['step'] = 'Terminé';
-        $data['detail'] = 'Mise à jour appliquée avec succès';
+        $data['step'] = 'Terminé ✓';
+        $data['detail'] = $to
+            ? "v{$to} installée avec succès — migrations & caches OK"
+            : 'Mise à jour appliquée avec succès';
         $data['error'] = null;
         $data['result'] = $result;
-        $data['logs'][] = ['t' => now()->toDateTimeString(), 'm' => 'Mise à jour terminée'];
+        $data['logs'][] = ['t' => now()->toDateTimeString(), 'm' => $data['detail']];
         $data['updated_at'] = now()->toIso8601String();
         $this->write($data);
     }

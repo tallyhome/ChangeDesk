@@ -77,11 +77,10 @@ body{margin:0;font-family:Manrope,system-ui,sans-serif;background:var(--sa-bg);c
     <div class="mb-3 d-lg-none">
       <button type="button" class="btn btn-dark btn-sm" id="saOpen"><i class="fas fa-bars me-1"></i> Menu</button>
     </div>
-    @if(session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
-    @if(session('error'))<div class="alert alert-danger">{{ session('error') }}</div>@endif
     @yield('content')
   </main>
 </div>
+@include('partials.sweetalert')
 <script>
 (() => {
   const side = document.getElementById('saSide');

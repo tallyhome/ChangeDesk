@@ -29,12 +29,17 @@
       <div class="card h-100"><div class="card-body">
         <div class="text-muted">Domaine</div>
         <div class="fw-semibold">
-          @switch($tenant->domain_status)
-            @case('verified') <span class="text-success">Vérifié</span> @break
-            @case('pending') <span class="text-warning">En attente</span> @break
-            @default <span class="text-muted">Non configuré</span>
-          @endswitch
+          @if($tenant->isCustomDomainVerified())
+            <span class="text-success">Domaine custom vérifié</span>
+          @elseif(filled($tenant->custom_domain) && $tenant->domain_status === 'pending')
+            <span class="text-warning">Custom en attente</span>
+          @elseif(filled($tenant->slug))
+            <span class="text-success">Sous-domaine actif</span>
+          @else
+            <span class="text-muted">Non configuré</span>
+          @endif
         </div>
+        <div class="small text-muted mb-1">{{ parse_url($tenant->subdomainUrl(), PHP_URL_HOST) }}</div>
         <a href="{{ route('admin.domain.edit') }}" class="small">Configurer →</a>
       </div></div>
     </div>

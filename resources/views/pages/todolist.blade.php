@@ -3,24 +3,28 @@
 @section('title', 'Fonctionnalités à venir')
 
 @section('content')
+@php use App\Support\ThemeUi; @endphp
 <div class="container py-5">
     <h1 class="mb-4">Fonctionnalités à venir</h1>
     
     <div class="row">
         @foreach($todoItems as $item)
+            @php
+                $progress = $item->progress ?? 0;
+                $barColor = ThemeUi::progressColor($item->color ?? 'primary');
+            @endphp
             <div class="col-md-6 mb-4">
                 <div class="card h-100">
                     <div class="card-body">
                         <h5 class="card-title">{{ $item->title }}</h5>
                         <div class="card-text">{!! $item->description !!}</div>
                         
-                        <!-- Barre de progression -->
                         <div class="progress mb-3">
                             <div class="progress-bar bg-{{ $item->color ?? 'primary' }}" role="progressbar" 
-                                style="width: {{ $item->progress ?? 0 }}%" 
-                                aria-valuenow="{{ $item->progress ?? 0 }}" 
+                                style="width: {{ $progress }}%;background-color:{{ $barColor }}!important" 
+                                aria-valuenow="{{ $progress }}" 
                                 aria-valuemin="0" 
-                                aria-valuemax="100">{{ $item->progress ?? 0 }}%</div>
+                                aria-valuemax="100">{{ $progress }}%</div>
                         </div>
                         
                         <div class="d-flex justify-content-between">
@@ -35,15 +39,9 @@
                                 @endif
                             </div>
                             <div>
-                                @if($item->status == 'pending')
-                                    <span class="badge bg-warning">En attente</span>
-                                @elseif($item->status == 'in_progress')
-                                    <span class="badge bg-info">En cours</span>
-                                @elseif($item->status == 'completed')
-                                    <span class="badge bg-success">Terminé</span>
-                                @else
-                                    <span class="badge bg-secondary">{{ $item->status }}</span>
-                                @endif
+                                <span class="badge bg-{{ $item->status == 'completed' ? 'success' : ($item->status == 'in_progress' ? 'info' : 'secondary') }}">
+                                    {{ ThemeUi::statusLabel($item->status) }}
+                                </span>
                             </div>
                         </div>
                     </div>
