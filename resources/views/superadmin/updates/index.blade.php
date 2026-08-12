@@ -20,6 +20,7 @@
     <div class="small mb-0" id="updateSuccessText">Tout est en place. Aucune action SSH nécessaire.</div>
   </div>
   <span class="badge text-bg-success fs-6 px-3 py-2">OK</span>
+  <button type="button" class="btn-close" id="updateSuccessClose" aria-label="Fermer"></button>
 </div>
 
 <div class="row g-4">
@@ -121,7 +122,12 @@
   let timer = null;
   let successShown = false;
 
-  function showSuccess(p, { celebrate = false, reload = false } = {}) {
+  function hideSuccessBanner() {
+    banner.classList.add('d-none');
+    banner.classList.remove('d-flex');
+  }
+
+  function showSuccess(p, { celebrate = false, reload = false, autoHideMs = 8000 } = {}) {
     const to = (p.result && p.result.to) || p.to || currentVersion;
     const title = 'Mise à jour réussie';
     const text = to
@@ -132,6 +138,9 @@
     bannerTitle.textContent = title;
     bannerText.textContent = text;
     progressCardSuccess();
+    if (autoHideMs > 0) {
+      setTimeout(hideSuccessBanner, autoHideMs);
+    }
     const key = 'chanlog_update_ok_' + (p.updated_at || to || 'done');
     if (celebrate && !successShown && !sessionStorage.getItem(key)) {
       successShown = true;
@@ -144,6 +153,8 @@
       }
     }
   }
+
+  document.getElementById('updateSuccessClose')?.addEventListener('click', hideSuccessBanner);
 
   function progressCardSuccess() {
     stepEl.classList.add('text-success');
@@ -196,9 +207,22 @@
     } catch (e) {}
   }
 
-  @if(($progress['status'] ?? '') === 'done')
+  @if(!empty($showSuccessOnce) && ($progress['status'] ?? '') === 'done')
     paint(@json($progress));
-    showSuccess(@json($progress), { celebrate: false, reload: false });
+    showSuccess(@json($progress), { celebrate: false, reload: false, autoHideMs: 8000 });
+    // Après affichage ponctuel : carte progression en état neutre (fichier déjà acknowledge côté serveur)
+    setTimeout(() => {
+      paint({
+        percent: 0,
+        step: 'En attente',
+        detail: 'Lancez une mise à jour pour suivre l’avancement en direct.',
+        logs: @json(array_slice($progress['logs'] ?? [], -20)),
+        status: 'idle'
+      });
+      stepEl.classList.remove('text-success');
+      detailEl.classList.add('text-muted');
+      detailEl.classList.remove('text-success', 'fw-semibold');
+    }, 8000);
   @elseif(($progress['status'] ?? '') === 'running')
     timer = setInterval(poll, 600);
     poll();

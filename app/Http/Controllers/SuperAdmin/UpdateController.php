@@ -27,6 +27,13 @@ class UpdateController extends Controller
             $error = $e->getMessage();
         }
 
+        $state = $progress->read();
+        $showSuccessOnce = ($state['status'] ?? '') === 'done';
+        // Affiche le succès une seule fois, puis reset → disparait au prochain refresh
+        if ($showSuccessOnce) {
+            $progress->acknowledge();
+        }
+
         return view('superadmin.updates.index', [
             'current' => $current,
             'release' => $release,
@@ -34,7 +41,8 @@ class UpdateController extends Controller
             'error' => $error,
             'repo' => GithubUpdateAuth::REPO,
             'hasToken' => GithubUpdateAuth::hasToken(),
-            'progress' => $progress->read(),
+            'progress' => $state,
+            'showSuccessOnce' => $showSuccessOnce,
         ]);
     }
 

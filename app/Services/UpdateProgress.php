@@ -79,6 +79,30 @@ class UpdateProgress
         $this->write($data);
     }
 
+    /**
+     * Repasse en idle après affichage du succès (évite le bandeau permanent au refresh).
+     */
+    public function acknowledge(): void
+    {
+        $data = $this->read();
+        if (($data['status'] ?? '') !== 'done' && ($data['status'] ?? '') !== 'failed') {
+            return;
+        }
+
+        $this->write([
+            'status' => 'idle',
+            'percent' => 0,
+            'step' => 'En attente',
+            'detail' => 'Lancez une mise à jour pour suivre l’avancement en direct.',
+            'from' => $data['from'] ?? null,
+            'to' => $data['to'] ?? null,
+            'logs' => array_slice($data['logs'] ?? [], -20),
+            'error' => null,
+            'result' => $data['result'] ?? null,
+            'updated_at' => now()->toIso8601String(),
+        ]);
+    }
+
     public function read(): array
     {
         if (! File::exists($this->path())) {
