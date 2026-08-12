@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ChanLog — Changelog multi-tenant</title>
 @include('partials.favicon')
-@php $siteVersion = config('updates.number', config('version.number', '2.8.1')); @endphp
+@php $siteVersion = config('updates.number', config('version.number', '2.8.2')); @endphp
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet">
@@ -64,12 +64,12 @@ img{max-width:100%;display:block}
 .value h3{margin:0 0 .3rem;font-size:1.05rem;font-weight:700}
 .value p{margin:0;color:#a8b0b8;font-size:.95rem;line-height:1.55}
 
-.shots{display:grid;grid-template-columns:1.15fr 1fr;gap:.9rem}
-.shot{border-radius:16px;overflow:hidden;background:#111417;min-height:210px;box-shadow:0 14px 36px rgba(26,31,36,.1);transition:transform .35s ease}
+.shots{display:grid;grid-template-columns:1.2fr 1fr;gap:.9rem}
+.shot{border-radius:16px;overflow:hidden;background:#0f1418;box-shadow:0 14px 36px rgba(26,31,36,.1);transition:transform .35s ease;display:flex;align-items:center;justify-content:center}
 .shot:hover{transform:translateY(-4px) scale(1.01)}
-.shot img{width:100%;height:100%;object-fit:cover;min-height:210px}
-.shot.tall{grid-row:span 2;min-height:440px}
-.shot.tall img{min-height:440px}
+.shot img{width:100%;height:auto;object-fit:contain;display:block}
+.shot.wide{grid-column:1 / -1}
+.shot.wide img{width:100%;max-height:none}
 
 .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
 .plan{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1.45rem;display:flex;flex-direction:column;transition:transform .3s ease,box-shadow .3s ease}
@@ -128,8 +128,7 @@ footer strong{color:var(--ink)}
 }
 @media(max-width:960px){
   .values,.plans,.shots{grid-template-columns:1fr}
-  .shot.tall{grid-row:auto;min-height:240px}
-  .shot.tall img{min-height:240px}
+  .shot.wide{grid-column:auto}
   .nav-links a:not(.btn){display:none}
   .carousel-wrap{animation:none}
 }
@@ -211,13 +210,13 @@ footer strong{color:var(--ink)}
 
 <section class="section" id="screens" style="padding-top:0">
   <div class="section-head reveal">
-    <h2>Des écrans qui donnent envie</h2>
-    <p>Aperçus réels de l’expérience publique et admin.</p>
+    <h2>Voyez le produit en situation</h2>
+    <p>Changelog, roadmap et bugs — l’interface telle que vos utilisateurs la verront.</p>
   </div>
   <div class="shots">
-    <div class="shot tall reveal"><img src="{{ asset('Promo/02-Promotionnel/chanlog-promo-03-piliers.png') }}" alt="ChanLog modules" loading="lazy"></div>
-    <div class="shot reveal reveal-delay-1"><img src="{{ asset('Promo/03-Marketplace/chanlog-marketplace-02-roadmap.png') }}" alt="Roadmap" loading="lazy"></div>
-    <div class="shot reveal reveal-delay-2"><img src="{{ asset('Promo/04-Stories/chanlog-stories-03-modules.png') }}" alt="Modules" loading="lazy"></div>
+    <div class="shot wide reveal"><img src="{{ asset('Promo/03-Marketplace/chanlog-marketplace-01-cover.png') }}" alt="Dashboard ChanLog" loading="lazy"></div>
+    <div class="shot reveal reveal-delay-1"><img src="{{ asset('Promo/03-Marketplace/chanlog-marketplace-02-roadmap.png') }}" alt="Roadmap publique" loading="lazy"></div>
+    <div class="shot reveal reveal-delay-2"><img src="{{ asset('Promo/03-Marketplace/chanlog-marketplace-03-bugs.png') }}" alt="Suivi des bugs" loading="lazy"></div>
   </div>
 </section>
 

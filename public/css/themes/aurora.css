@@ -50,7 +50,7 @@ a:hover{color:#67e8f9}
   background:linear-gradient(135deg,#22d3ee,#a78bfa);color:#061018!important;font-weight:800;font-size:.85rem;
 }
 
-.au-main{width:min(1100px, calc(100% - 2rem));margin:0 auto;padding:2rem 0 3.5rem;flex:1}
+.au-main{width:min(1180px, calc(100% - 2rem));margin:0 auto;padding:2rem 0 3.5rem;flex:1}
 .au-title{font-size:clamp(1.8rem,4vw,2.5rem);margin:0 0 .5rem;font-weight:800;letter-spacing:-.03em}
 .au-lead{color:var(--au-muted);margin:0 0 1.5rem;max-width:40rem}
 .au-muted{color:var(--au-muted)}
@@ -163,6 +163,107 @@ a:hover{color:#67e8f9}
 .justify-content-center{justify-content:center}.h-100{height:100%}.text-decoration-none{text-decoration:none}
 .gap-2{gap:.5rem}
 
+/* —— Panneaux type marketplace (roadmap / versions / bugs / wiki) —— */
+.au-hero-line{color:var(--au-accent);font-weight:800;font-size:clamp(1.35rem,2.6vw,1.85rem);margin:0 0 .35rem;letter-spacing:-.02em}
+.au-panel{
+  background:rgba(15,23,42,.72);border:1px solid var(--au-line);border-radius:22px;
+  backdrop-filter:blur(20px);box-shadow:0 24px 60px rgba(0,0,0,.35);overflow:hidden;margin-bottom:1.25rem;
+}
+.au-panel-pad{padding:1.35rem 1.45rem 1.5rem}
+.au-panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;margin-bottom:1.1rem}
+.au-panel-head h1,.au-panel-head h2{margin:0;font-size:1.45rem;font-weight:800;letter-spacing:-.02em;color:#fff}
+.au-panel-head p{margin:.35rem 0 0;color:var(--au-muted);font-size:.95rem}
+
+.au-stats{display:flex;flex-wrap:wrap;gap:1.25rem 1.75rem;margin:0 0 1.15rem;color:var(--au-muted);font-weight:600;font-size:.92rem}
+.au-stats span{display:inline-flex;align-items:center;gap:.45rem}
+.au-stats i{color:var(--au-accent)}
+
+.au-filters{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1rem}
+.au-filter{
+  border:1px solid var(--au-line);background:rgba(2,6,23,.4);color:var(--au-muted);
+  border-radius:999px;padding:.4rem .9rem;font:inherit;font-weight:700;font-size:.85rem;cursor:pointer;
+}
+.au-filter:hover{color:#fff;border-color:rgba(34,211,238,.35)}
+.au-filter.active{background:var(--au-accent);color:#061018;border-color:transparent}
+
+.au-road-list{display:flex;flex-direction:column}
+.au-road-item{
+  display:grid;grid-template-columns:44px minmax(0,1fr) minmax(120px,160px) auto;
+  gap:1rem;align-items:center;padding:1rem 0;border-top:1px solid rgba(148,163,184,.12);
+}
+.au-road-item:first-child{border-top:0}
+.au-road-ico{
+  width:44px;height:44px;border-radius:12px;display:grid;place-items:center;
+  background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.22);color:var(--au-accent);font-size:1rem;
+}
+.au-road-body strong{display:block;color:#fff;font-size:1.02rem;margin-bottom:.15rem}
+.au-road-body p{margin:0;color:var(--au-muted);font-size:.88rem;line-height:1.45}
+.au-road-prog{display:flex;flex-direction:column;gap:.35rem;min-width:0}
+.au-road-prog .pct{font-size:.82rem;font-weight:700;color:var(--au-muted);text-align:right}
+.au-road-prog .bar{height:6px;background:rgba(148,163,184,.18);border-radius:999px;overflow:hidden}
+.au-road-prog .bar>i{display:block;height:100%;border-radius:inherit;background:var(--au-accent)}
+
+.au-status{
+  display:inline-flex;align-items:center;gap:.4rem;font-size:.82rem;font-weight:700;
+  padding:.28rem .7rem;border-radius:999px;white-space:nowrap;
+}
+.au-status.progress{background:rgba(59,130,246,.18);color:#93c5fd}
+.au-status.pending{background:rgba(245,158,11,.16);color:#fcd34d}
+.au-status.done{background:rgba(16,185,129,.16);color:#6ee7b7}
+.au-status.open{background:rgba(248,113,113,.16);color:#fca5a5}
+.au-status .dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+
+.au-table{width:100%;border-collapse:collapse}
+.au-table th{
+  text-align:left;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--au-muted);font-weight:700;padding:.65rem .5rem;border-bottom:1px solid rgba(148,163,184,.14);
+}
+.au-table td{padding:.95rem .5rem;border-bottom:1px solid rgba(148,163,184,.1);vertical-align:top;color:#e2e8f0}
+.au-table tr:last-child td{border-bottom:0}
+.au-table tr.au-clickable{cursor:pointer}
+.au-table tr.au-clickable:hover td{background:rgba(34,211,238,.04)}
+.au-ver{color:var(--au-accent);font-weight:800}
+.au-ver small{display:block;color:var(--au-muted);font-weight:500;margin-top:.2rem;font-size:.85rem}
+.au-detail{display:none;padding:0 .5rem 1rem;color:var(--au-muted);font-size:.92rem}
+.au-detail.open{display:block}
+.au-detail .au-prose{color:#cbd5e1}
+
+.au-bug-layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(220px,280px);gap:1rem}
+.au-form-actions{display:flex;justify-content:flex-end;gap:.65rem;flex-wrap:wrap;margin-top:.5rem}
+.au-btn-ghost{
+  display:inline-flex;align-items:center;border:1px solid var(--au-line);background:transparent;
+  color:var(--au-muted);border-radius:999px;padding:.7rem 1.15rem;font:inherit;font-weight:700;cursor:pointer;text-decoration:none;
+}
+.au-btn-ghost:hover{color:#fff;border-color:rgba(34,211,238,.35)}
+.au-sev{display:inline-flex;align-items:center;gap:.35rem;font-weight:700;font-size:.85rem}
+.au-sev .dot{width:8px;height:8px;border-radius:50%}
+.au-sev.high .dot{background:#f87171}
+.au-sev.medium .dot{background:#fbbf24}
+.au-sev.low .dot{background:#facc15}
+
+.au-wiki{
+  display:grid;grid-template-columns:240px minmax(0,1fr) 240px;gap:1rem;align-items:start;
+}
+.au-wiki-nav a{
+  display:flex;align-items:center;gap:.55rem;padding:.55rem .7rem;border-radius:10px;
+  color:var(--au-muted);font-weight:600;margin-bottom:.2rem;
+}
+.au-wiki-nav a:hover,.au-wiki-nav a.active{background:rgba(34,211,238,.1);color:var(--au-accent)}
+.au-article{padding-bottom:1rem;border-bottom:1px solid rgba(148,163,184,.12);margin-bottom:1rem}
+.au-article:last-child{border-bottom:0;margin-bottom:0;padding-bottom:0}
+.au-article h3{margin:0 0 .35rem;font-size:1.05rem}
+.au-article h3 a{color:#fff;font-weight:800}
+.au-breadcrumb{display:flex;flex-wrap:wrap;gap:.4rem;color:var(--au-muted);font-size:.9rem;margin-bottom:1rem}
+.au-breadcrumb a{color:var(--au-accent)}
+
+@media(max-width:960px){
+  .au-road-item{grid-template-columns:44px minmax(0,1fr);gap:.75rem}
+  .au-road-prog,.au-road-item .au-status{grid-column:2}
+  .au-bug-layout,.au-wiki{grid-template-columns:1fr}
+  .au-table thead{display:none}
+  .au-table tr{display:block;padding:.85rem 0;border-bottom:1px solid rgba(148,163,184,.12)}
+  .au-table td{display:block;border:0;padding:.2rem 0}
+}
 @media(max-width:900px){
   .au-grid,.au-todo-grid{grid-template-columns:1fr}
   .au-side{position:relative;top:0}

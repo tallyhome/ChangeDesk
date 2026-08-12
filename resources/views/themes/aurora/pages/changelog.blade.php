@@ -1,30 +1,57 @@
 @extends('themes.aurora.layouts.app')
-@section('title', 'Historique des versions')
+@section('title', 'Versions')
 @section('content')
-<span class="au-chip">Journal</span>
-<h1 class="au-title" style="margin-top:.75rem">Historique des versions</h1>
-<p class="au-lead">Chaque release, ancrée et accessible en un clic.</p>
+<p class="au-hero-line">Changelog Multi-Tenant</p>
+<p class="au-lead" style="margin-bottom:1.25rem">Affichez et parcourez vos versions publiées — clairement.</p>
 
 <div class="au-grid">
-  <div>
-    @forelse($versions as $version)
-      <article class="au-card au-version" id="version-{{ $version->id }}">
-        <div class="au-version-head">
-          <div>
-            <span class="au-chip">v{{ $version->version_number }}</span>
-            @if($version->description)
-              <h2 style="margin:.55rem 0 0">{{ $version->description }}</h2>
-            @else
-              <h2 style="margin:.55rem 0 0">Version {{ $version->version_number }}</h2>
-            @endif
-          </div>
-          <div class="au-muted" style="font-weight:600">{{ $version->release_date?->format('d/m/Y') }}</div>
+  <div class="au-panel">
+    <div class="au-panel-pad">
+      <div class="au-panel-head">
+        <div>
+          <h1>Versions</h1>
+          <p>Historique des releases publiées pour vos utilisateurs.</p>
         </div>
-        <div class="au-prose">{!! $version->content !!}</div>
-      </article>
-    @empty
-      <div class="au-card au-muted">Aucune version publiée.</div>
-    @endforelse
+        <span class="au-chip">{{ $versions->count() }} publiée{{ $versions->count() > 1 ? 's' : '' }}</span>
+      </div>
+
+      <div class="table-responsive">
+        <table class="au-table">
+          <thead>
+            <tr>
+              <th>Version</th>
+              <th>Date</th>
+              <th>Statut</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @forelse($versions as $version)
+              <tr class="au-clickable" data-toggle-detail="detail-{{ $version->id }}" id="version-{{ $version->id }}">
+                <td>
+                  <span class="au-ver">
+                    v{{ $version->version_number }}
+                    <small>{{ $version->description ?: 'Release' }}</small>
+                  </span>
+                </td>
+                <td>{{ $version->release_date?->format('d/m/Y') }}</td>
+                <td><span class="au-status done"><i class="fas fa-check-circle"></i> Publié</span></td>
+                <td class="au-muted"><i class="fas fa-globe"></i></td>
+              </tr>
+              <tr>
+                <td colspan="4" style="padding:0">
+                  <div class="au-detail" id="detail-{{ $version->id }}">
+                    <div class="au-prose">{!! $version->content !!}</div>
+                  </div>
+                </td>
+              </tr>
+            @empty
+              <tr><td colspan="4" class="au-muted">Aucune version publiée.</td></tr>
+            @endforelse
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
   <aside class="au-side" aria-label="Versions disponibles">
@@ -47,3 +74,35 @@
   </aside>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+(() => {
+  const openDetail = (id) => {
+    document.querySelectorAll('.au-detail.open').forEach(d => d.classList.remove('open'));
+    const el = document.getElementById(id);
+    if (el) el.classList.add('open');
+  };
+  document.querySelectorAll('[data-toggle-detail]').forEach(row => {
+    row.addEventListener('click', () => {
+      const id = row.dataset.toggleDetail;
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (el.classList.contains('open')) el.classList.remove('open');
+      else openDetail(id);
+    });
+  });
+  document.querySelectorAll('.au-side-list a[href^="#version-"]').forEach(a => {
+    a.addEventListener('click', () => {
+      const vid = a.getAttribute('href').replace('#', '');
+      const row = document.getElementById(vid);
+      if (row?.dataset?.toggleDetail) openDetail(row.dataset.toggleDetail);
+    });
+  });
+  if (location.hash.startsWith('#version-')) {
+    const row = document.querySelector(location.hash);
+    if (row?.dataset?.toggleDetail) openDetail(row.dataset.toggleDetail);
+  }
+})();
+</script>
+@endpush
