@@ -1,5 +1,5 @@
 @extends('themes.aurora.layouts.app')
-@section('title', 'Roadmap')
+@section('title', 'Fonctionnalités à venir')
 @section('content')
 @php
   use App\Support\ThemeUi;
@@ -9,18 +9,10 @@
   $icons = ['fa-chart-line','fa-users','fa-bell','fa-rocket','fa-puzzle-piece','fa-bolt','fa-layer-group','fa-wand-magic-sparkles'];
 @endphp
 
-<p class="au-hero-line">Roadmap publique pour vos utilisateurs</p>
-<p class="au-lead" style="margin-bottom:1.25rem">Transparence, clarté et confiance à chaque étape.</p>
+<h1 class="au-title">Fonctionnalités à venir</h1>
 
 <div class="au-panel">
   <div class="au-panel-pad">
-    <div class="au-panel-head">
-      <div>
-        <h1>Notre roadmap</h1>
-        <p>Fonctionnalités prévues, en cours et déjà livrées.</p>
-      </div>
-    </div>
-
     <div class="au-stats">
       <span><i class="fas fa-list"></i> {{ $total }} fonctionnalité{{ $total > 1 ? 's' : '' }}</span>
       <span><i class="fas fa-circle-notch"></i> {{ $inProgress }} en cours</span>

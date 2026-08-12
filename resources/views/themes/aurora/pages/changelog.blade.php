@@ -1,16 +1,14 @@
 @extends('themes.aurora.layouts.app')
-@section('title', 'Versions')
+@section('title', 'Historique des versions')
 @section('content')
-<p class="au-hero-line">Changelog Multi-Tenant</p>
-<p class="au-lead" style="margin-bottom:1.25rem">Affichez et parcourez vos versions publiées — clairement.</p>
+<h1 class="au-title">Historique des versions</h1>
 
 <div class="au-grid">
   <div class="au-panel">
     <div class="au-panel-pad">
       <div class="au-panel-head">
         <div>
-          <h1>Versions</h1>
-          <p>Historique des releases publiées pour vos utilisateurs.</p>
+          <h2 style="margin:0;font-size:1.15rem;font-weight:800;color:#fff">Versions</h2>
         </div>
         <span class="au-chip">{{ $versions->count() }} publiée{{ $versions->count() > 1 ? 's' : '' }}</span>
       </div>

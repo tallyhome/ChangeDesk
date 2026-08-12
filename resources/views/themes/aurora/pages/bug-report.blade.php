@@ -1,19 +1,11 @@
 @extends('themes.aurora.layouts.app')
-@section('title', 'Rapport de bugs')
+@section('title', 'Signaler un bug')
 @section('content')
 @php use App\Support\ThemeUi; @endphp
-<p class="au-hero-line">Bugs signalés. Suivis. <span style="color:var(--au-accent)">Résolus.</span></p>
-<p class="au-lead" style="margin-bottom:1.25rem">Du signalement à la résolution — un suivi clair pour vos utilisateurs.</p>
+<h1 class="au-title">Signaler un bug</h1>
 
 <div class="au-panel">
   <div class="au-panel-pad">
-    <div class="au-panel-head">
-      <div>
-        <h1>Rapporter un bug</h1>
-        <p>Décrivez le problème — on le suit jusqu’à résolution.</p>
-      </div>
-    </div>
-
     @if(session('success'))
       <div class="au-alert">{{ session('success') }}</div>
     @endif
@@ -61,8 +53,7 @@
   <div class="au-panel-pad">
     <div class="au-panel-head">
       <div>
-        <h2>Bugs récemment signalés</h2>
-        <p>Suivi public des derniers tickets.</p>
+        <h2 style="margin:0;font-size:1.15rem;font-weight:800;color:#fff">Bugs récemment signalés</h2>
       </div>
     </div>
 

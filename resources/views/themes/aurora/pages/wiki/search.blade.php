@@ -1,8 +1,8 @@
 @extends('themes.aurora.layouts.app')
 @section('title', 'Recherche wiki')
 @section('content')
-<p class="au-hero-line">Recherche</p>
-<p class="au-lead">Résultats pour « {{ $query }} »</p>
+<h1 class="au-title">Recherche</h1>
+<p class="au-muted" style="margin-top:-.5rem;margin-bottom:1.25rem">Résultats pour « {{ $query }} »</p>
 
 <div class="au-wiki">
   <aside class="au-panel">

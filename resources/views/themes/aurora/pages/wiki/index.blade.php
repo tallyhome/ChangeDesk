@@ -1,8 +1,7 @@
 @extends('themes.aurora.layouts.app')
 @section('title', $wikiTitle)
 @section('content')
-<p class="au-hero-line">{{ $wikiTitle }}</p>
-<p class="au-lead" style="margin-bottom:1.25rem">Base de connaissances claire, dans le même esprit Aurora.</p>
+<h1 class="au-title">{{ $wikiTitle }}</h1>
 
 <div class="au-wiki">
   <aside class="au-panel">
@@ -19,14 +18,16 @@
 
   <div class="au-panel">
     <div class="au-panel-pad">
-      <div class="au-panel-head">
-        <div>
-          <h1>{{ $welcomeTitle }}</h1>
-          @if($welcomeText)
-            <p>{!! nl2br(e($welcomeText)) !!}</p>
-          @endif
+      @if($welcomeTitle || $welcomeText)
+        <div class="au-panel-head">
+          <div>
+            @if($welcomeTitle)<h2 style="margin:0;font-size:1.15rem;font-weight:800;color:#fff">{{ $welcomeTitle }}</h2>@endif
+            @if($welcomeText)
+              <p class="au-muted" style="margin:.35rem 0 0">{!! nl2br(e($welcomeText)) !!}</p>
+            @endif
+          </div>
         </div>
-      </div>
+      @endif
 
       <h2 style="margin:0 0 1rem;font-size:1.1rem;color:#fff">Articles récents</h2>
       @forelse($recentArticles as $article)

@@ -1,7 +1,7 @@
 @extends('themes.aurora.layouts.app')
 @section('title', $category->name)
 @section('content')
-<p class="au-hero-line">{{ $category->name }}</p>
+<h1 class="au-title">{{ $category->name }}</h1>
 <div class="au-breadcrumb">
   <a href="{{ route('wiki') }}">Wiki</a> <span>/</span> <span>{{ $category->name }}</span>
 </div>
