@@ -17,14 +17,14 @@
 *{box-sizing:border-box}
 body{margin:0;font-family:Manrope,system-ui,sans-serif;background:var(--sa-bg);color:var(--sa-ink)}
 .sa-shell{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
-.sa-side{background:linear-gradient(180deg,var(--sa-side),var(--sa-side-2));color:var(--sa-text);padding:1.25rem 1rem;position:sticky;top:0;height:100vh;display:flex;flex-direction:column}
+.sa-side{background:linear-gradient(180deg,var(--sa-side),var(--sa-side-2));color:var(--sa-text);padding:1.25rem 1rem;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;overflow:visible}
 .sa-brand{font-weight:800;font-size:1.25rem;padding:.5rem .75rem 1.25rem;letter-spacing:-.02em}
 .sa-brand span{color:var(--sa-accent)}
 .sa-nav a{display:flex;align-items:center;gap:.75rem;color:var(--sa-muted);text-decoration:none;padding:.7rem .85rem;border-radius:12px;margin-bottom:.2rem;font-weight:600;font-size:.95rem}
 .sa-nav a:hover,.sa-nav a.active{background:rgba(18,163,140,.12);color:#fff}
 .sa-nav a i{width:1.1rem;text-align:center}
 .sa-nav .section-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(143,179,171,.7);padding:.9rem .85rem .35rem}
-.sa-side-foot{margin-top:auto;padding:.75rem}
+.sa-side-foot{margin-top:auto;padding:.75rem;position:relative;z-index:90;overflow:visible}
 .sa-main{padding:1.5rem 1.75rem 2.5rem}
 .sa-top{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1.25rem}
 .sa-top h1{margin:0;font-size:1.55rem;font-weight:800;letter-spacing:-.02em}
@@ -69,7 +69,7 @@ body{margin:0;font-family:Manrope,system-ui,sans-serif;background:var(--sa-bg);c
       <a class="{{ request()->routeIs('superadmin.backups.*') ? 'active' : '' }}" href="{{ route('superadmin.backups.index') }}"><i class="fas fa-database"></i> {{ __('app.superadmin.backups') }}</a>
     </nav>
     <div class="sa-side-foot">
-      @include('partials.lang-switcher', ['variant' => 'on-dark'])
+      @include('partials.lang-switcher', ['variant' => 'on-dark', 'placement' => 'up-start'])
       <form method="POST" action="{{ route('logout') }}" class="mt-2">@csrf
         <button class="btn btn-outline-light btn-sm w-100">{{ __('app.superadmin.logout') }}</button>
       </form>

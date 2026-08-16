@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ChanLog — Changelog multi-tenant</title>
 @include('partials.favicon')
-@php $siteVersion = config('updates.number', config('version.number', '2.8.6')); @endphp
+@php $siteVersion = config('updates.number', config('version.number', '2.8.7')); @endphp
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,500;1,8..60,500&display=swap" rel="stylesheet">
