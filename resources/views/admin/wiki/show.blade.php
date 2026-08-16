@@ -16,7 +16,7 @@
                 <i class="fas fa-edit me-1"></i> Modifier
             </a>
             <a href="{{ route('admin.wiki.index') }}" class="btn btn-outline-secondary ms-2">
-                <i class="fas fa-arrow-left me-1"></i> Retour à la liste
+                <i class="fas fa-arrow-left me-1"></i> {{ __('app.common.back') }}
             </a>
         </div>
     </div>

@@ -25,8 +25,8 @@
   <div class="container d-flex justify-content-between flex-wrap gap-2">
     <span>&copy; {{ date('Y') }} {{ $currentTenant->name ?? config('app.name') }}</span>
     <span>
-      <a href="{{ route('terms') }}">Conditions</a> ·
-      <a href="{{ route('privacy') }}">Confidentialité</a>
+      <a href="{{ route('terms') }}">{{ __('app.footer.terms') }}</a> ·
+      <a href="{{ route('privacy') }}">{{ __('app.footer.privacy') }}</a>
     </span>
   </div>
 </footer>

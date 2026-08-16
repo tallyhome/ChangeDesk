@@ -1,5 +1,5 @@
 @extends('themes.aurora.layouts.app')
-@section('title', 'Fonctionnalités à venir')
+@section('title', __('app.public.todolist_title'))
 @section('content')
 @php
   use App\Support\ThemeUi;
@@ -9,21 +9,21 @@
   $icons = ['fa-chart-line','fa-users','fa-bell','fa-rocket','fa-puzzle-piece','fa-bolt','fa-layer-group','fa-wand-magic-sparkles'];
 @endphp
 
-<h1 class="au-title">Fonctionnalités à venir</h1>
+<h1 class="au-title">{{ __('app.public.todolist_title') }}</h1>
 
 <div class="au-panel">
   <div class="au-panel-pad">
     <div class="au-stats">
-      <span><i class="fas fa-list"></i> {{ $total }} fonctionnalité{{ $total > 1 ? 's' : '' }}</span>
-      <span><i class="fas fa-circle-notch"></i> {{ $inProgress }} en cours</span>
-      <span><i class="fas fa-check-circle"></i> {{ $done }} terminée{{ $done > 1 ? 's' : '' }}</span>
+      <span><i class="fas fa-list"></i> {{ trans_choice('app.public.features_count', $total, ['count' => $total]) }}</span>
+      <span><i class="fas fa-circle-notch"></i> {{ trans_choice('app.public.in_progress_count', $inProgress, ['count' => $inProgress]) }}</span>
+      <span><i class="fas fa-check-circle"></i> {{ trans_choice('app.public.done_count', $done, ['count' => $done]) }}</span>
     </div>
 
     <div class="au-filters" id="auRoadFilters">
-      <button type="button" class="au-filter active" data-filter="all">Toutes</button>
-      <button type="button" class="au-filter" data-filter="in_progress">En cours</button>
-      <button type="button" class="au-filter" data-filter="pending">En attente</button>
-      <button type="button" class="au-filter" data-filter="completed">Terminées</button>
+      <button type="button" class="au-filter active" data-filter="all">{{ __('app.public.filter_all') }}</button>
+      <button type="button" class="au-filter" data-filter="in_progress">{{ __('app.public.filter_progress') }}</button>
+      <button type="button" class="au-filter" data-filter="pending">{{ __('app.public.filter_pending') }}</button>
+      <button type="button" class="au-filter" data-filter="completed">{{ __('app.public.filter_done') }}</button>
     </div>
 
     <div class="au-road-list">
@@ -68,7 +68,7 @@
           </span>
         </article>
       @empty
-        <p class="au-muted" style="margin:0">Aucune fonctionnalité pour le moment.</p>
+        <p class="au-muted" style="margin:0">{{ __('app.common.empty') }}</p>
       @endforelse
     </div>
   </div>

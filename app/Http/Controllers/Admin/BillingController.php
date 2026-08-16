@@ -49,6 +49,6 @@ class BillingController extends Controller
     public function success()
     {
         return redirect()->route('admin.billing.index')
-            ->with('success', 'Paiement en cours de confirmation. Votre plan sera activé sous peu.');
+            ->with('success', __('app.flash.billing_pending'));
     }
 }

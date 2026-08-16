@@ -1,7 +1,7 @@
 @extends('themes.editorial.layouts.app')
-@section('title', 'Accueil')
+@section('title', __('app.nav.home'))
 @section('content')
-<p class="ed-kicker">Accueil</p>
+<p class="ed-kicker">{{ __('app.nav.home') }}</p>
 <h1 class="ed-title">{{ $currentTenant->name ?? 'Bienvenue' }}</h1>
 <p class="ed-lead">Suivez les versions, la roadmap et les retours utilisateurs au même endroit.</p>
 <div class="ed-card ed-prose">

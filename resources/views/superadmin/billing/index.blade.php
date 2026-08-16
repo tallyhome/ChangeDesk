@@ -1,5 +1,5 @@
 @extends('superadmin.layout')
-@section('title', 'Billing')
+@section('title', __('app.superadmin.billing'))
 @section('content')
 <h1 class="mb-4">Billing</h1>
 <form method="POST" action="{{ route('superadmin.billing.assign') }}" class="card card-body mb-4">

@@ -5,7 +5,7 @@
   <div>
     <h1>{{ $plan->exists ? 'Éditer '.$plan->name : 'Nouveau plan' }}</h1>
   </div>
-  <a href="{{ route('superadmin.plans.index') }}" class="btn btn-outline-secondary">Retour</a>
+  <a href="{{ route('superadmin.plans.index') }}" class="btn btn-outline-secondary">{{ __('app.common.back') }}</a>
 </div>
 
 <form method="POST" action="{{ $plan->exists ? route('superadmin.plans.update', $plan) : route('superadmin.plans.store') }}" class="sa-card p-4" style="max-width:820px">
@@ -79,7 +79,7 @@
   </div>
 
   <div class="mt-4">
-    <button class="btn btn-accent">Enregistrer</button>
+    <button class="btn btn-accent">{{ __('app.common.save') }}</button>
   </div>
 </form>
 @endsection

@@ -1,7 +1,7 @@
 @extends('themes.aurora.layouts.app')
-@section('title', 'Accueil')
+@section('title', __('app.nav.home'))
 @section('content')
-<span class="au-chip">Accueil</span>
+<span class="au-chip">{{ __('app.nav.home') }}</span>
 <h1 class="au-title" style="margin-top:.75rem">{{ $currentTenant->name ?? 'Bienvenue' }}</h1>
 <p class="au-lead">Changelog, roadmap et bugs — une vitrine produit claire, moderne et vivante.</p>
 <div class="au-panel">

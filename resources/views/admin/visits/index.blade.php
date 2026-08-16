@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Statistiques des visites</h1>
+    <h1 class="mt-4">{{ __('app.admin.stats') }}</h1>
 
     <div class="row mt-4">
         <div class="col-xl-3 col-md-6">

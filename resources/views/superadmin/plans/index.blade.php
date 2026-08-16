@@ -1,5 +1,5 @@
 @extends('superadmin.layout')
-@section('title', 'Plans')
+@section('title', __('app.superadmin.plans'))
 @section('content')
 <div class="sa-top">
   <div>
@@ -21,7 +21,7 @@
   <td>{{ $plan->is_active ? 'Oui' : 'Non' }}</td>
   <td class="text-end">
     <a href="{{ route('superadmin.plans.edit', $plan) }}" class="btn btn-sm btn-outline-primary">Éditer</a>
-    <form class="d-inline" method="POST" action="{{ route('superadmin.plans.destroy', $plan) }}" onsubmit="return confirm('Supprimer ce plan ?')">
+    <form class="d-inline" method="POST" action="{{ route('superadmin.plans.destroy', $plan) }}" onsubmit="return confirm(@json(__('app.admin.confirm_delete')))">
       @csrf @method('DELETE')
       <button class="btn btn-sm btn-outline-danger">Suppr.</button>
     </form>

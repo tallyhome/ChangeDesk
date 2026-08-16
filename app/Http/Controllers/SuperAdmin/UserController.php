@@ -94,7 +94,7 @@ class UserController extends Controller
             'preferred_plan_id' => $preferredPlanId,
         ]);
 
-        return redirect()->route('superadmin.users.edit', $user)->with('success', 'Utilisateur créé.');
+        return redirect()->route('superadmin.users.edit', $user)->with('success', __('app.flash.user_created'));
     }
 
     public function edit(User $user)
@@ -160,7 +160,7 @@ class UserController extends Controller
         $user->save();
         AuditLog::record('user.updated', $user->tenant, ['user_id' => $user->id]);
 
-        return redirect()->route('superadmin.users.edit', $user)->with('success', 'Utilisateur mis à jour.');
+        return redirect()->route('superadmin.users.edit', $user)->with('success', __('app.flash.user_updated'));
     }
 
     public function resetPassword(User $user)
@@ -169,7 +169,7 @@ class UserController extends Controller
         $user->update(['password' => Hash::make($temp)]);
         AuditLog::record('user.password_reset', $user->tenant, ['user_id' => $user->id]);
 
-        return back()->with('success', "Nouveau mot de passe temporaire : {$temp}");
+        return back()->with('success', __('app.flash.user_temp_password', ['password' => $temp]));
     }
 
     public function toggleActive(User $user)
@@ -177,6 +177,6 @@ class UserController extends Controller
         $user->update(['is_active' => ! $user->is_active]);
         AuditLog::record('user.toggle_active', $user->tenant, ['is_active' => $user->is_active]);
 
-        return back()->with('success', $user->is_active ? 'Utilisateur activé.' : 'Utilisateur désactivé.');
+        return back()->with('success', $user->is_active ? __('app.flash.user_enabled') : __('app.flash.user_disabled'));
     }
 }

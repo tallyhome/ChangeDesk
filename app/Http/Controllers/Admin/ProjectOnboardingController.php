@@ -58,6 +58,6 @@ class ProjectOnboardingController extends Controller
 
         return redirect()
             ->route('admin.domain.edit')
-            ->with('success', 'Projet créé. Configurez votre domaine si besoin.');
+            ->with('success', __('app.flash.project_created'));
     }
 }

@@ -32,7 +32,7 @@ class TodoItemController extends Controller
         
         TodoItem::create($validated);
         
-        return redirect()->route('admin.todolist')->with('success', 'Fonctionnalité ajoutée avec succès.');
+        return redirect()->route('admin.todolist')->with('success', __('app.flash.feature_created'));
     }
 
     public function show(string $id)
@@ -58,13 +58,13 @@ class TodoItemController extends Controller
         
         $todoItem->update($validated);
         
-        return redirect()->route('admin.todolist')->with('success', 'Fonctionnalité mise à jour avec succès.');
+        return redirect()->route('admin.todolist')->with('success', __('app.flash.feature_updated'));
     }
 
     public function destroy(TodoItem $todoItem)
     {
         $todoItem->delete();
-        return redirect()->route('admin.todolist')->with('success', 'Fonctionnalité supprimée avec succès.');
+        return redirect()->route('admin.todolist')->with('success', __('app.flash.feature_deleted'));
     }
 
     public function toggleTodoStatus()

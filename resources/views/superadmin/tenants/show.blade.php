@@ -1,7 +1,7 @@
 @extends('superadmin.layout')
 @section('title', $tenant->name)
 @section('content')
-<div class="mb-3"><a href="{{ route('superadmin.tenants.index') }}">&larr; Retour</a></div>
+<div class="mb-3"><a href="{{ route('superadmin.tenants.index') }}">&larr; {{ __('app.common.back') }}</a></div>
 <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
   <div>
     <h1 class="mb-1">{{ $tenant->name }}</h1>

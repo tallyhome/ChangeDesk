@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Créer un article Wiki')
+@section('title', __('app.admin.new_article'))
 
 @push('styles')
 <style>
@@ -44,14 +44,14 @@
 
     <div class="card">
         <div class="card-header bg-light">
-            <h1 class="h2 mb-0">Créer un nouvel article Wiki</h1>
+            <h1 class="h2 mb-0">{{ __('app.admin.new_article') }}</h1>
         </div>
         <div class="card-body">
             <form action="{{ route('admin.wiki.store') }}" method="POST">
                 @csrf
                 
                 <div class="mb-3">
-                    <label for="title" class="form-label">Titre</label>
+                    <label for="title" class="form-label">{{ __('app.common.title') }}</label>
                     <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title') }}" required>
                     @error('title')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -100,11 +100,11 @@
 
                 <div class="d-flex justify-content-between">
                     <a href="{{ route('admin.wiki.index') }}" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left me-1"></i> Retour
+                        <i class="fas fa-arrow-left me-1"></i> {{ __('app.common.back') }}
                     </a>
                     <div>
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save me-1"></i> Enregistrer
+                            <i class="fas fa-save me-1"></i> {{ __('app.common.save') }}
                         </button>
                     </div>
                 </div>

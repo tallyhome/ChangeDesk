@@ -9,7 +9,7 @@
     <h1>{{ $user->exists ? $user->name : 'Nouvel utilisateur' }}</h1>
     <div class="text-muted">{{ $user->exists ? $user->email : 'Création d\'un compte plateforme' }}</div>
   </div>
-  <a href="{{ route('superadmin.users.index') }}" class="btn btn-outline-secondary">Retour</a>
+  <a href="{{ route('superadmin.users.index') }}" class="btn btn-outline-secondary">{{ __('app.common.back') }}</a>
 </div>
 
 <div class="row g-4">
@@ -75,7 +75,7 @@
       </div>
 
       <div class="mt-4 d-flex gap-2">
-        <button class="btn btn-accent">Enregistrer</button>
+        <button class="btn btn-accent">{{ __('app.common.save') }}</button>
       </div>
     </form>
   </div>

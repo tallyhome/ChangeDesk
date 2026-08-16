@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Liens externes')
+@section('title', __('app.admin.external_links'))
 
 @section('content')
 <div class="container">
@@ -86,7 +86,7 @@
 
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save me-2"></i>Enregistrer les modifications
+                        <i class="fas fa-save me-2"></i>{{ __('app.common.update') }}
                     </button>
                 </div>
             </form>

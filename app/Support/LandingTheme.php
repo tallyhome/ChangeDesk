@@ -18,19 +18,19 @@ class LandingTheme
     {
         return [
             'origin' => [
-                'label' => 'Origin',
-                'description' => 'Crème & terracotta, carrousel produit — le thème historique.',
+                'label' => __('app.superadmin.origin'),
+                'description' => __('app.superadmin.origin_desc'),
                 'accent' => '#c2410c',
             ],
             'nebula' => [
-                'label' => 'Nebula',
-                'description' => 'Sombre tech, dégradés cyan/violet et cartes en verre.',
+                'label' => __('app.superadmin.nebula'),
+                'description' => __('app.superadmin.nebula_desc'),
                 'accent' => '#22d3ee',
             ],
             'studio' => [
-                'label' => 'Studio',
-                'description' => 'Clair éditorial, grandes typos et blocs encadrés.',
-                'accent' => '#111827',
+                'label' => __('app.superadmin.studio'),
+                'description' => __('app.superadmin.studio_desc'),
+                'accent' => '#e85d4c',
             ],
         ];
     }

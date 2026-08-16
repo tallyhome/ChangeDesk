@@ -1,8 +1,8 @@
 @extends('themes.editorial.layouts.app')
-@section('title', 'Historique des versions')
+@section('title', __('app.public.changelog_title'))
 @section('content')
-<p class="ed-kicker">Journal des versions</p>
-<h1 class="ed-title">Historique des versions</h1>
+<p class="ed-kicker">{{ __('app.nav.changelog') }}</p>
+<h1 class="ed-title">{{ __('app.public.changelog_title') }}</h1>
 <p class="ed-lead">Ce qui change, clairement — une chronologie lisible et ancrée.</p>
 
 <div class="ed-grid">
@@ -12,8 +12,8 @@
         <div class="ed-version-head">
           <h2>v{{ $version->version_number }}</h2>
           <div>
-            <span class="ed-badge">Publié</span>
-            <div class="ed-date" style="margin-top:.35rem;text-align:right">{{ $version->release_date?->format('d/m/Y') }}</div>
+            <span class="ed-badge">{{ __('app.common.published') }}</span>
+            <div class="ed-date" style="margin-top:.35rem;text-align:right">{{ \App\Support\Locale::formatDate($version->release_date) }}</div>
           </div>
         </div>
         @if($version->description)
@@ -22,25 +22,25 @@
         <div class="ed-prose">{!! $version->content !!}</div>
       </article>
     @empty
-      <div class="ed-card ed-muted">Aucune version publiée.</div>
+      <div class="ed-card ed-muted">{{ __('app.common.empty') }}</div>
     @endforelse
   </div>
 
-  <aside class="ed-side" aria-label="Versions disponibles">
-    <div class="ed-side-head">Versions disponibles</div>
+  <aside class="ed-side" aria-label="{{ __('app.common.available_versions') }}">
+    <div class="ed-side-head">{{ __('app.common.available_versions') }}</div>
     <ul class="ed-side-list">
       @forelse($versions as $version)
         <li>
           <a href="#version-{{ $version->id }}">
             <div>
               <strong>v{{ $version->version_number }}</strong>
-              <small>{{ $version->release_date?->format('d/m/Y') }}</small>
+              <small>{{ \App\Support\Locale::formatDate($version->release_date) }}</small>
             </div>
             <span class="chev" aria-hidden="true">›</span>
           </a>
         </li>
       @empty
-        <li style="padding:1rem" class="ed-muted">Aucune version</li>
+        <li style="padding:1rem" class="ed-muted">{{ __('app.common.empty') }}</li>
       @endforelse
     </ul>
   </aside>

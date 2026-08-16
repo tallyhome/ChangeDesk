@@ -49,7 +49,7 @@ class BugReportController extends Controller
         
         $bugReport->save();
         
-        return redirect()->route('admin.bug_reports')->with('success', 'Rapport de bug créé avec succès.');
+        return redirect()->route('admin.bug_reports')->with('success', __('app.flash.bug_created'));
     }
 
     public function edit(BugReport $bugReport)
@@ -71,14 +71,14 @@ class BugReportController extends Controller
         
         $bugReport->update($validated);
         
-        return redirect()->route('admin.bug_reports')->with('success', 'Rapport de bug mis à jour avec succès.');
+        return redirect()->route('admin.bug_reports')->with('success', __('app.flash.bug_updated'));
     }
 
     public function destroy(BugReport $bugReport)
     {
         $bugReport->delete();
         
-        return redirect()->route('admin.bug_reports')->with('success', 'Rapport de bug supprimé avec succès.');
+        return redirect()->route('admin.bug_reports')->with('success', __('app.flash.bug_deleted'));
     }
 
     public function toggleBugReportStatus()

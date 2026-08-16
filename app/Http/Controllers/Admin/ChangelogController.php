@@ -19,7 +19,7 @@ class ChangelogController extends Controller
         $version = Version::findOrFail($id);
         $version->delete();
         
-        return redirect()->route('admin.changelog')->with('success', 'Version supprimée avec succès');
+        return redirect()->route('admin.changelog')->with('success', __('app.flash.version_deleted'));
     }
     
     public function update(Request $request, $id)
@@ -32,7 +32,7 @@ class ChangelogController extends Controller
             'content' => $request->content
         ]);
         
-        return redirect()->route('admin.changelog')->with('success', 'Version mise à jour avec succès');
+        return redirect()->route('admin.changelog')->with('success', __('app.flash.version_updated'));
     }
 
     public function create()
@@ -49,7 +49,7 @@ class ChangelogController extends Controller
             'content' => $request->content
         ]);
         
-        return redirect()->route('admin.changelog')->with('success', 'Version créée avec succès');
+        return redirect()->route('admin.changelog')->with('success', __('app.flash.version_created'));
     }
     
     // Ajoutez cette méthode à votre contrôleur

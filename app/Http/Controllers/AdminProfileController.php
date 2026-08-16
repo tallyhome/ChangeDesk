@@ -53,6 +53,6 @@ class AdminProfileController extends Controller
         $user->save();
         
         return redirect()->route('admin.profile.edit')
-            ->with('success', 'Profil mis à jour avec succès');
+            ->with('success', __('app.flash.profile_saved'));
     }
 }

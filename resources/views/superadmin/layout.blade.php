@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -52,31 +52,32 @@ body{margin:0;font-family:Manrope,system-ui,sans-serif;background:var(--sa-bg);c
   <aside class="sa-side" id="saSide">
     <div class="d-flex justify-content-between align-items-center">
       <div class="sa-brand">Chan<span>Log</span> Admin</div>
-      <button type="button" class="sa-menu-btn d-md-none" id="saClose" aria-label="Fermer">✕</button>
+      <button type="button" class="sa-menu-btn d-md-none" id="saClose" aria-label="{{ __('app.nav.close') }}">✕</button>
     </div>
     <nav class="sa-nav">
-      <div class="section-label">Vue d'ensemble</div>
-      <a class="{{ request()->routeIs('superadmin.dashboard') ? 'active' : '' }}" href="{{ route('superadmin.dashboard') }}"><i class="fas fa-gauge-high"></i> Dashboard</a>
-      <div class="section-label">Plateforme</div>
-      <a class="{{ request()->routeIs('superadmin.tenants.*') ? 'active' : '' }}" href="{{ route('superadmin.tenants.index') }}"><i class="fas fa-building"></i> Tenants</a>
-      <a class="{{ request()->routeIs('superadmin.users.*') ? 'active' : '' }}" href="{{ route('superadmin.users.index') }}"><i class="fas fa-users"></i> Utilisateurs</a>
-      <a class="{{ request()->routeIs('superadmin.plans.*') ? 'active' : '' }}" href="{{ route('superadmin.plans.index') }}"><i class="fas fa-tags"></i> Plans</a>
-      <a class="{{ request()->routeIs('superadmin.billing.*') ? 'active' : '' }}" href="{{ route('superadmin.billing.index') }}"><i class="fas fa-credit-card"></i> Facturation</a>
-      <a class="{{ request()->routeIs('superadmin.landing.*') ? 'active' : '' }}" href="{{ route('superadmin.landing.index') }}"><i class="fas fa-palette"></i> Site vitrine</a>
-      <div class="section-label">Système</div>
-      <a class="{{ request()->routeIs('superadmin.audit.*') ? 'active' : '' }}" href="{{ route('superadmin.audit.index') }}"><i class="fas fa-clipboard-list"></i> Audit</a>
-      <a class="{{ request()->routeIs('superadmin.updates.*') ? 'active' : '' }}" href="{{ route('superadmin.updates.index') }}"><i class="fas fa-cloud-arrow-down"></i> Mises à jour</a>
-      <a class="{{ request()->routeIs('superadmin.backups.*') ? 'active' : '' }}" href="{{ route('superadmin.backups.index') }}"><i class="fas fa-database"></i> Backups</a>
+      <div class="section-label">{{ __('app.superadmin.overview') }}</div>
+      <a class="{{ request()->routeIs('superadmin.dashboard') ? 'active' : '' }}" href="{{ route('superadmin.dashboard') }}"><i class="fas fa-gauge-high"></i> {{ __('app.superadmin.dashboard') }}</a>
+      <div class="section-label">{{ __('app.superadmin.platform') }}</div>
+      <a class="{{ request()->routeIs('superadmin.tenants.*') ? 'active' : '' }}" href="{{ route('superadmin.tenants.index') }}"><i class="fas fa-building"></i> {{ __('app.superadmin.tenants') }}</a>
+      <a class="{{ request()->routeIs('superadmin.users.*') ? 'active' : '' }}" href="{{ route('superadmin.users.index') }}"><i class="fas fa-users"></i> {{ __('app.superadmin.users') }}</a>
+      <a class="{{ request()->routeIs('superadmin.plans.*') ? 'active' : '' }}" href="{{ route('superadmin.plans.index') }}"><i class="fas fa-tags"></i> {{ __('app.superadmin.plans') }}</a>
+      <a class="{{ request()->routeIs('superadmin.billing.*') ? 'active' : '' }}" href="{{ route('superadmin.billing.index') }}"><i class="fas fa-credit-card"></i> {{ __('app.superadmin.billing') }}</a>
+      <a class="{{ request()->routeIs('superadmin.landing.*') ? 'active' : '' }}" href="{{ route('superadmin.landing.index') }}"><i class="fas fa-palette"></i> {{ __('app.superadmin.landing') }}</a>
+      <div class="section-label">{{ __('app.superadmin.system') }}</div>
+      <a class="{{ request()->routeIs('superadmin.audit.*') ? 'active' : '' }}" href="{{ route('superadmin.audit.index') }}"><i class="fas fa-clipboard-list"></i> {{ __('app.superadmin.audit') }}</a>
+      <a class="{{ request()->routeIs('superadmin.updates.*') ? 'active' : '' }}" href="{{ route('superadmin.updates.index') }}"><i class="fas fa-cloud-arrow-down"></i> {{ __('app.superadmin.updates') }}</a>
+      <a class="{{ request()->routeIs('superadmin.backups.*') ? 'active' : '' }}" href="{{ route('superadmin.backups.index') }}"><i class="fas fa-database"></i> {{ __('app.superadmin.backups') }}</a>
     </nav>
     <div class="sa-side-foot">
-      <form method="POST" action="{{ route('logout') }}">@csrf
-        <button class="btn btn-outline-light btn-sm w-100">Déconnexion</button>
+      @include('partials.lang-switcher', ['variant' => 'on-dark'])
+      <form method="POST" action="{{ route('logout') }}" class="mt-2">@csrf
+        <button class="btn btn-outline-light btn-sm w-100">{{ __('app.superadmin.logout') }}</button>
       </form>
     </div>
   </aside>
   <main class="sa-main">
     <div class="mb-3 d-lg-none">
-      <button type="button" class="btn btn-dark btn-sm" id="saOpen"><i class="fas fa-bars me-1"></i> Menu</button>
+      <button type="button" class="btn btn-dark btn-sm" id="saOpen"><i class="fas fa-bars me-1"></i> {{ __('app.superadmin.menu') }}</button>
     </div>
     @yield('content')
   </main>

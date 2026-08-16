@@ -1,6 +1,6 @@
 @extends(\App\Support\ThemeView::layout())
 
-@section('title', 'Accueil')
+@section('title', __('app.nav.home'))
 
 @section('content')
 <div class="container">

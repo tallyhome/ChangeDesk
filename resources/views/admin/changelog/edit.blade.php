@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Modifier la version')
+@section('title', __('app.common.edit'))
 
 @section('content')
 <div class="container">
@@ -8,10 +8,10 @@
         <div class="col-md-8">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h1>Modifier la version</h1>
-                <form action="{{ route('admin.changelog.destroy', $version->id) }}" method="POST" data-confirm="Êtes-vous sûr de vouloir supprimer cette version ?">
+                <form action="{{ route('admin.changelog.destroy', $version->id) }}" method="POST" data-confirm="{{ __('app.admin.confirm_delete') }}">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                    <button type="submit" class="btn btn-danger">{{ __('app.common.delete') }}</button>
                 </form>
             </div>
             
@@ -36,7 +36,7 @@
                     <textarea class="form-control" id="content" name="content" rows="10" required>{{ $version->content }}</textarea>
                 </div>
                 
-                <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                <button type="submit" class="btn btn-primary">{{ __('app.common.update') }}</button>
             </form>
         </div>
         

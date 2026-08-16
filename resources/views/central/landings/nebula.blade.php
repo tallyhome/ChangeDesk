@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ChanLog — Changelog multi-tenant</title>
 @include('partials.favicon')
-@php $siteVersion = config('updates.number', config('version.number', '2.8.5')); @endphp
+@php $siteVersion = config('updates.number', config('version.number', '2.8.6')); @endphp
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -175,30 +175,31 @@ footer b{color:var(--ink)}
     <img src="{{ asset('Promo/05-Branding/chanlog-mark.svg') }}" alt="">
     ChanLog
   </a>
-  <button class="nav-burger" id="burger" aria-label="Menu">☰</button>
-  <nav class="nav-links" id="navLinks" aria-label="Navigation">
-    <a href="#modules">Modules</a>
-    <a href="#screens">Produit</a>
-    <a href="#plans">Tarifs</a>
-    <a href="#themes">Thèmes</a>
-    <a href="{{ route('login') }}">Connexion</a>
-    <a class="btn btn-primary" href="{{ route('register') }}">Créer mon projet</a>
+  <button class="nav-burger" id="burger" aria-label="{{ __('app.nav.menu') }}">☰</button>
+  <nav class="nav-links" id="navLinks" aria-label="{{ __('app.nav.menu') }}">
+    <a href="#modules">{{ __('app.nav.modules') }}</a>
+    <a href="#screens">{{ __('app.nav.product') }}</a>
+    <a href="#plans">{{ __('app.nav.pricing') }}</a>
+    <a href="#themes">{{ __('app.nav.themes') }}</a>
+    <a href="{{ route('login') }}">{{ __('app.nav.login') }}</a>
+    <a class="btn btn-primary" href="{{ route('register') }}">{{ __('app.nav.register') }}</a>
+    @include('partials.lang-switcher', ['variant' => 'on-dark'])
   </nav>
 </header>
 
 <section class="hero">
   <div>
-    <span class="pill"><i></i> Changelog SaaS multi-tenant</span>
-    <h1>Publiez vos releases<br><span>comme une équipe produit.</span></h1>
-    <p class="lead">Changelog, roadmap, bugs et wiki dans un espace public à votre marque, sur <strong>slug.{{ config('tenancy.central_domain') }}</strong> ou votre propre domaine.</p>
+    <span class="pill"><i></i> {{ __('app.landing.kicker_multi') }}</span>
+    <h1>{{ __('app.landing.nebula_title_1') }}<br><span>{{ __('app.landing.nebula_title_2') }}</span></h1>
+    <p class="lead">{!! __('app.landing.nebula_lead', ['slug' => 'slug.'.config('tenancy.central_domain')]) !!}</p>
     <div class="hero-cta">
-      <a class="btn btn-primary" href="{{ route('register') }}">Essayer gratuitement</a>
-      <a class="btn btn-line" href="#screens">Voir l’application</a>
+      <a class="btn btn-primary" href="{{ route('register') }}">{{ __('app.landing.try_free') }}</a>
+      <a class="btn btn-line" href="#screens">{{ __('app.landing.see_application') }}</a>
     </div>
     <div class="hero-note">
-      <span><b>✓</b> Installation guidée</span>
-      <span><b>✓</b> Stripe &amp; PayPal</span>
-      <span><b>✓</b> Domaine personnalisé</span>
+      <span><b>✓</b> {{ __('app.landing.install_guided') }}</span>
+      <span><b>✓</b> {{ __('app.landing.stripe_paypal') }}</span>
+      <span><b>✓</b> {{ __('app.landing.custom_domain') }}</span>
     </div>
   </div>
   <div class="window reveal in">
@@ -213,10 +214,10 @@ footer b{color:var(--ink)}
       <img src="{{ asset('Promo/03-Marketplace/chanlog-marketplace-04-wiki.png') }}" alt="Wiki" data-url="/wiki" loading="lazy">
     </div>
     <div class="slide-tabs" id="slideTabs">
-      <button class="on" type="button">Dashboard</button>
-      <button type="button">Roadmap</button>
-      <button type="button">Bugs</button>
-      <button type="button">Wiki</button>
+      <button class="on" type="button">{{ __('app.landing.dashboard') }}</button>
+      <button type="button">{{ __('app.landing.mod_roadmap_only') }}</button>
+      <button type="button">{{ __('app.landing.mod_bugs') }}</button>
+      <button type="button">{{ __('app.nav.wiki') }}</button>
     </div>
   </div>
 </section>
@@ -230,90 +231,90 @@ footer b{color:var(--ink)}
 
 <section class="section" id="modules">
   <div class="section-head reveal">
-    <span class="tag">Modules</span>
-    <h2>Tout ce que vos utilisateurs doivent voir</h2>
-    <p>Un espace public soigné par projet, sans multiplier les installations ni les outils.</p>
+    <span class="tag">{{ __('app.nav.modules') }}</span>
+    <h2>{{ __('app.landing.modules_title') }}</h2>
+    <p>{{ __('app.landing.modules_lead') }}</p>
   </div>
   <div class="cards">
-    <article class="card reveal"><div class="ico">01</div><h3>Changelog</h3><p>Versions datées, contenu riche, images de release et flux public prêt à partager.</p></article>
-    <article class="card reveal d1"><div class="ico">02</div><h3>Roadmap</h3><p>Fonctionnalités à venir, statuts et progression — la transparence produit sans effort.</p></article>
-    <article class="card reveal d2"><div class="ico">03</div><h3>Bugs</h3><p>Formulaire de signalement public, sévérité et suivi visible côté admin.</p></article>
-    <article class="card reveal d3"><div class="ico">04</div><h3>Wiki &amp; domaine</h3><p>Documentation par tenant, sous-domaine automatique ou domaine personnalisé vérifié.</p></article>
+    <article class="card reveal"><div class="ico">01</div><h3>{{ __('app.landing.mod_changelog') }}</h3><p>{{ __('app.landing.mod_changelog_text') }}</p></article>
+    <article class="card reveal d1"><div class="ico">02</div><h3>{{ __('app.landing.mod_roadmap_only') }}</h3><p>{{ __('app.landing.mod_roadmap_only_text') }}</p></article>
+    <article class="card reveal d2"><div class="ico">03</div><h3>{{ __('app.landing.mod_bugs') }}</h3><p>{{ __('app.landing.mod_bugs_text') }}</p></article>
+    <article class="card reveal d3"><div class="ico">04</div><h3>{{ __('app.landing.mod_wiki_domain') }}</h3><p>{{ __('app.landing.mod_wiki_domain_text') }}</p></article>
   </div>
 </section>
 
 <section class="section" style="padding-top:0">
   <div class="stats reveal">
-    <div class="stat"><b>4</b><span>modules publics</span></div>
-    <div class="stat"><b>4</b><span>thèmes visiteurs</span></div>
-    <div class="stat"><b>∞</b><span>projets multi-tenant</span></div>
-    <div class="stat"><b>2</b><span>passerelles de paiement</span></div>
+    <div class="stat"><b>4</b><span>{{ __('app.landing.stat_modules') }}</span></div>
+    <div class="stat"><b>4</b><span>{{ __('app.landing.stat_themes') }}</span></div>
+    <div class="stat"><b>∞</b><span>{{ __('app.landing.stat_tenants') }}</span></div>
+    <div class="stat"><b>2</b><span>{{ __('app.landing.stat_payments') }}</span></div>
   </div>
 </section>
 
 <section class="section" id="screens" style="padding-top:0">
   <div class="section-head reveal">
-    <span class="tag">Produit</span>
-    <h2>Voyez le produit en situation</h2>
-    <p>Changelog, roadmap et bugs — l’interface telle que vos utilisateurs la verront.</p>
+    <span class="tag">{{ __('app.nav.product') }}</span>
+    <h2>{{ __('app.landing.shots_title') }}</h2>
+    <p>{{ __('app.landing.shots_lead') }}</p>
   </div>
   <div class="shots">
     <figure class="shot full reveal" style="margin:0">
       <img src="{{ asset('Promo/03-Marketplace/chanlog-marketplace-01-cover.png') }}" alt="Dashboard ChanLog" loading="lazy">
-      <figcaption><b>Dashboard</b><span>Pilotage des versions</span></figcaption>
+      <figcaption><b>{{ __('app.landing.dashboard') }}</b><span>{{ __('app.landing.dashboard_cap') }}</span></figcaption>
     </figure>
     <figure class="shot reveal d1" style="margin:0">
       <img src="{{ asset('Promo/03-Marketplace/chanlog-marketplace-02-roadmap.png') }}" alt="Roadmap publique" loading="lazy">
-      <figcaption><b>Roadmap</b><span>Fonctionnalités à venir</span></figcaption>
+      <figcaption><b>{{ __('app.landing.mod_roadmap_only') }}</b><span>{{ __('app.landing.roadmap_cap') }}</span></figcaption>
     </figure>
     <figure class="shot reveal d2" style="margin:0">
       <img src="{{ asset('Promo/03-Marketplace/chanlog-marketplace-03-bugs.png') }}" alt="Suivi des bugs" loading="lazy">
-      <figcaption><b>Bugs</b><span>Signalements publics</span></figcaption>
+      <figcaption><b>{{ __('app.landing.mod_bugs') }}</b><span>{{ __('app.landing.bugs_cap') }}</span></figcaption>
     </figure>
   </div>
 </section>
 
 <section class="section" id="plans">
   <div class="section-head reveal">
-    <span class="tag">Tarifs</span>
-    <h2>Des plans simples</h2>
-    <p>Stripe ou PayPal. Changement de plan à tout moment depuis l’espace client.</p>
+    <span class="tag">{{ __('app.nav.pricing') }}</span>
+    <h2>{{ __('app.landing.plans_title') }}</h2>
+    <p>{{ __('app.landing.plans_lead_long') }}</p>
   </div>
   <div class="plans">
     @forelse($plans as $i => $plan)
       <article class="plan reveal d{{ min($i,3) }} {{ $plan->slug === 'pro' ? 'featured' : '' }}">
-        @if($plan->slug === 'pro')<span class="badge">Populaire</span>@endif
+        @if($plan->slug === 'pro')<span class="badge">{{ __('app.landing.popular') }}</span>@endif
         <h3>{{ $plan->name }}</h3>
         <div class="price">{{ $plan->formattedPrice() }}</div>
         <ul>
-          @if($plan->features['changelog'] ?? false)<li>Changelog</li>@endif
-          @if($plan->features['todolist'] ?? false)<li>Roadmap / Todo</li>@endif
-          @if($plan->features['bugs'] ?? false)<li>Bugs</li>@endif
-          @if($plan->features['wiki'] ?? false)<li>Wiki</li>@endif
-          @if($plan->features['stats'] ?? false)<li>Statistiques</li>@endif
-          @if($plan->features['custom_domain'] ?? false)<li>Domaine personnalisé</li>@endif
-          @if(!empty($plan->features['themes']))<li>Thèmes : {{ implode(', ', $plan->features['themes']) }}</li>@endif
+          @if($plan->features['changelog'] ?? false)<li>{{ __('app.landing.feat_changelog') }}</li>@endif
+          @if($plan->features['todolist'] ?? false)<li>{{ __('app.landing.feat_todo') }}</li>@endif
+          @if($plan->features['bugs'] ?? false)<li>{{ __('app.landing.feat_bugs') }}</li>@endif
+          @if($plan->features['wiki'] ?? false)<li>{{ __('app.landing.feat_wiki') }}</li>@endif
+          @if($plan->features['stats'] ?? false)<li>{{ __('app.landing.feat_stats') }}</li>@endif
+          @if($plan->features['custom_domain'] ?? false)<li>{{ __('app.landing.feat_domain') }}</li>@endif
+          @if(!empty($plan->features['themes']))<li>{{ __('app.landing.feat_themes', ['list' => implode(', ', $plan->features['themes'])]) }}</li>@endif
         </ul>
-        <a class="btn {{ $plan->slug === 'pro' ? 'btn-primary' : 'btn-line' }}" href="{{ route('register') }}">Choisir {{ $plan->name }}</a>
+        <a class="btn {{ $plan->slug === 'pro' ? 'btn-primary' : 'btn-line' }}" href="{{ route('register') }}">{{ __('app.landing.choose_plan', ['name' => $plan->name]) }}</a>
       </article>
     @empty
-      <p style="color:var(--muted)">Les plans seront affichés après installation.</p>
+      <p style="color:var(--muted)">{{ __('app.landing.plans_empty') }}</p>
     @endforelse
   </div>
 </section>
 
 <section class="section" id="themes">
   <div class="section-head reveal">
-    <span class="tag">Thèmes</span>
-    <h2>4 thèmes publics réels</h2>
-    <p>Aperçus live — Accueil, Changelog, Roadmap, Bugs et Wiki.</p>
+    <span class="tag">{{ __('app.nav.themes') }}</span>
+    <h2>{{ __('app.landing.themes_title') }}</h2>
+    <p>{{ __('app.landing.themes_lead') }}</p>
   </div>
   <div class="themes">
     @foreach([
-      ['classic','Classic','Bootstrap clair'],
-      ['midnight','Midnight','Sombre teal'],
-      ['editorial','Editorial','Chronologique'],
-      ['aurora','Aurora','Glass / gradient'],
+      ['classic', __('app.landing.classic'), __('app.landing.classic_desc')],
+      ['midnight', __('app.landing.midnight'), __('app.landing.midnight_desc')],
+      ['editorial', __('app.landing.editorial'), __('app.landing.editorial_desc')],
+      ['aurora', __('app.landing.aurora'), __('app.landing.aurora_desc')],
     ] as $i => [$slug,$label,$desc])
     <article class="theme-frame reveal d{{ min($i,3) }}">
       <div class="theme-label"><strong>{{ $label }}</strong><span>{{ $desc }}</span></div>
@@ -326,14 +327,14 @@ footer b{color:var(--ink)}
 </section>
 
 <section class="cta reveal">
-  <h2>Prêt à publier votre changelog ?</h2>
-  <p>Créez votre projet en quelques minutes, choisissez un thème et publiez votre première version.</p>
-  <a class="btn btn-primary" href="{{ route('register') }}">Créer mon projet</a>
+  <h2>{{ __('app.landing.cta_title') }}</h2>
+  <p>{{ __('app.landing.cta_lead') }}</p>
+  <a class="btn btn-primary" href="{{ route('register') }}">{{ __('app.landing.create_project') }}</a>
 </section>
 
 <footer>
   <span><b>ChanLog</b> v{{ $siteVersion }}</span>
-  <span>Multi-tenant · Stripe &amp; PayPal</span>
+  <span>{{ __('app.footer.multi_tenant') }}</span>
 </footer>
 </div>
 

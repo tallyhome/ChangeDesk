@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Ajouter un rapport de bug')
+@section('title', __('app.admin.new_bug'))
 
 @section('content')
 <div class="container">
@@ -9,7 +9,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1>Ajouter un rapport de bug</h1>
                 <a href="{{ route('admin.bug_reports') }}" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> Retour à la liste
+                    <i class="fas fa-arrow-left"></i> {{ __('app.common.back') }}
                 </a>
             </div>
 
@@ -19,7 +19,7 @@
                         @csrf
                         
                         <div class="mb-3">
-                            <label for="title" class="form-label">Titre</label>
+                            <label for="title" class="form-label">{{ __('app.common.title') }}</label>
                             <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title') }}" required>
                             @error('title')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -27,7 +27,7 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label for="description" class="form-label">Description</label>
+                            <label for="description" class="form-label">{{ __('app.common.description') }}</label>
                             <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="5" required>{{ old('description') }}</textarea>
                             @error('description')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -48,7 +48,7 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label for="status" class="form-label">Statut</label>
+                            <label for="status" class="form-label">{{ __('app.common.status') }}</label>
                             <select class="form-select @error('status') is-invalid @enderror" id="status" name="status" required>
                                 <option value="open" {{ old('status') == 'open' ? 'selected' : '' }}>Ouvert</option>
                                 <option value="in_progress" {{ old('status') == 'in_progress' ? 'selected' : '' }}>En cours</option>
@@ -95,7 +95,7 @@
                         
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save"></i> Enregistrer
+                                <i class="fas fa-save"></i> {{ __('app.common.save') }}
                             </button>
                         </div>
                     </form>

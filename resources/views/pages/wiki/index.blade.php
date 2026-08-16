@@ -9,13 +9,13 @@
         <div class="col-md-3">
             <div class="card sticky-top" style="top: 20px;">
                 <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Catégories</h5>
+                    <h5 class="mb-0">{{ __('app.common.categories') }}</h5>
                 </div>
                 <div class="card-body" style="max-height: 600px; overflow-y: auto;">
                     <ul class="nav flex-column wiki-nav">
                         <li class="nav-item">
                             <a href="{{ route('wiki') }}" class="nav-link {{ request()->routeIs('wiki') && !request()->route('slug') ? 'active' : '' }}">
-                                <i class="fas fa-home me-2"></i> Accueil du {{ $wikiTitle }}
+                                <i class="fas fa-home me-2"></i> {{ __('app.common.wiki_home') }}
                             </a>
                         </li>
                         @foreach($categories as $category)
@@ -43,7 +43,7 @@
                 </div>
             </div>
             
-            <h2 class="h3 mb-3">Articles récents</h2>
+            <h2 class="h3 mb-3">{{ __('app.common.recent_articles') }}</h2>
             
             @if($recentArticles->count() > 0)
                 @foreach($recentArticles as $article)
@@ -56,7 +56,7 @@
                                 @if($article->category)
                                     <span class="badge bg-secondary">{{ $article->category->name }}</span>
                                 @endif
-                                <span><i class="fas fa-calendar-alt ms-2 me-1"></i> {{ $article->updated_at->format('d/m/Y') }}</span>
+                                <span><i class="fas fa-calendar-alt ms-2 me-1"></i> {{ \App\Support\Locale::formatDate($article->updated_at) }}</span>
                             </p>
                             <p class="mb-0">{{ Str::limit(strip_tags($article->content), 150) }}</p>
                         </div>
@@ -64,7 +64,7 @@
                 @endforeach
             @else
                 <div class="alert alert-info">
-                    Aucun article n'a encore été publié.
+                    {{ __('app.common.empty') }}
                 </div>
             @endif
         </div>
@@ -73,12 +73,12 @@
         <div class="col-md-3">
             <div class="card sticky-top" style="top: 20px;">
                 <div class="card-header bg-secondary text-white">
-                    <h5 class="mb-0">Recherche</h5>
+                    <h5 class="mb-0">{{ __('app.common.search') }}</h5>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('wiki.search') }}" method="GET">
                         <div class="input-group">
-                            <input type="text" class="form-control" name="q" placeholder="Rechercher..." required>
+                            <input type="text" class="form-control" name="q" placeholder="{{ __('app.common.search') }}" required>
                             <button class="btn btn-primary" type="submit">
                                 <i class="fas fa-search"></i>
                             </button>
@@ -89,7 +89,7 @@
             
             <div class="card mt-4">
                 <div class="card-header bg-secondary text-white">
-                    <h5 class="mb-0">Toutes les catégories</h5>
+                    <h5 class="mb-0">{{ __('app.common.categories') }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="list-group list-group-flush">

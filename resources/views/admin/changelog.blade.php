@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Admin - Changelog')
+@section('title', __('app.admin.changelog'))
 
 @include('partials.tinymce')
 
@@ -11,8 +11,8 @@
         <div class="col-md-8 editor-container">
             <div class="card fixed-card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <span>{{ isset($version) ? 'Éditer la version '.$version->version_number : 'Nouvelle version' }}</span>
-                    <a href="{{ route('admin.changelog.create') }}" class="btn btn-primary btn-sm">Nouvelle version</a>
+                    <span>{{ isset($version) ? __('app.common.edit').' '.$version->version_number : __('app.admin.new_version') }}</span>
+                    <a href="{{ route('admin.changelog.create') }}" class="btn btn-primary btn-sm">{{ __('app.admin.new_version') }}</a>
                 </div>
                 <div class="card-body scrollable">
                     <form action="{{ isset($version) ? route('admin.changelog.update', $version->id) : route('admin.changelog.store') }}" method="POST" enctype="multipart/form-data">
@@ -39,14 +39,14 @@
 
                         <div class="mb-3 d-flex justify-content-between">
                             <div>
-                                <button type="submit" class="btn btn-primary">Sauvegarder</button>
-                                <a href="{{ route('admin.changelog') }}" class="btn btn-secondary">Retour</a>
+                                <button type="submit" class="btn btn-primary">{{ __('app.common.save') }}</button>
+                                <a href="{{ route('admin.changelog') }}" class="btn btn-secondary">{{ __('app.common.back') }}</a>
                             </div>
                             @if(isset($version))
-                            <form action="{{ route('admin.changelog.destroy', $version->id) }}" method="POST" class="d-inline" data-confirm="Êtes-vous sûr de vouloir supprimer cette version?">
+                            <form action="{{ route('admin.changelog.destroy', $version->id) }}" method="POST" class="d-inline" data-confirm="{{ __('app.admin.confirm_delete') }}">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Supprimer</button>
+                                <button type="submit" class="btn btn-danger">{{ __('app.common.delete') }}</button>
                             </form>
                             @endif
                         </div>
@@ -66,7 +66,7 @@
                                 <a href="{{ route('admin.changelog.edit', $v->id) }}" class="nav-link">
                                     {{ $v->version_number }} ({{ $v->release_date->format('d/m/Y') }})
                                 </a>
-                                <form action="{{ route('admin.changelog.destroy', $v->id) }}" method="POST" class="d-inline" data-confirm="Êtes-vous sûr de vouloir supprimer cette version?">
+                                <form action="{{ route('admin.changelog.destroy', $v->id) }}" method="POST" class="d-inline" data-confirm="{{ __('app.admin.confirm_delete') }}">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger">

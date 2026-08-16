@@ -1,17 +1,17 @@
 @extends(\App\Support\ThemeView::layout())
 
-@section('title', 'Historique des versions')
+@section('title', __('app.public.changelog_title'))
 
 @section('content')
 <div class="container py-5">
     <div class="row">
         <div class="col-md-8">
-            <h1 class="mb-4">Historique des versions</h1>
+            <h1 class="mb-4">{{ __('app.public.changelog_title') }}</h1>
             
             @foreach($versions as $version)
                 <div class="card mb-4">
                     <div class="card-header bg-light">
-                        <h2 class="h4 mb-0">v{{ $version->version_number }} <small class="text-muted">({{ $version->release_date->format('d/m/Y') }})</small></h2>
+                        <h2 class="h4 mb-0">v{{ $version->version_number }} <small class="text-muted">({{ \App\Support\Locale::formatDate($version->release_date) }})</small></h2>
                     </div>
                     <div class="card-body">
                         {!! $version->content !!}
@@ -23,7 +23,7 @@
         <div class="col-md-4">
             <div class="card sticky-top" style="top: 20px;">
                 <div class="card-header">
-                    <h5>Versions disponibles</h5>
+                    <h5>{{ __('app.common.available_versions') }}</h5>
                 </div>
                 <div class="card-body" style="max-height: 600px; overflow-y: auto;">
                     <ul class="list-group">
@@ -33,7 +33,7 @@
                                     <div>
                                         <strong>v{{ $version->version_number }}</strong>
                                         <br>
-                                        <small>{{ $version->release_date->format('d/m/Y') }}</small>
+                                        <small>{{ \App\Support\Locale::formatDate($version->release_date) }}</small>
                                     </div>
                                     <i class="fas fa-chevron-right"></i>
                                 </a>

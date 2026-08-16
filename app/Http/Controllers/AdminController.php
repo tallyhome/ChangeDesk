@@ -22,22 +22,22 @@ class AdminController extends Controller
 
         $checklist = [
             [
-                'label' => 'Créer une première version changelog',
+                'label' => __('app.admin.check_changelog'),
                 'done' => Version::count() > 0,
                 'url' => route('admin.changelog.create'),
             ],
             [
-                'label' => 'Configurer le domaine (slug ou custom)',
+                'label' => __('app.admin.check_domain'),
                 'done' => $domainReady,
                 'url' => route('admin.domain.edit'),
             ],
             [
-                'label' => 'Choisir un thème public',
+                'label' => __('app.admin.check_theme'),
                 'done' => filled($tenant->visual_theme),
                 'url' => route('admin.appearance.edit'),
             ],
             [
-                'label' => 'Choisir / upgrader le plan',
+                'label' => __('app.admin.check_plan'),
                 'done' => (bool) $tenant->plan_id,
                 'url' => route('admin.billing.index'),
             ],
@@ -65,7 +65,7 @@ class AdminController extends Controller
         $page = Page::findOrFail($id);
         $page->update($request->all());
 
-        return redirect()->route('admin.pages.index')->with('success', 'Page mise à jour avec succès');
+        return redirect()->route('admin.pages.index')->with('success', __('app.flash.page_saved'));
     }
 
     public function changelog()

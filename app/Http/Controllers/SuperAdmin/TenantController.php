@@ -80,7 +80,7 @@ class TenantController extends Controller
 
         AuditLog::record('tenant.updated', $tenant, $validated);
 
-        return redirect()->route('superadmin.tenants.show', $tenant)->with('success', 'Tenant mis à jour.');
+        return redirect()->route('superadmin.tenants.show', $tenant)->with('success', __('app.flash.tenant_updated'));
     }
 
     public function toggle(Tenant $tenant)
@@ -88,7 +88,7 @@ class TenantController extends Controller
         $tenant->update(['is_active' => ! $tenant->is_active]);
         AuditLog::record('tenant.toggle', $tenant, ['is_active' => $tenant->is_active]);
 
-        return back()->with('success', $tenant->is_active ? 'Tenant activé.' : 'Tenant désactivé.');
+        return back()->with('success', $tenant->is_active ? __('app.flash.tenant_enabled') : __('app.flash.tenant_disabled'));
     }
 
     public function suspend(Request $request, Tenant $tenant)
@@ -104,7 +104,7 @@ class TenantController extends Controller
 
         AuditLog::record('tenant.suspended', $tenant, $data);
 
-        return back()->with('success', 'Tenant suspendu.');
+        return back()->with('success', __('app.flash.tenant_suspended'));
     }
 
     public function unsuspend(Tenant $tenant)
@@ -116,7 +116,7 @@ class TenantController extends Controller
 
         AuditLog::record('tenant.unsuspended', $tenant);
 
-        return back()->with('success', 'Suspension levée.');
+        return back()->with('success', __('app.flash.tenant_unsuspended'));
     }
 
     public function impersonate(Tenant $tenant)
@@ -130,6 +130,6 @@ class TenantController extends Controller
 
         AuditLog::record('impersonation.start', $tenant, ['client_id' => $client->id]);
 
-        return redirect()->route('admin.dashboard')->with('success', 'Vous êtes connecté en tant que '.$client->email);
+        return redirect()->route('admin.dashboard')->with('success', __('app.flash.impersonating', ['email' => $client->email]));
     }
 }

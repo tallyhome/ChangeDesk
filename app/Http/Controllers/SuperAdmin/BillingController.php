@@ -36,6 +36,6 @@ class BillingController extends Controller
         app(StripeBilling::class)->activate($tenant, $plan, 'manual', 'manual-'.Str::uuid());
         AuditLog::record('billing.manual_assign', $tenant, $data);
 
-        return back()->with('success', "Plan {$plan->name} assigné à {$tenant->name}.");
+        return back()->with('success', __('app.flash.plan_assigned', ['plan' => $plan->name, 'tenant' => $tenant->name]));
     }
 }

@@ -46,7 +46,7 @@ class PlanController extends Controller
         $plan = $this->savePlan(new Plan(), $request);
         AuditLog::record('plan.created', null, ['plan_id' => $plan->id]);
 
-        return redirect()->route('superadmin.plans.index')->with('success', 'Plan créé.');
+        return redirect()->route('superadmin.plans.index')->with('success', __('app.flash.plan_created'));
     }
 
     public function edit(Plan $plan)
@@ -59,19 +59,19 @@ class PlanController extends Controller
         $this->savePlan($plan, $request);
         AuditLog::record('plan.updated', null, ['plan_id' => $plan->id]);
 
-        return redirect()->route('superadmin.plans.index')->with('success', 'Plan mis à jour.');
+        return redirect()->route('superadmin.plans.index')->with('success', __('app.flash.plan_updated'));
     }
 
     public function destroy(Plan $plan)
     {
         if ($plan->subscriptions()->whereIn('status', ['active', 'trialing'])->exists()) {
-            return back()->with('error', 'Impossible de supprimer un plan avec des abonnements actifs.');
+            return back()->with('error', __('app.flash.plan_has_subs'));
         }
 
         $plan->delete();
         AuditLog::record('plan.deleted', null, ['slug' => $plan->slug]);
 
-        return redirect()->route('superadmin.plans.index')->with('success', 'Plan supprimé.');
+        return redirect()->route('superadmin.plans.index')->with('success', __('app.flash.plan_deleted'));
     }
 
     protected function savePlan(Plan $plan, Request $request): Plan

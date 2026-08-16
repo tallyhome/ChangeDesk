@@ -206,11 +206,11 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <p class="mb-0">&copy; {{ date('Y') }} {{ $currentTenant->name ?? config('app.name') }}. Tous droits réservés.</p>
+                    <p class="mb-0">&copy; {{ date('Y') }} {{ $currentTenant->name ?? config('app.name') }}. {{ __('app.footer.rights') }}</p>
                 </div>
                 <div class="col-md-6 text-md-end">
-                    <a href="{{ route('terms') }}" class="text-decoration-none me-3">Conditions d'utilisation</a>
-                    <a href="{{ route('privacy') }}" class="text-decoration-none me-3">Politique de confidentialité</a>
+                    <a href="{{ route('terms') }}" class="text-decoration-none me-3">{{ __('app.footer.terms_long') }}</a>
+                    <a href="{{ route('privacy') }}" class="text-decoration-none me-3">{{ __('app.footer.privacy_long') }}</a>
                     @php
                         $playStoreEnabled = \App\Models\Setting::getValue('play_store_enabled', '0');
                         $appStoreEnabled = \App\Models\Setting::getValue('app_store_enabled', '0');

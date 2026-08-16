@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 
-@section('title', 'Paramètres du Wiki')
+@section('title', __('app.admin.settings'))
 
 @section('content')
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Paramètres du Wiki</h1>
+        <h1>{{ __('app.admin.settings') }}</h1>
         <a href="{{ route('admin.wiki.index') }}" class="btn btn-outline-secondary">
-            <i class="fas fa-arrow-left me-2"></i>Retour aux articles
+            <i class="fas fa-arrow-left me-2"></i>{{ __('app.common.back') }}
         </a>
     </div>
 
@@ -52,7 +52,7 @@
 
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save me-2"></i>Enregistrer les modifications
+                        <i class="fas fa-save me-2"></i>{{ __('app.common.update') }}
                     </button>
                 </div>
             </form>

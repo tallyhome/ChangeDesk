@@ -35,6 +35,6 @@ class AppearanceController extends Controller
         $tenant->update(['visual_theme' => $data['visual_theme']]);
         AuditLog::record('tenant.theme_updated', $tenant, $data);
 
-        return back()->with('success', 'Thème public mis à jour.');
+        return back()->with('success', __('app.flash.theme_saved'));
     }
 }

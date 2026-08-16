@@ -1,5 +1,5 @@
 @extends('superadmin.layout')
-@section('title', 'Mises à jour')
+@section('title', __('app.superadmin.updates'))
 @section('content')
 <div class="sa-top">
   <div>

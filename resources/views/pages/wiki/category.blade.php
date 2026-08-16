@@ -9,13 +9,13 @@
         <div class="col-md-3">
             <div class="card sticky-top" style="top: 20px;">
                 <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Catégories</h5>
+                    <h5 class="mb-0">{{ __('app.common.categories') }}</h5>
                 </div>
                 <div class="card-body" style="max-height: 600px; overflow-y: auto;">
                     <ul class="nav flex-column wiki-nav">
                         <li class="nav-item">
                             <a href="{{ route('wiki') }}" class="nav-link {{ request()->routeIs('wiki') && !request()->route('slug') ? 'active' : '' }}">
-                                <i class="fas fa-home me-2"></i> Accueil du Wiki
+                                <i class="fas fa-home me-2"></i> {{ __('app.common.wiki_home') }}
                             </a>
                         </li>
                         @foreach($categories as $cat)
@@ -34,7 +34,7 @@
         <div class="col-md-6">
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('wiki') }}">Wiki</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('wiki') }}">{{ __('app.nav.wiki') }}</a></li>
                     <li class="breadcrumb-item active" aria-current="page">{{ $category->name }}</li>
                 </ol>
             </nav>
@@ -55,7 +55,7 @@
                         <a href="{{ route('wiki.show', $article->slug) }}" class="list-group-item list-group-item-action">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">{{ $article->title }}</h5>
-                                <small>{{ $article->updated_at->format('d/m/Y') }}</small>
+                                <small>{{ \App\Support\Locale::formatDate($article->updated_at) }}</small>
                             </div>
                             <p class="mb-1">{{ Str::limit(strip_tags($article->content), 150) }}</p>
                         </a>
@@ -63,7 +63,7 @@
                 </div>
             @else
                 <div class="alert alert-info">
-                    Aucun article n'a encore été publié dans cette catégorie.
+                    {{ __('app.common.empty') }}
                 </div>
             @endif
         </div>
@@ -72,12 +72,12 @@
         <div class="col-md-3">
             <div class="card sticky-top" style="top: 20px;">
                 <div class="card-header bg-secondary text-white">
-                    <h5 class="mb-0">Recherche</h5>
+                    <h5 class="mb-0">{{ __('app.common.search') }}</h5>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('wiki.search') }}" method="GET">
                         <div class="input-group">
-                            <input type="text" class="form-control" name="q" placeholder="Rechercher..." required>
+                            <input type="text" class="form-control" name="q" placeholder="{{ __('app.common.search') }}" required>
                             <button class="btn btn-primary" type="submit">
                                 <i class="fas fa-search"></i>
                             </button>
@@ -88,7 +88,7 @@
             
             <div class="card mt-4">
                 <div class="card-header bg-secondary text-white">
-                    <h5 class="mb-0">Articles de cette catégorie</h5>
+                    <h5 class="mb-0">{{ __('app.common.articles') }}</h5>
                 </div>
                 <div class="card-body">
                     @if($articles->count() > 0)
@@ -101,7 +101,7 @@
                             @endforeach
                         </div>
                     @else
-                        <p class="text-muted">Aucun article dans cette catégorie.</p>
+                        <p class="text-muted">{{ __('app.common.empty') }}</p>
                     @endif
                 </div>
             </div>

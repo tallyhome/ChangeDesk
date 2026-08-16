@@ -9,13 +9,13 @@
         <div class="col-md-3">
             <div class="card sticky-top" style="top: 20px;">
                 <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Catégories</h5>
+                    <h5 class="mb-0">{{ __('app.common.categories') }}</h5>
                 </div>
                 <div class="card-body" style="max-height: 600px; overflow-y: auto;">
                     <ul class="nav flex-column wiki-nav">
                         <li class="nav-item">
                             <a href="{{ route('wiki') }}" class="nav-link {{ request()->routeIs('wiki') && !request()->route('slug') ? 'active' : '' }}">
-                                <i class="fas fa-home me-2"></i> Accueil du Wiki
+                                <i class="fas fa-home me-2"></i> {{ __('app.common.wiki_home') }}
                             </a>
                         </li>
                         @foreach($categories as $category)
@@ -34,7 +34,7 @@
         <div class="col-md-6">
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('wiki') }}">Wiki</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('wiki') }}">{{ __('app.nav.wiki') }}</a></li>
                     @if($article->category)
                         <li class="breadcrumb-item"><a href="{{ route('wiki.category', $article->category->slug) }}">{{ $article->category->name }}</a></li>
                     @endif
@@ -54,7 +54,7 @@
                 <div class="card-footer bg-light text-muted">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <i class="fas fa-calendar-alt me-1"></i> Mis à jour le {{ $article->updated_at->format('d/m/Y') }}
+                            <i class="fas fa-calendar-alt me-1"></i> {{ \App\Support\Locale::formatDate($article->updated_at) }}
                         </div>
                         @if($article->category)
                             <div>
@@ -70,7 +70,7 @@
         <div class="col-md-3">
             <div class="card sticky-top" style="top: 20px;">
                 <div class="card-header bg-secondary text-white">
-                    <h5 class="mb-0">Articles similaires</h5>
+                    <h5 class="mb-0">{{ __('app.common.articles') }}</h5>
                 </div>
                 <div class="card-body">
                     @if($relatedArticles->count() > 0)
@@ -87,7 +87,7 @@
                             @endforeach
                         </ul>
                     @else
-                        <p class="text-muted">Aucun article similaire trouvé.</p>
+                        <p class="text-muted">{{ __('app.common.empty') }}</p>
                     @endif
                 </div>
             </div>

@@ -1,6 +1,6 @@
 @extends('superadmin.layout')
 
-@section('title', 'Gestion des sauvegardes de base de données')
+@section('title', __('app.admin.backups'))
 
 @section('content')
 <div class="container">
@@ -71,7 +71,7 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-danger" data-confirm="Êtes-vous sûr de vouloir supprimer cette sauvegarde ?">
-                                                        <i class="fas fa-trash"></i> Supprimer
+                                                        <i class="fas fa-trash"></i> {{ __('app.common.delete') }}
                                                     </button>
                                                 </form>
                                             </td>

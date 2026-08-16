@@ -137,7 +137,7 @@ class DatabaseBackupController extends Controller
             
             $backupType = $request->has('user_data_only') ? 'des données utilisateur' : 'complète';
             return redirect()->route('superadmin.backups.index')
-                ->with('success', "Sauvegarde {$backupType} créée avec succès.");
+                ->with('success', __('app.flash.backup_created', ['type' => $backupType]));
                 
         } catch (\Exception $e) {
             return redirect()->route('superadmin.backups.index')
@@ -157,7 +157,7 @@ class DatabaseBackupController extends Controller
         }
         
         return redirect()->route('superadmin.backups.index')
-            ->with('error', 'Le fichier de sauvegarde n\'existe pas.');
+            ->with('error', __('app.flash.backup_missing'));
     }
 
     /**
@@ -170,11 +170,11 @@ class DatabaseBackupController extends Controller
         if (file_exists($path)) {
             unlink($path);
             return redirect()->route('superadmin.backups.index')
-                ->with('success', 'Sauvegarde supprimée avec succès.');
+                ->with('success', __('app.flash.backup_deleted'));
         }
         
         return redirect()->route('superadmin.backups.index')
-            ->with('error', 'Le fichier de sauvegarde n\'existe pas.');
+            ->with('error', __('app.flash.backup_missing'));
     }
 
     /**
@@ -187,14 +187,14 @@ class DatabaseBackupController extends Controller
             
             if (!file_exists($path)) {
                 return redirect()->route('superadmin.backups.index')
-                    ->with('error', 'Le fichier de sauvegarde n\'existe pas.');
+                    ->with('error', __('app.flash.backup_missing'));
             }
             
             // Lire le contenu du fichier SQL
             $sql = file_get_contents($path);
             if (!$sql) {
                 return redirect()->route('superadmin.backups.index')
-                    ->with('error', 'Impossible de lire le fichier de sauvegarde.');
+                    ->with('error', __('app.flash.backup_unreadable'));
             }
             
             // Désactiver les contraintes de clé étrangère
@@ -219,7 +219,7 @@ class DatabaseBackupController extends Controller
             DB::statement('SET FOREIGN_KEY_CHECKS=1');
             
             return redirect()->route('superadmin.backups.index')
-                ->with('success', 'Base de données restaurée avec succès.');
+                ->with('success', __('app.flash.backup_restored'));
                 
         } catch (\Exception $e) {
             return redirect()->route('superadmin.backups.index')

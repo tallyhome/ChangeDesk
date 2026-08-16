@@ -1,6 +1,6 @@
 @extends(\App\Support\ThemeView::layout())
 
-@section('title', 'Détails du bug - ' . $bug->title)
+@section('title', __('app.common.details').' - '.$bug->title)
 
 @section('content')
 <div class="container py-5">
@@ -9,7 +9,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1>{{ $bug->title }}</h1>
                 <a href="{{ route('bug-report') }}" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> Retour à la liste
+                    <i class="fas fa-arrow-left"></i> {{ __('app.common.back') }}
                 </a>
             </div>
             
@@ -17,21 +17,21 @@
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <p class="mb-1"><strong>Statut:</strong></p>
+                            <p class="mb-1"><strong>{{ __('app.common.status') }}:</strong></p>
                             <span class="badge bg-{{ $bug->status == 'open' ? 'danger' : ($bug->status == 'in_progress' ? 'info' : 'success') }} p-2">
-                                {{ $bug->status == 'open' ? 'Ouvert' : ($bug->status == 'in_progress' ? 'En cours' : 'Résolu') }}
+                                {{ \App\Support\ThemeUi::statusLabel($bug->status) }}
                             </span>
                         </div>
                         <div class="col-md-6">
-                            <p class="mb-1"><strong>Signalé le:</strong></p>
-                            <p>{{ $bug->created_at->format('d/m/Y à H:i') }}</p>
+                            <p class="mb-1"><strong>{{ __('app.common.date') }}:</strong></p>
+                            <p>{{ \App\Support\Locale::formatDate($bug->created_at) }}</p>
                         </div>
                     </div>
                     
                     @if($bug->progress > 0)
                     <div class="row mb-3">
                         <div class="col-md-12">
-                            <p class="mb-1"><strong>Progression:</strong></p>
+                            <p class="mb-1"><strong>{{ __('app.common.progress') }}:</strong></p>
                             <div class="progress">
                                 <div class="progress-bar bg-{{ $bug->color ?? 'primary' }}" role="progressbar" 
                                     style="width: {{ $bug->progress }}%" 
@@ -45,7 +45,7 @@
                     
                     <div class="row mb-3">
                         <div class="col-md-12">
-                            <p class="mb-1"><strong>Description:</strong></p>
+                            <p class="mb-1"><strong>{{ __('app.common.description') }}:</strong></p>
                             <div class="p-3 bg-light rounded">
                                 {!! $bug->description !!}
                             </div>
@@ -55,8 +55,8 @@
                     @if($bug->expected_fix_date)
                     <div class="row">
                         <div class="col-md-12">
-                            <p class="mb-1"><strong>Date prévue de correction:</strong></p>
-                            <p>{{ $bug->expected_fix_date->format('d/m/Y') }}</p>
+                            <p class="mb-1"><strong>{{ __('app.common.estimated_date') }}:</strong></p>
+                            <p>{{ \App\Support\Locale::formatDate($bug->expected_fix_date) }}</p>
                         </div>
                     </div>
                     @endif

@@ -1,11 +1,11 @@
 @extends('layouts.admin')
 
-@section('title', 'Gestion des rapports de bugs')
+@section('title', __('app.admin.bug_reports'))
 
 @section('content')
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Gestion des rapports de bugs</h1>
+        <h1>{{ __('app.admin.bug_reports') }}</h1>
         <div class="d-flex align-items-center gap-3">
             @php
                 $bugReportEnabled = \App\Models\Setting::getValue('bug_report_enabled', '1');
@@ -15,7 +15,7 @@
                data-key="bug_report_enabled"
                title="{{ $bugReportEnabled == '1' ? 'Désactiver les rapports de bugs' : 'Activer les rapports de bugs' }}"></i>
             <a href="{{ route('admin.bug_reports.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Ajouter un rapport de bug
+                <i class="fas fa-plus"></i> {{ __('app.admin.new_bug') }}
             </a>
         </div>
     </div>
@@ -33,13 +33,13 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Titre</th>
-                                <th>Description</th>
-                                <th>Progression</th>
-                                <th>Sévérité</th>
-                                <th>Statut</th>
-                                <th>Date prévue</th>
-                                <th>Actions</th>
+                                <th>{{ __('app.common.title') }}</th>
+                                <th>{{ __('app.common.description') }}</th>
+                                <th>{{ __('app.common.progress') }}</th>
+                                <th>{{ __('app.common.status') }}</th>
+                                <th>{{ __('app.common.status') }}</th>
+                                <th>{{ __('app.common.estimated_date') }}</th>
+                                <th>{{ __('app.common.actions') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -64,17 +64,11 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @if($bug->status == 'open')
-                                            <span class="badge bg-danger">Ouvert</span>
-                                        @elseif($bug->status == 'in_progress')
-                                            <span class="badge bg-info">En cours</span>
-                                        @elseif($bug->status == 'resolved')
-                                            <span class="badge bg-success">Résolu</span>
-                                        @elseif($bug->status == 'closed')
-                                            <span class="badge bg-secondary">Fermé</span>
-                                        @endif
+                                        <span class="badge bg-{{ $bug->status == 'open' ? 'danger' : ($bug->status == 'in_progress' ? 'info' : ($bug->status == 'resolved' ? 'success' : 'secondary')) }}">
+                                            {{ \App\Support\ThemeUi::statusLabel($bug->status) }}
+                                        </span>
                                     </td>
-                                    <td>{{ $bug->expected_fix_date ? $bug->expected_fix_date->format('d/m/Y') : 'Non définie' }}</td>
+                                    <td>{{ $bug->expected_fix_date ? \App\Support\Locale::formatDate($bug->expected_fix_date) : __('app.common.undefined') }}</td>
                                     <td>
                                         <a href="{{ route('admin.bug_reports.edit', $bug->id) }}" class="btn btn-sm btn-primary">
                                             <i class="fas fa-edit"></i>
@@ -82,7 +76,7 @@
                                         <form action="{{ route('admin.bug_reports.destroy', $bug->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger" data-confirm="Êtes-vous sûr de vouloir supprimer ce rapport de bug ?">
+                                            <button type="submit" class="btn btn-sm btn-danger" data-confirm="{{ __('app.admin.confirm_delete') }}">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
@@ -93,7 +87,7 @@
                     </table>
                 </div>
             @else
-                <p class="text-center">Aucun rapport de bug n'a été ajouté.</p>
+                <p class="text-center">{{ __('app.common.empty') }}</p>
             @endif
         </div>
     </div>

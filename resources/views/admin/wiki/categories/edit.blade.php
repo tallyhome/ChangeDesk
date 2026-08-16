@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Modifier une catégorie Wiki')
+@section('title', __('app.common.edit'))
 
 @section('content')
 <div class="container-fluid py-4">
@@ -31,7 +31,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="description" class="form-label">Description</label>
+                    <label for="description" class="form-label">{{ __('app.common.description') }}</label>
                     <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="3">{{ old('description', $category->description) }}</textarea>
                     @error('description')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -48,7 +48,7 @@
 
                 <div class="d-flex justify-content-end gap-2">
                     <a href="{{ route('admin.wiki.categories.index') }}" class="btn btn-secondary">Annuler</a>
-                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    <button type="submit" class="btn btn-primary">{{ __('app.common.save') }}</button>
                 </div>
             </form>
         </div>

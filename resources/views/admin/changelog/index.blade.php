@@ -1,11 +1,11 @@
 @extends('layouts.admin')
 
-@section('title', 'Gestion des Versions')
+@section('title', __('app.admin.changelog'))
 
 @section('content')
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Gestion des Versions</h1>
+        <h1>{{ __('app.admin.changelog') }}</h1>
         <div class="d-flex align-items-center gap-3">
             @php
                 $changelogEnabled = \App\Models\Setting::getValue('changelog_enabled', '1');
@@ -15,7 +15,7 @@
                data-key="changelog_enabled"
                title="{{ $changelogEnabled == '1' ? 'Désactiver le changelog' : 'Activer le changelog' }}"></i>
             <a href="{{ route('admin.changelog.create') }}" class="btn btn-success">
-                Nouvelle Version
+                {{ __('app.admin.new_version') }}
             </a>
         </div>
     </div>
@@ -30,22 +30,22 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Version</th>
-                    <th>Date</th>
-                    <th>Actions</th>
+                    <th>{{ __('app.common.version') }}</th>
+                    <th>{{ __('app.common.date') }}</th>
+                    <th>{{ __('app.common.actions') }}</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($versions as $version)
                     <tr>
                         <td>{{ $version->version_number }}</td>
-                        <td>{{ $version->release_date->format('d/m/Y') }}</td>
+                        <td>{{ \App\Support\Locale::formatDate($version->release_date) }}</td>
                         <td>
-                            <a href="{{ route('admin.changelog.edit', $version->id) }}" class="btn btn-sm btn-primary">Modifier</a>
+                            <a href="{{ route('admin.changelog.edit', $version->id) }}" class="btn btn-sm btn-primary">{{ __('app.common.edit') }}</a>
                             <form action="{{ route('admin.changelog.destroy', $version->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" data-confirm="Confirmer la suppression ?">Supprimer</button>
+                                <button type="submit" class="btn btn-sm btn-danger" data-confirm="{{ __('app.admin.confirm_delete') }}">{{ __('app.common.delete') }}</button>
                             </form>
                         </td>
                     </tr>

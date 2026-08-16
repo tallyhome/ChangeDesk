@@ -1,11 +1,11 @@
 @extends(\App\Support\ThemeView::layout())
 
-@section('title', 'Fonctionnalités à venir')
+@section('title', __('app.public.todolist_title'))
 
 @section('content')
 @php use App\Support\ThemeUi; @endphp
 <div class="container py-5">
-    <h1 class="mb-4">Fonctionnalités à venir</h1>
+    <h1 class="mb-4">{{ __('app.public.todolist_title') }}</h1>
     
     <div class="row">
         @foreach($todoItems as $item)
@@ -29,13 +29,13 @@
                         
                         <div class="d-flex justify-content-between">
                             <div>
-                                <i class="fas fa-calendar-alt"></i> Date estimée : 
+                                <i class="fas fa-calendar-alt"></i> {{ __('app.common.estimated_date') }} :
                                 @if(is_string($item->expected_date))
                                     {{ $item->expected_date }}
                                 @elseif($item->expected_date)
-                                    {{ $item->expected_date->format('d/m/Y') }}
+                                    {{ \App\Support\Locale::formatDate($item->expected_date) }}
                                 @else
-                                    Non définie
+                                    {{ __('app.common.undefined') }}
                                 @endif
                             </div>
                             <div>

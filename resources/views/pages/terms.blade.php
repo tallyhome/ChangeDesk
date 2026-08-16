@@ -1,13 +1,13 @@
 @extends(\App\Support\ThemeView::layout())
 
-@section('title', 'Conditions d\'utilisation')
+@section('title', __('app.footer.terms_long'))
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Conditions d'utilisation</div>
+                <div class="card-header">{{ __('app.footer.terms_long') }}</div>
                 <div class="card-body">
                     @if(isset($page) && $page)
                         {!! $page->content !!}

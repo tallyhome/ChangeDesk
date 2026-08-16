@@ -1,6 +1,6 @@
 @extends(\App\Support\ThemeView::layout())
 
-@section('title', 'Recherche: ' . $query)
+@section('title', __('app.common.search').': '.$query)
 
 @section('content')
 <div class="container-fluid py-5">
@@ -9,13 +9,13 @@
         <div class="col-md-3">
             <div class="card sticky-top" style="top: 20px;">
                 <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Catégories</h5>
+                    <h5 class="mb-0">{{ __('app.common.categories') }}</h5>
                 </div>
                 <div class="card-body" style="max-height: 600px; overflow-y: auto;">
                     <ul class="nav flex-column wiki-nav">
                         <li class="nav-item">
                             <a href="{{ route('wiki') }}" class="nav-link {{ request()->routeIs('wiki') && !request()->route('slug') ? 'active' : '' }}">
-                                <i class="fas fa-home me-2"></i> Accueil du Wiki
+                                <i class="fas fa-home me-2"></i> {{ __('app.common.wiki_home') }}
                             </a>
                         </li>
                         @foreach($categories as $category)
@@ -34,12 +34,12 @@
         <div class="col-md-6">
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('wiki') }}">Wiki</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Recherche: {{ $query }}</li>
+                    <li class="breadcrumb-item"><a href="{{ route('wiki') }}">{{ __('app.nav.wiki') }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ __('app.common.search') }}: {{ $query }}</li>
                 </ol>
             </nav>
             
-            <h1 class="mb-4">Résultats de recherche pour "{{ $query }}"</h1>
+            <h1 class="mb-4">{{ __('app.common.search') }}: "{{ $query }}"</h1>
             
             @if($articles->count() > 0)
                 <div class="list-group mb-4">
@@ -57,13 +57,13 @@
                 </div>
             @else
                 <div class="alert alert-info">
-                    <i class="fas fa-info-circle me-2"></i> Aucun résultat trouvé pour "{{ $query }}".
+                    <i class="fas fa-info-circle me-2"></i> {{ __('app.common.empty') }}
                 </div>
             @endif
             
             <div class="mt-4">
                 <a href="{{ route('wiki') }}" class="btn btn-outline-primary">
-                    <i class="fas fa-arrow-left me-2"></i> Retour à l'accueil du Wiki
+                    <i class="fas fa-arrow-left me-2"></i> {{ __('app.common.back') }}
                 </a>
             </div>
         </div>

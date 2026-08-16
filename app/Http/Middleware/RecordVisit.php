@@ -25,6 +25,7 @@ class RecordVisit
             || $request->is('register')
             || $request->is('api/*')
             || $request->is('theme-preview/*')
+            || $request->is('locale/*')
             || $request->is('_debugbar/*')
             || $request->ajax()
             || $this->isAsset($request->path())) {

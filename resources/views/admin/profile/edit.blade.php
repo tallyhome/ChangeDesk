@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Modifier le profil administrateur</div>
+                <div class="card-header">{{ __('app.admin.profile') }}</div>
 
                 <div class="card-body">
                     @if (session('success'))
@@ -65,7 +65,7 @@
 
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary">
-                                Mettre à jour le profil
+                                {{ __('app.common.update') }}
                             </button>
                         </div>
                     </form>

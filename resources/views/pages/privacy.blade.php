@@ -1,13 +1,13 @@
 @extends(\App\Support\ThemeView::layout())
 
-@section('title', 'Politique de confidentialité')
+@section('title', __('app.footer.privacy_long'))
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Politique de confidentialité</div>
+                <div class="card-header">{{ __('app.footer.privacy_long') }}</div>
                 <div class="card-body">
                     @if(isset($page) && $page)
                         {!! $page->content !!}

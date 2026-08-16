@@ -1,6 +1,6 @@
 <ul class="nav">
     <li class="nav-item">
-        <a class="nav-link" href="{{ route('admin.dashboard') }}">Dashboard</a>
+        <a class="nav-link" href="{{ route('admin.dashboard') }}">{{ __('app.admin.dashboard') }}</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="{{ route('admin.wiki.index') }}">

@@ -50,7 +50,7 @@ class SettingController extends Controller
         }
 
         return redirect()->route('admin.settings.index')
-            ->with('success', 'Les paramètres ont été mis à jour avec succès.');
+            ->with('success', __('app.flash.settings_saved'));
     }
     
     /**

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Créer une catégorie Wiki')
+@section('title', __('app.admin.new_category'))
 
 @section('content')
 <div class="container-fluid py-4">
@@ -15,7 +15,7 @@
 
     <div class="card">
         <div class="card-header bg-light">
-            <h1 class="h2 mb-0">Créer une nouvelle catégorie Wiki</h1>
+            <h1 class="h2 mb-0">{{ __('app.admin.new_category') }}</h1>
         </div>
         <div class="card-body">
             <form action="{{ route('admin.wiki.categories.store') }}" method="POST">
@@ -30,7 +30,7 @@
                 </div>
                 
                 <div class="mb-3">
-                    <label for="description" class="form-label">Description</label>
+                    <label for="description" class="form-label">{{ __('app.common.description') }}</label>
                     <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="3">{{ old('description') }}</textarea>
                     @error('description')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -47,7 +47,7 @@
                 
                 <div class="d-flex justify-content-end gap-2">
                     <a href="{{ route('admin.wiki.categories.index') }}" class="btn btn-secondary">Annuler</a>
-                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    <button type="submit" class="btn btn-primary">{{ __('app.common.save') }}</button>
                 </div>
             </form>
         </div>

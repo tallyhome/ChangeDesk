@@ -13,7 +13,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ url('/') }}">Accueil</a>
+                    <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ url('/') }}">{{ __('app.nav.home') }}</a>
                 </li>
                 @php
                     $changelogEnabled = \App\Models\Setting::getValue('changelog_enabled', true);
@@ -29,25 +29,25 @@
 
                 @if($changelogEnabled)
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('changelog') ? 'active' : '' }}" href="{{ route('changelog') }}">Changelog</a>
+                    <a class="nav-link {{ request()->routeIs('changelog') ? 'active' : '' }}" href="{{ route('changelog') }}">{{ __('app.nav.changelog') }}</a>
                 </li>
                 @endif
 
                 @if($todoEnabled && $gate->can($t, 'todolist'))
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('todolist') ? 'active' : '' }}" href="{{ route('todolist') }}">Prochaines fonctionnalités</a>
+                    <a class="nav-link {{ request()->routeIs('todolist') ? 'active' : '' }}" href="{{ route('todolist') }}">{{ __('app.nav.upcoming') }}</a>
                 </li>
                 @endif
 
                 @if($bugReportEnabled && $gate->can($t, 'bugs'))
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('bug-report*') ? 'active' : '' }}" href="{{ route('bug-report') }}">Signaler un bug</a>
+                    <a class="nav-link {{ request()->routeIs('bug-report*') ? 'active' : '' }}" href="{{ route('bug-report') }}">{{ __('app.nav.report_bug') }}</a>
                 </li>
                 @endif
 
                 @if($wikiEnabled && $gate->can($t, 'wiki'))
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('wiki*') ? 'active' : '' }}" href="{{ route('wiki') }}">Wiki</a>
+                    <a class="nav-link {{ request()->routeIs('wiki*') ? 'active' : '' }}" href="{{ route('wiki') }}">{{ __('app.nav.wiki') }}</a>
                 </li>
                 @endif
 
@@ -60,13 +60,14 @@
 
             <div class="d-flex align-items-center gap-2">
                 @auth
-                    <a href="{{ $adminUrl }}" class="btn btn-light btn-sm">Administration</a>
+                    <a href="{{ $adminUrl }}" class="btn btn-light btn-sm">{{ __('app.nav.admin') }}</a>
                     <form method="POST" action="{{ route('logout') }}" class="d-inline">@csrf
-                        <button type="submit" class="btn btn-outline-light btn-sm">Déconnexion</button>
+                        <button type="submit" class="btn btn-outline-light btn-sm">{{ __('app.nav.logout') }}</button>
                     </form>
                 @else
-                    <a href="{{ $loginUrl }}" class="btn btn-light btn-sm">Connexion</a>
+                    <a href="{{ $loginUrl }}" class="btn btn-light btn-sm">{{ __('app.nav.login') }}</a>
                 @endauth
+                @include('partials.lang-switcher', ['variant' => 'on-dark'])
             </div>
         </div>
     </div>

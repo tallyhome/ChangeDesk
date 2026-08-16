@@ -1,11 +1,11 @@
 @extends('layouts.admin')
 
-@section('title', 'Gestion des fonctionnalités à venir')
+@section('title', __('app.admin.upcoming'))
 
 @section('content')
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Gestion des fonctionnalités à venir</h1>
+        <h1>{{ __('app.admin.upcoming') }}</h1>
         <div class="d-flex align-items-center gap-3">
             @php
                 $todoEnabled = \App\Models\Setting::getValue('todo_enabled', '1');
@@ -15,7 +15,7 @@
                data-key="todo_enabled"
                title="{{ $todoEnabled == '1' ? 'Désactiver les fonctionnalités à venir' : 'Activer les fonctionnalités à venir' }}"></i>
             <a href="{{ route('admin.todolist.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Ajouter une fonctionnalité
+                <i class="fas fa-plus"></i> {{ __('app.admin.new_feature') }}
             </a>
         </div>
     </div>
@@ -33,13 +33,13 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Titre</th>
-                                <th>Description</th>
-                                <th>Progression</th>
-                                <th>Priorité</th>
-                                <th>Statut</th>
-                                <th>Date prévue</th>
-                                <th>Actions</th>
+                                <th>{{ __('app.common.title') }}</th>
+                                <th>{{ __('app.common.description') }}</th>
+                                <th>{{ __('app.common.progress') }}</th>
+                                <th>{{ __('app.common.status') }}</th>
+                                <th>{{ __('app.common.status') }}</th>
+                                <th>{{ __('app.common.estimated_date') }}</th>
+                                <th>{{ __('app.common.actions') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -64,10 +64,10 @@
                                     </td>
                                     <td>
                                         <span class="badge bg-{{ $item->status === 'pending' ? 'warning' : ($item->status === 'completed' ? 'success' : 'info') }}">
-                                            {{ $item->status === 'pending' ? 'En attente' : ($item->status === 'completed' ? 'Terminé' : 'En cours') }}
+                                            {{ \App\Support\ThemeUi::statusLabel($item->status) }}
                                         </span>
                                     </td>
-                                    <td>{{ $item->expected_completion_date ? date('d/m/Y', strtotime($item->expected_completion_date)) : 'Non définie' }}</td>
+                                    <td>{{ $item->expected_completion_date ? \App\Support\Locale::formatDate($item->expected_completion_date) : __('app.common.undefined') }}</td>
                                     <td>
                                         <div class="btn-group">
                                             <a href="{{ route('admin.todolist.edit', $item) }}" class="btn btn-sm btn-primary">
@@ -76,7 +76,7 @@
                                             <form action="{{ route('admin.todolist.destroy', $item) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger" data-confirm="Êtes-vous sûr de vouloir supprimer cette fonctionnalité ?">
+                                                <button type="submit" class="btn btn-sm btn-danger" data-confirm="{{ __('app.admin.confirm_delete') }}">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </form>

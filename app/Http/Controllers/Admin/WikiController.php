@@ -52,7 +52,7 @@ class WikiController extends Controller
         $article->save();
 
         return redirect()->route('admin.wiki.index')
-            ->with('success', 'Article créé avec succès.');
+            ->with('success', __('app.flash.article_created'));
     }
 
     /**
@@ -91,7 +91,7 @@ class WikiController extends Controller
         $article->save();
 
         return redirect()->route('admin.wiki.index')
-            ->with('success', 'Article mis à jour avec succès.');
+            ->with('success', __('app.flash.article_updated'));
     }
 
     /**
@@ -101,7 +101,7 @@ class WikiController extends Controller
     {
         $article->delete();
         return redirect()->route('admin.wiki.index')
-            ->with('success', 'Article supprimé avec succès.');
+            ->with('success', __('app.flash.article_deleted'));
     }
 
     /**
@@ -148,7 +148,7 @@ class WikiController extends Controller
         $category->save();
 
         return redirect()->route('admin.wiki.categories')
-            ->with('success', 'Catégorie créée avec succès.');
+            ->with('success', __('app.flash.category_created'));
     }
 
     /**
@@ -182,7 +182,7 @@ class WikiController extends Controller
         $category->save();
 
         return redirect()->route('admin.wiki.categories')
-            ->with('success', 'Catégorie mise à jour avec succès.');
+            ->with('success', __('app.flash.category_updated'));
     }
 
     /**
@@ -192,7 +192,7 @@ class WikiController extends Controller
     {
         $category->delete();
         return redirect()->route('admin.wiki.categories')
-            ->with('success', 'Catégorie supprimée avec succès.');
+            ->with('success', __('app.flash.category_deleted'));
     }
 
     public function settings()

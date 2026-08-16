@@ -27,6 +27,6 @@
 </select></div>
 <div class="mb-3"><label class="form-label">Couleur branding</label><input name="branding_primary" class="form-control" value="{{ old('branding_primary', $tenant->branding['primary'] ?? '') }}" placeholder="#0d9488"></div>
 <div class="form-check mb-3"><input type="checkbox" class="form-check-input" name="is_active" value="1" @checked(old('is_active', $tenant->is_active))><label class="form-check-label">Actif</label></div>
-<button class="btn btn-primary">Enregistrer</button>
+<button class="btn btn-primary">{{ __('app.common.save') }}</button>
 </form>
 @endsection

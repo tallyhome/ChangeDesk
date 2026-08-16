@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Gestion du Wiki')
+@section('title', __('app.admin.wiki'))
 
 @push('styles')
 <style>
@@ -49,20 +49,20 @@
 @section('content')
 <div class="container-fluid" style="margin-top: 80px;">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h2">Gestion des articles Wiki</h1>
+        <h1 class="h2">{{ __('app.admin.wiki') }}</h1>
         <div>
             <i class="fas fa-power-off btn-toggle-wiki {{ $wikiEnabled ? 'enabled' : 'disabled' }}"
                data-bs-toggle="tooltip"
                title="{{ $wikiEnabled ? 'Désactiver le Wiki' : 'Activer le Wiki' }}"
                style="margin-right: 1rem;"></i>
             <a href="{{ route('admin.wiki.categories.index') }}" class="btn btn-outline-primary me-2">
-                <i class="fas fa-folder me-1"></i> Gérer les catégories
+                <i class="fas fa-folder me-1"></i> {{ __('app.common.categories') }}
             </a>
             <a href="{{ route('admin.wiki.settings') }}" class="btn btn-outline-secondary me-2">
-                <i class="fas fa-cog me-2"></i>Paramètres
+                <i class="fas fa-cog me-2"></i>{{ __('app.admin.settings') }}
             </a>
             <a href="{{ route('admin.wiki.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus me-2"></i>Nouvel article
+                <i class="fas fa-plus me-2"></i>{{ __('app.admin.new_article') }}
             </a>
         </div>
     </div>
@@ -95,12 +95,12 @@
                 <table class="table table-hover mb-0">
                     <thead>
                         <tr>
-                            <th>Titre</th>
-                            <th>Catégorie</th>
+                            <th>{{ __('app.common.title') }}</th>
+                            <th>{{ __('app.common.categories') }}</th>
                             <th>Ordre</th>
-                            <th>Statut</th>
-                            <th>Dernière modification</th>
-                            <th class="text-end">Actions</th>
+                            <th>{{ __('app.common.status') }}</th>
+                            <th>{{ __('app.common.date') }}</th>
+                            <th class="text-end">{{ __('app.common.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -132,7 +132,7 @@
                                         </i>
                                     </form>
                                 </td>
-                                <td>{{ $article->updated_at->format('d/m/Y H:i') }}</td>
+                                <td>{{ \App\Support\Locale::formatDate($article->updated_at) }}</td>
                                 <td class="text-end">
                                     <a href="{{ route('admin.wiki.show', $article) }}" class="btn btn-sm btn-outline-info" title="Voir">
                                         <i class="fas fa-eye"></i>
@@ -143,7 +143,7 @@
                                     <form action="{{ route('admin.wiki.destroy', $article) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" data-confirm="Êtes-vous sûr de vouloir supprimer cet article ?" title="Supprimer">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" data-confirm="{{ __('app.admin.confirm_delete') }}" title="{{ __('app.common.delete') }}">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
@@ -151,7 +151,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center py-4">Aucun article trouvé</td>
+                                <td colspan="6" class="text-center py-4">{{ __('app.common.empty') }}</td>
                             </tr>
                         @endforelse
                     </tbody>

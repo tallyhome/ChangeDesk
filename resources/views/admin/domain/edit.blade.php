@@ -1,11 +1,11 @@
 @extends('layouts.admin')
 
-@section('title', 'Domaine')
+@section('title', __('app.admin.domain'))
 
 @section('content')
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Domaine &amp; URL publique</h1>
+        <h1>{{ __('app.admin.domain') }}</h1>
     </div>
 
     @if(session('success'))
@@ -58,7 +58,7 @@
                            placeholder="changelog.monsite.fr">
                     @error('custom_domain')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     <div class="form-text">
-                        Statut :
+                        {{ __('app.common.status') }} :
                         <strong>
                             @switch($tenant->domain_status)
                                 @case('verified') Vérifié @break
@@ -69,7 +69,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                <button type="submit" class="btn btn-primary">{{ __('app.common.save') }}</button>
             </form>
         </div>
     </div>

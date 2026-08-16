@@ -57,6 +57,6 @@ class RegisteredUserController extends Controller
 
         return redirect()
             ->route('admin.domain.edit')
-            ->with('success', 'Bienvenue ! Votre projet est prêt. Configurez votre domaine personnalisé.');
+            ->with('success', __('app.flash.welcome'));
     }
 }

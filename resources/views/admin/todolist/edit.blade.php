@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Modifier une fonctionnalité')
+@section('title', __('app.common.edit'))
 
 @section('content')
 <div class="container">
@@ -9,7 +9,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1>Modifier une fonctionnalité</h1>
                 <a href="{{ route('admin.todolist') }}" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> Retour à la liste
+                    <i class="fas fa-arrow-left"></i> {{ __('app.common.back') }}
                 </a>
             </div>
 
@@ -20,7 +20,7 @@
                         @method('PUT')
                         
                         <div class="mb-3">
-                            <label for="title" class="form-label">Titre</label>
+                            <label for="title" class="form-label">{{ __('app.common.title') }}</label>
                             <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title', $todoItem->title) }}" required>
                             @error('title')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -28,7 +28,7 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label for="description" class="form-label">Description</label>
+                            <label for="description" class="form-label">{{ __('app.common.description') }}</label>
                             <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="5" required>{{ old('description', $todoItem->description) }}</textarea>
                             @error('description')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -36,7 +36,7 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label for="status" class="form-label">Statut</label>
+                            <label for="status" class="form-label">{{ __('app.common.status') }}</label>
                             <select class="form-select @error('status') is-invalid @enderror" id="status" name="status" required>
                                 <option value="pending" {{ old('status', $todoItem->status) == 'pending' ? 'selected' : '' }}>En attente</option>
                                 <option value="in_progress" {{ old('status', $todoItem->status) == 'in_progress' ? 'selected' : '' }}>En cours</option>
@@ -82,7 +82,7 @@
                         
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save"></i> Enregistrer les modifications
+                                <i class="fas fa-save"></i> {{ __('app.common.update') }}
                             </button>
                         </div>
                     </form>

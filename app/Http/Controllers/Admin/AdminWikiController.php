@@ -57,7 +57,7 @@ class AdminWikiController extends Controller
 
         return redirect()
             ->route('admin.wiki.index')
-            ->with('success', 'Article créé avec succès.');
+            ->with('success', __('app.flash.article_created'));
     }
 
     public function show(WikiArticle $article)
@@ -91,7 +91,7 @@ class AdminWikiController extends Controller
 
         return redirect()
             ->route('admin.wiki.index')
-            ->with('success', 'Article mis à jour avec succès.');
+            ->with('success', __('app.flash.article_updated'));
     }
 
     public function destroy(WikiArticle $article)
@@ -100,7 +100,7 @@ class AdminWikiController extends Controller
 
         return redirect()
             ->route('admin.wiki.index')
-            ->with('success', 'Article supprimé avec succès.');
+            ->with('success', __('app.flash.article_deleted'));
     }
 
     public function preview(Request $request)
@@ -166,7 +166,7 @@ class AdminWikiController extends Controller
 
         return redirect()
             ->route('admin.wiki.categories.index')
-            ->with('success', 'Catégorie créée avec succès.');
+            ->with('success', __('app.flash.category_created'));
     }
 
     public function editCategory(WikiCategory $category)
@@ -190,7 +190,7 @@ class AdminWikiController extends Controller
 
         return redirect()
             ->route('admin.wiki.categories.index')
-            ->with('success', 'Catégorie mise à jour avec succès.');
+            ->with('success', __('app.flash.category_updated'));
     }
 
     public function settings()
@@ -216,7 +216,7 @@ class AdminWikiController extends Controller
 
         return redirect()
             ->route('admin.wiki.settings')
-            ->with('success', 'Paramètres du wiki mis à jour avec succès.');
+            ->with('success', __('app.flash.wiki_settings'));
     }
 
     public function destroyCategory(WikiCategory $category)
@@ -224,14 +224,14 @@ class AdminWikiController extends Controller
         if ($category->articles()->count() > 0) {
             return redirect()
                 ->route('admin.wiki.categories.index')
-                ->with('error', 'Impossible de supprimer une catégorie contenant des articles.');
+                ->with('error', __('app.flash.category_has_articles'));
         }
 
         $category->delete();
 
         return redirect()
             ->route('admin.wiki.categories.index')
-            ->with('success', 'Catégorie supprimée avec succès.');
+            ->with('success', __('app.flash.category_deleted'));
     }
 
     public function toggleWikiStatus()

@@ -1,8 +1,8 @@
 @extends('layouts.admin')
-@section('title', 'Apparence')
+@section('title', __('app.admin.appearance'))
 @section('content')
 <div class="container" style="max-width:720px">
-  <h1 class="mb-3">Apparence publique</h1>
+  <h1 class="mb-3">{{ __('app.admin.appearance') }}</h1>
   <p class="text-muted">Choisissez le rendu de votre changelog public. Les thèmes disponibles dépendent de votre plan.</p>
   @if(session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
   <form method="POST" action="{{ route('admin.appearance.update') }}" class="card card-body">
@@ -19,7 +19,7 @@
         </label>
       </div>
     @endforeach
-    <button class="btn btn-primary">Enregistrer</button>
+    <button class="btn btn-primary">{{ __('app.common.save') }}</button>
   </form>
 </div>
 @endsection

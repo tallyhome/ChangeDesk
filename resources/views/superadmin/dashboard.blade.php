@@ -1,9 +1,9 @@
 @extends('superadmin.layout')
-@section('title', 'Dashboard')
+@section('title', __('app.superadmin.dashboard'))
 @section('content')
 <div class="sa-top">
   <div>
-    <h1>Dashboard plateforme</h1>
+    <h1>{{ __('app.superadmin.dashboard') }}</h1>
     <div class="text-muted">Pilotage de ChanLog en un coup d’œil</div>
   </div>
   <a href="{{ route('superadmin.tenants.index') }}" class="btn btn-accent">Gérer les tenants</a>
@@ -11,7 +11,7 @@
 
 <div class="row g-3 mb-4">
 @foreach([
-  ['Tenants', $stats['tenants'], 'fa-building', 'Projets clients'],
+  [__('app.superadmin.tenants'), $stats['tenants'], 'fa-building', __('app.superadmin.tenants')],
   ['Actifs', $stats['active_tenants'], 'fa-circle-check', 'Non suspendus'],
   ['Clients', $stats['users'], 'fa-users', 'Comptes admin projet'],
   ['Entrées changelog', $stats['versions'], 'fa-code-branch', 'Versions publiées (tous tenants)'],

@@ -29,7 +29,7 @@ class LandingThemeController extends Controller
 
         return redirect()
             ->route('superadmin.landing.index')
-            ->with('success', 'Thème vitrine « '.LandingTheme::label($data['theme']).' » activé.');
+            ->with('success', __('app.flash.landing_theme', ['name' => LandingTheme::label($data['theme'])]));
     }
 
     public function preview(string $theme): View

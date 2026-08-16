@@ -1,14 +1,14 @@
 @extends('layouts.admin')
 
-@section('title', 'Gestion des catégories Wiki')
+@section('title', __('app.common.categories'))
 
 @section('content')
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h2">Gestion des catégories Wiki</h1>
+        <h1 class="h2">{{ __('app.common.categories') }}</h1>
         <div>
             <a href="{{ route('admin.wiki.categories.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus me-1"></i> Nouvelle catégorie
+                <i class="fas fa-plus me-1"></i> {{ __('app.admin.new_category') }}
             </a>
         </div>
     </div>
@@ -33,12 +33,12 @@
                 <table class="table table-hover mb-0">
                     <thead>
                         <tr>
-                            <th>Nom</th>
+                            <th>{{ __('app.common.name') }}</th>
                             <th>Slug</th>
-                            <th>Description</th>
-                            <th>Articles</th>
+                            <th>{{ __('app.common.description') }}</th>
+                            <th>{{ __('app.common.articles') }}</th>
                             <th>Ordre</th>
-                            <th class="text-end">Actions</th>
+                            <th class="text-end">{{ __('app.common.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -56,7 +56,7 @@
                                     <form action="{{ route('admin.wiki.categories.destroy', $category) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" data-confirm="Êtes-vous sûr de vouloir supprimer cette catégorie ?">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" data-confirm="{{ __('app.admin.confirm_delete') }}">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>

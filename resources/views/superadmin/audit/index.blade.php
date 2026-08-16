@@ -1,5 +1,5 @@
 @extends('superadmin.layout')
-@section('title', 'Audit')
+@section('title', __('app.superadmin.audit'))
 @section('content')
 <h1 class="mb-4">Logs d'audit</h1>
 <form method="GET" class="mb-3"><input name="action" value="{{ request('action') }}" class="form-control" placeholder="Filtrer action" style="max-width:320px"></form>

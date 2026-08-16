@@ -1,9 +1,9 @@
 @extends('superadmin.layout')
-@section('title', 'Utilisateurs')
+@section('title', __('app.superadmin.users'))
 @section('content')
 <div class="sa-top">
   <div>
-    <h1>Utilisateurs</h1>
+    <h1>{{ __('app.superadmin.users') }}</h1>
     <div class="text-muted">Clients et superadmins</div>
   </div>
   <a href="{{ route('superadmin.users.create') }}" class="btn btn-accent"><i class="fas fa-user-plus me-1"></i> Nouvel utilisateur</a>

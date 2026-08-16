@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Installation ChanLog</title>
@@ -18,7 +18,10 @@ body{font-family:Manrope,system-ui,sans-serif;background:#f3faf8;min-height:100v
 </head>
 <body>
 <div class="wrap">
-  <div class="brand mb-3">Chan<span>Log</span> Installer</div>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="brand">Chan<span>Log</span> Installer</div>
+    @include('partials.lang-switcher', ['variant' => 'light'])
+  </div>
   <div class="steps">
     <span class="@yield('step1','')">1. Accueil</span>
     <span class="@yield('step2','')">2. Prérequis</span>

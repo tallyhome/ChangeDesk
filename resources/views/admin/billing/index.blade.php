@@ -1,8 +1,8 @@
 @extends('layouts.admin')
-@section('title', 'Facturation')
+@section('title', __('app.admin.billing'))
 @section('content')
 <div class="container">
-  <h1 class="mb-3">Facturation</h1>
+  <h1 class="mb-3">{{ __('app.admin.billing') }}</h1>
   @if(session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
   @if(session('error'))<div class="alert alert-danger">{{ session('error') }}</div>@endif
 
@@ -46,10 +46,10 @@
   </div>
 
   <div class="card">
-    <div class="card-header">Historique paiements</div>
+    <div class="card-header">{{ __('app.admin.billing') }}</div>
     <div class="table-responsive">
       <table class="table mb-0">
-        <thead><tr><th>Date</th><th>Provider</th><th>Montant</th><th>Statut</th></tr></thead>
+        <thead><tr><th>{{ __('app.common.date') }}</th><th>Provider</th><th>Montant</th><th>{{ __('app.common.status') }}</th></tr></thead>
         <tbody>
         @forelse($payments as $p)
           <tr>
@@ -59,7 +59,7 @@
             <td>{{ $p->status }}</td>
           </tr>
         @empty
-          <tr><td colspan="4" class="text-muted">Aucun paiement</td></tr>
+          <tr><td colspan="4" class="text-muted">{{ __('app.common.empty') }}</td></tr>
         @endforelse
         </tbody>
       </table>

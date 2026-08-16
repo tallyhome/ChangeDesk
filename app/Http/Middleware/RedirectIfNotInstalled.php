@@ -11,7 +11,7 @@ class RedirectIfNotInstalled
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->is('install') || $request->is('install/*') || $request->is('up')) {
+        if ($request->is('install') || $request->is('install/*') || $request->is('up') || $request->is('locale/*')) {
             return $next($request);
         }
 

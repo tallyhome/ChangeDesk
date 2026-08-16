@@ -1,25 +1,25 @@
 @extends('themes.aurora.layouts.app')
-@section('title', 'Historique des versions')
+@section('title', __('app.public.changelog_title'))
 @section('content')
-<h1 class="au-title">Historique des versions</h1>
+<h1 class="au-title">{{ __('app.public.changelog_title') }}</h1>
 
 <div class="au-grid">
   <div class="au-panel">
     <div class="au-panel-pad">
       <div class="au-panel-head">
         <div>
-          <h2 style="margin:0;font-size:1.15rem;font-weight:800;color:#fff">Versions</h2>
+          <h2 style="margin:0;font-size:1.15rem;font-weight:800;color:#fff">{{ __('app.common.versions') }}</h2>
         </div>
-        <span class="au-chip">{{ $versions->count() }} publiée{{ $versions->count() > 1 ? 's' : '' }}</span>
+        <span class="au-chip">{{ trans_choice('app.public.published_count', $versions->count(), ['count' => $versions->count()]) }}</span>
       </div>
 
       <div class="table-responsive">
         <table class="au-table">
           <thead>
             <tr>
-              <th>Version</th>
-              <th>Date</th>
-              <th>Statut</th>
+              <th>{{ __('app.common.version') }}</th>
+              <th>{{ __('app.common.date') }}</th>
+              <th>{{ __('app.common.status') }}</th>
               <th></th>
             </tr>
           </thead>
@@ -29,11 +29,11 @@
                 <td>
                   <span class="au-ver">
                     v{{ $version->version_number }}
-                    <small>{{ $version->description ?: 'Release' }}</small>
+                    <small>{{ $version->description ?: __('app.common.release') }}</small>
                   </span>
                 </td>
-                <td>{{ $version->release_date?->format('d/m/Y') }}</td>
-                <td><span class="au-status done"><i class="fas fa-check-circle"></i> Publié</span></td>
+                <td>{{ \App\Support\Locale::formatDate($version->release_date) }}</td>
+                <td><span class="au-status done"><i class="fas fa-check-circle"></i> {{ __('app.common.published') }}</span></td>
                 <td class="au-muted"><i class="fas fa-globe"></i></td>
               </tr>
               <tr>
@@ -44,7 +44,7 @@
                 </td>
               </tr>
             @empty
-              <tr><td colspan="4" class="au-muted">Aucune version publiée.</td></tr>
+              <tr><td colspan="4" class="au-muted">{{ __('app.common.empty') }}</td></tr>
             @endforelse
           </tbody>
         </table>
@@ -52,21 +52,21 @@
     </div>
   </div>
 
-  <aside class="au-side" aria-label="Versions disponibles">
-    <div class="au-side-head">Versions disponibles</div>
+  <aside class="au-side" aria-label="{{ __('app.common.available_versions') }}">
+    <div class="au-side-head">{{ __('app.common.available_versions') }}</div>
     <ul class="au-side-list">
       @forelse($versions as $version)
         <li>
           <a href="#version-{{ $version->id }}">
             <div>
               <strong>v{{ $version->version_number }}</strong>
-              <small>{{ $version->release_date?->format('d/m/Y') }}</small>
+              <small>{{ \App\Support\Locale::formatDate($version->release_date) }}</small>
             </div>
             <span class="chev" aria-hidden="true">›</span>
           </a>
         </li>
       @empty
-        <li style="padding:1rem" class="au-muted">Aucune version</li>
+        <li style="padding:1rem" class="au-muted">{{ __('app.common.empty') }}</li>
       @endforelse
     </ul>
   </aside>

@@ -1,7 +1,7 @@
 @extends('superadmin.layout')
-@section('title', 'Tenants')
+@section('title', __('app.superadmin.tenants'))
 @section('content')
-<h1 class="mb-4">Tenants</h1>
+<h1 class="mb-4">{{ __('app.superadmin.tenants') }}</h1>
 <div class="card"><div class="table-responsive">
 <table class="table table-hover mb-0">
 <thead><tr><th>Nom</th><th>Slug</th><th>Plan</th><th>Thème</th><th>Domaine</th><th>Statut</th><th></th></tr></thead>

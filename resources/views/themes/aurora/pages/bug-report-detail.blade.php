@@ -7,9 +7,9 @@
     <div class="au-panel-head">
       <div>
         <h1>{{ $bug->title }}</h1>
-        <p>Signalé le {{ $bug->created_at?->format('d/m/Y à H:i') }}</p>
+        <p>{{ \App\Support\Locale::formatDate($bug->created_at) }}</p>
       </div>
-      <a href="{{ route('bug-report') }}" class="au-btn-ghost"><i class="fas fa-arrow-left"></i> Retour</a>
+      <a href="{{ route('bug-report') }}" class="au-btn-ghost"><i class="fas fa-arrow-left"></i> {{ __('app.common.back') }}</a>
     </div>
     <p style="margin:0 0 1rem">
       <span class="au-status {{ in_array($bug->status, ['resolved','closed','completed']) ? 'done' : ($bug->status === 'in_progress' ? 'progress' : 'open') }}">

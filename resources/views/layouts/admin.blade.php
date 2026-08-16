@@ -185,53 +185,53 @@
                     <ul class="nav admin-tabs" style="z-index: 1000; position: fixed; top: 56px; left: 0; right: 0; margin: 0; padding: 5px 20px; background-color: var(--tab-bg); box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
-                                <i class="fas fa-tachometer-alt"></i> Dashboard
+                                <i class="fas fa-tachometer-alt"></i> {{ __('app.admin.dashboard') }}
                             </a>
                         </li>
 
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.changelog*') ? 'active' : '' }}" href="{{ route('admin.changelog') }}">
-                                <i class="fas fa-history"></i> Changelog
+                                <i class="fas fa-history"></i> {{ __('app.admin.changelog') }}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.todolist*') ? 'active' : '' }}" href="{{ route('admin.todolist') }}">
-                                <i class="fas fa-tasks"></i> Fonctionnalités à venir
+                                <i class="fas fa-tasks"></i> {{ __('app.admin.upcoming') }}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.bug_reports*') ? 'active' : '' }}" href="{{ route('admin.bug_reports') }}">
-                                <i class="fas fa-bug"></i> Rapports de bugs
+                                <i class="fas fa-bug"></i> {{ __('app.admin.bug_reports') }}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.domain.*') ? 'active' : '' }}" href="{{ route('admin.domain.edit') }}">
-                                <i class="fas fa-globe"></i> Domaine
+                                <i class="fas fa-globe"></i> {{ __('app.admin.domain') }}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.appearance.*') ? 'active' : '' }}" href="{{ route('admin.appearance.edit') }}">
-                                <i class="fas fa-palette"></i> Apparence
+                                <i class="fas fa-palette"></i> {{ __('app.admin.appearance') }}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.billing.*') ? 'active' : '' }}" href="{{ route('admin.billing.index') }}">
-                                <i class="fas fa-credit-card"></i> Facturation
+                                <i class="fas fa-credit-card"></i> {{ __('app.admin.billing') }}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('admin.settings.index') }}" class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
-                                <i class="fas fa-link me-2"></i>Liens externes
+                                <i class="fas fa-link me-2"></i>{{ __('app.admin.external_links') }}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.visits.*') ? 'active' : '' }}" href="{{ route('admin.visits.index') }}">
-                                <i class="fas fa-chart-line me-2"></i>Statistiques
+                                <i class="fas fa-chart-line me-2"></i>{{ __('app.admin.stats') }}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.wiki.*') ? 'active' : '' }}" href="{{ route('admin.wiki.index') }}">
-                                <i class="fas fa-book"></i> Wiki
+                                <i class="fas fa-book"></i> {{ __('app.admin.wiki') }}
                             </a>
                         </li>
                     </ul>

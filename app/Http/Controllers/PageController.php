@@ -74,7 +74,7 @@ class PageController extends Controller
         $bugReport->reporter_email = ! empty($validated['email']) ? $validated['email'] : 'anonyme@example.com';
         $bugReport->save();
 
-        return redirect()->route('bug-report')->with('success', 'Votre signalement de bug a été enregistré avec succès. Merci de votre contribution !');
+        return redirect()->route('bug-report')->with('success', __('app.flash.bug_public'));
     }
 
     public function showBugReport($id)

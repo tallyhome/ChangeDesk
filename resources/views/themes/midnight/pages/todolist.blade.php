@@ -1,9 +1,9 @@
 @extends('themes.midnight.layouts.app')
-@section('title', 'Roadmap')
+@section('title', __('app.public.todolist_title'))
 @section('content')
 @php use App\Support\ThemeUi; @endphp
-<h1 class="md-title">Notre roadmap</h1>
-<p class="md-muted">Fonctionnalités à venir, en cours et terminées.</p>
+<h1 class="md-title">{{ __('app.public.todolist_title') }}</h1>
+<p class="md-muted">{{ __('app.landing.mod_roadmap_only_text') }}</p>
 @foreach($todoItems as $item)
   @php
     $progress = $item->progress ?? $item->completion_percentage ?? 0;

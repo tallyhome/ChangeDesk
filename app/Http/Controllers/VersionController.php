@@ -43,7 +43,7 @@ class VersionController extends Controller
         
         $version->save();
         
-        return redirect()->route('admin.changelog')->with('success', 'Version ajoutée avec succès.');
+        return redirect()->route('admin.changelog')->with('success', __('app.flash.version_added'));
     }
 
     public function edit(Version $version)
@@ -81,13 +81,13 @@ class VersionController extends Controller
         
         $version->save();
         
-        return redirect()->route('admin.changelog')->with('success', 'Version mise à jour avec succès.');
+        return redirect()->route('admin.changelog')->with('success', __('app.flash.version_updated'));
     }
 
     public function destroy(Version $version)
     {
         $version->delete();
-        return redirect()->route('admin.changelog')->with('success', 'Version supprimée avec succès.');
+        return redirect()->route('admin.changelog')->with('success', __('app.flash.version_deleted'));
     }
 
     public function toggleChangelogStatus()

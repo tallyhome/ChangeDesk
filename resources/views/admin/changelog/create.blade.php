@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 
-@section('title', 'Nouvelle Version')
+@section('title', __('app.admin.new_version'))
 
 @section('content')
 <div class="container">
     <div class="row">
         <div class="col-md-8">
-            <h1>Créer une Nouvelle Version</h1>
+            <h1>{{ __('app.admin.new_version') }}</h1>
             
             <form action="{{ route('admin.changelog.store') }}" method="POST">
                 @csrf

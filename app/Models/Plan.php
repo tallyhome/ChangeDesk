@@ -56,7 +56,7 @@ class Plan extends Model
     public function formattedPrice(): string
     {
         if ($this->price_cents <= 0) {
-            return 'Gratuit';
+            return __('app.common.free');
         }
 
         return number_format($this->price_cents / 100, 2, ',', ' ').' € / '.$this->interval;

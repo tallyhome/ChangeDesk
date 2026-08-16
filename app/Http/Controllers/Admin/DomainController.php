@@ -86,7 +86,7 @@ class DomainController extends Controller
 
         return redirect()
             ->route('admin.domain.edit')
-            ->with('success', 'Paramètres de domaine enregistrés.');
+            ->with('success', __('app.flash.domain_saved'));
     }
 
     public function verify(Request $request, DomainVerificationService $verifier, PlanGate $gate)

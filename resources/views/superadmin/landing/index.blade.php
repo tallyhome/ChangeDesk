@@ -1,12 +1,12 @@
 @extends('superadmin.layout')
-@section('title', 'Site vitrine')
+@section('title', __('app.superadmin.landing'))
 @section('content')
 <div class="sa-top">
   <div>
-    <h1>Thème du site vitrine</h1>
-    <div class="text-muted">Choisissez l’apparence de la page d’accueil publique (domaine central).</div>
+    <h1>{{ __('app.superadmin.landing_title') }}</h1>
+    <div class="text-muted">{{ __('app.superadmin.landing_lead') }}</div>
   </div>
-  <a href="{{ url('/') }}" target="_blank" rel="noopener" class="btn btn-outline-primary btn-sm"><i class="fas fa-arrow-up-right-from-square me-1"></i> Voir le site</a>
+  <a href="{{ url('/') }}" target="_blank" rel="noopener" class="btn btn-outline-primary btn-sm"><i class="fas fa-arrow-up-right-from-square me-1"></i> {{ __('app.superadmin.see_site') }}</a>
 </div>
 
 <div class="row g-3">
@@ -23,7 +23,7 @@
             <code class="small text-muted">{{ $slug }}</code>
           </div>
           @if($isActive)
-            <span class="badge bg-success">Actif</span>
+            <span class="badge bg-success">{{ __('app.superadmin.active_theme') }}</span>
           @endif
         </div>
 
@@ -38,14 +38,14 @@
         <div class="p-3 d-flex flex-column gap-3 flex-grow-1">
           <p class="small text-muted mb-0">{{ $theme['description'] }}</p>
           <div class="mt-auto d-flex gap-2">
-            <a class="btn btn-sm btn-outline-primary" href="{{ route('superadmin.landing.preview', $slug) }}" target="_blank" rel="noopener">Aperçu plein écran</a>
+            <a class="btn btn-sm btn-outline-primary" href="{{ route('superadmin.landing.preview', $slug) }}" target="_blank" rel="noopener">{{ __('app.superadmin.fullscreen') }}</a>
             @if($isActive)
-              <button class="btn btn-sm btn-success" disabled>Thème en place</button>
+              <button class="btn btn-sm btn-success" disabled>{{ __('app.superadmin.theme_in_place') }}</button>
             @else
-              <form method="POST" action="{{ route('superadmin.landing.update') }}" data-confirm="Activer le thème « {{ $theme['label'] }} » sur le site vitrine ?">
+              <form method="POST" action="{{ route('superadmin.landing.update') }}" data-confirm="{{ __('app.superadmin.confirm_theme', ['name' => $theme['label']]) }}">
                 @csrf
                 <input type="hidden" name="theme" value="{{ $slug }}">
-                <button class="btn btn-sm btn-accent">Activer</button>
+                <button class="btn btn-sm btn-accent">{{ __('app.superadmin.activate') }}</button>
               </form>
             @endif
           </div>
@@ -56,11 +56,11 @@
 </div>
 
 <div class="sa-card mt-3 p-3">
-  <h2 class="h6">Bon à savoir</h2>
+  <h2 class="h6">{{ __('app.superadmin.note_title') }}</h2>
   <ul class="small text-muted mb-0">
-    <li>Le choix s’applique uniquement à la page d’accueil du domaine central — les thèmes visiteurs des tenants restent gérés par chaque client.</li>
-    <li>Valeur de secours si la base est indisponible : <code>LANDING_THEME</code> dans le <code>.env</code>.</li>
-    <li>Après un changement, pensez à vider le cache de vue si vous utilisez <code>view:cache</code>.</li>
+    <li>{{ __('app.superadmin.note_1') }}</li>
+    <li>{{ __('app.superadmin.note_2') }}</li>
+    <li>{{ __('app.superadmin.note_3') }}</li>
   </ul>
 </div>
 @endsection

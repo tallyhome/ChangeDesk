@@ -21,6 +21,6 @@ class ImpersonationController extends Controller
 
         AuditLog::record('impersonation.stop', null, ['superadmin_id' => $admin->id]);
 
-        return redirect()->route('superadmin.dashboard')->with('success', 'Impersonation terminée.');
+        return redirect()->route('superadmin.dashboard')->with('success', __('app.flash.impersonation_left'));
     }
 }
