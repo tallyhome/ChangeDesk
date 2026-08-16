@@ -20,6 +20,7 @@ use App\Http\Controllers\ThemePreviewController;
 use App\Http\Controllers\SuperAdmin\AuditLogController;
 use App\Http\Controllers\SuperAdmin\BillingController as SuperAdminBillingController;
 use App\Http\Controllers\SuperAdmin\DashboardController as SuperAdminDashboardController;
+use App\Http\Controllers\SuperAdmin\LandingThemeController as SuperAdminLandingThemeController;
 use App\Http\Controllers\SuperAdmin\PlanController as SuperAdminPlanController;
 use App\Http\Controllers\SuperAdmin\TenantController as SuperAdminTenantController;
 use App\Http\Controllers\SuperAdmin\UserController as SuperAdminUserController;
@@ -210,6 +211,10 @@ Route::middleware(['central', 'auth', 'superadmin'])
 
         Route::get('/billing', [SuperAdminBillingController::class, 'index'])->name('billing.index');
         Route::post('/billing/assign', [SuperAdminBillingController::class, 'assign'])->name('billing.assign');
+
+        Route::get('/landing', [SuperAdminLandingThemeController::class, 'index'])->name('landing.index');
+        Route::post('/landing', [SuperAdminLandingThemeController::class, 'update'])->name('landing.update');
+        Route::get('/landing/preview/{theme}', [SuperAdminLandingThemeController::class, 'preview'])->name('landing.preview');
 
         Route::get('/audit', [AuditLogController::class, 'index'])->name('audit.index');
 

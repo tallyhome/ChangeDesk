@@ -124,7 +124,7 @@ class InstallController extends Controller
                 ['email' => $data['admin_email']],
                 [
                     'name' => $data['admin_name'],
-                    'password' => Hash::make($data['admin_password']),
+                    'password' => $data['admin_password'],
                     'role' => User::ROLE_SUPERADMIN,
                     'tenant_id' => null,
                     'is_active' => true,

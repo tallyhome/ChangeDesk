@@ -62,6 +62,7 @@ body{margin:0;font-family:Manrope,system-ui,sans-serif;background:var(--sa-bg);c
       <a class="{{ request()->routeIs('superadmin.users.*') ? 'active' : '' }}" href="{{ route('superadmin.users.index') }}"><i class="fas fa-users"></i> Utilisateurs</a>
       <a class="{{ request()->routeIs('superadmin.plans.*') ? 'active' : '' }}" href="{{ route('superadmin.plans.index') }}"><i class="fas fa-tags"></i> Plans</a>
       <a class="{{ request()->routeIs('superadmin.billing.*') ? 'active' : '' }}" href="{{ route('superadmin.billing.index') }}"><i class="fas fa-credit-card"></i> Facturation</a>
+      <a class="{{ request()->routeIs('superadmin.landing.*') ? 'active' : '' }}" href="{{ route('superadmin.landing.index') }}"><i class="fas fa-palette"></i> Site vitrine</a>
       <div class="section-label">Système</div>
       <a class="{{ request()->routeIs('superadmin.audit.*') ? 'active' : '' }}" href="{{ route('superadmin.audit.index') }}"><i class="fas fa-clipboard-list"></i> Audit</a>
       <a class="{{ request()->routeIs('superadmin.updates.*') ? 'active' : '' }}" href="{{ route('superadmin.updates.index') }}"><i class="fas fa-cloud-arrow-down"></i> Mises à jour</a>

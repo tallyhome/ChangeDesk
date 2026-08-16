@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Plan;
 use App\Models\Tenant;
+use App\Support\LandingTheme;
 
 class HomeController extends Controller
 {
@@ -15,6 +16,6 @@ class HomeController extends Controller
 
         $plans = Plan::where('is_active', true)->orderBy('sort_order')->get();
 
-        return view('central.landing', compact('plans'));
+        return view(LandingTheme::view(), compact('plans'));
     }
 }

@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class AdminSeeder extends Seeder
@@ -31,7 +30,7 @@ class AdminSeeder extends Seeder
             ['email' => 'demo@chanlog.app'],
             [
                 'name' => 'Demo Admin',
-                'password' => Hash::make('password'),
+                'password' => 'password',
                 'role' => User::ROLE_CLIENT,
                 'tenant_id' => $tenant->id,
                 'is_active' => true,
@@ -47,19 +46,34 @@ class AdminSeeder extends Seeder
             ]);
         }
 
+        // Unifier l’ancien email migration → superadmin@chanlog.app
+        $legacySa = User::where('email', 'superadmin@changelog.fr')->first();
+        if ($legacySa && ! User::where('email', 'superadmin@chanlog.app')->exists()) {
+            $legacySa->update([
+                'email' => 'superadmin@chanlog.app',
+                'name' => 'Super Admin',
+                'password' => 'password',
+                'role' => User::ROLE_SUPERADMIN,
+                'tenant_id' => null,
+                'is_active' => true,
+            ]);
+        } elseif ($legacySa) {
+            $legacySa->update([
+                'role' => User::ROLE_SUPERADMIN,
+                'tenant_id' => null,
+                'is_active' => true,
+            ]);
+        }
+
         User::updateOrCreate(
             ['email' => 'superadmin@chanlog.app'],
             [
                 'name' => 'Super Admin',
-                'password' => Hash::make('password'),
+                'password' => 'password',
                 'role' => User::ROLE_SUPERADMIN,
                 'tenant_id' => null,
                 'is_active' => true,
             ]
         );
-
-        if ($oldSa = User::where('email', 'superadmin@changelog.fr')->first()) {
-            $oldSa->update(['role' => User::ROLE_SUPERADMIN, 'tenant_id' => null]);
-        }
     }
 }
