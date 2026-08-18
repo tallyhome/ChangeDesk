@@ -11,6 +11,6 @@ class ExampleTest extends TestCase
         $response = $this->get('http://localhost/');
 
         $response->assertStatus(200);
-        $response->assertSee('ChangeDesk');
+        $response->assertSee('Evolora');
     }
 }

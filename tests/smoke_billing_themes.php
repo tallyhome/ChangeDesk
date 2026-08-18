@@ -83,7 +83,7 @@ assert_true(str_contains($res2->getContent(), '9.9.9') || str_contains($res2->ge
 
 $landing = $kernel->handle(Illuminate\Http\Request::create('http://localhost/', 'GET'));
 assert_true($landing->getStatusCode() === 200, 'vitrine ok');
-assert_true(str_contains($landing->getContent(), 'ChanLog') || str_contains($landing->getContent(), 'plans') || str_contains($landing->getContent(), 'Free'), 'vitrine shows brand/plans');
+assert_true(str_contains($landing->getContent(), 'Evolora') || str_contains($landing->getContent(), 'plans') || str_contains($landing->getContent(), 'Free'), 'vitrine shows brand/plans');
 
 $payload = [
     'type' => 'checkout.session.completed',

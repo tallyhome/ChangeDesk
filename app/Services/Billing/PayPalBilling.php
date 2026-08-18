@@ -48,7 +48,7 @@ class PayPalBilling
                 'plan_id' => $paypalPlanId,
                 'custom_id' => json_encode(['tenant_id' => $tenant->id, 'plan_id' => $plan->id]),
                 'application_context' => [
-                    'brand_name' => config('app.name', 'ChanLog'),
+                    'brand_name' => config('app.name', 'Evolora'),
                     'user_action' => 'SUBSCRIBE_NOW',
                     'return_url' => $returnUrl,
                     'cancel_url' => $cancelUrl,

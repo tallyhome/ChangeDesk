@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prérequis serveur — Evolora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Manrope:wght@500;650;750;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div id="app" data-page="prerequis">
+  <main class="main">
+    <div class="kicker">Avant d’installer</div>
+    <h1>Prérequis serveur</h1>
+    <p class="lead">L’étape 2 de l’assistant (<code>/install/requirements</code>) contrôle ces points. Corrigez-les avant de continuer, sinon l’installation s’arrête.</p>
+
+    <h2>Logiciels</h2>
+    <table>
+      <thead><tr><th>Composant</th><th>Minimum</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>PHP</td><td>8.2 ou plus</td><td>Laravel 12. Activez PHP 8.2 / 8.3 dans le sélecteur du panneau.</td></tr>
+        <tr><td>MySQL / MariaDB</td><td>5.7+ / 10.3+</td><td>Une base vide suffit. L’installeur crée les tables.</td></tr>
+        <tr><td>Composer</td><td>2.x</td><td>Uniquement si le dossier <code>vendor/</code> n’est pas déjà livré.</td></tr>
+        <tr><td>Apache ou Nginx</td><td>mod_rewrite / try_files</td><td>Le front controller est <code>public/index.php</code>.</td></tr>
+        <tr><td>HTTPS</td><td>Recommandé</td><td>Let’s Encrypt / AutoSSL. Obligatoire pour les cookies sécurisés en prod.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Extensions PHP contrôlées par l’assistant</h2>
+    <div class="grid grid-3">
+      <div class="card"><h3>PDO + PDO MySQL</h3><p>Connexion à la base.</p></div>
+      <div class="card"><h3>Mbstring</h3><p>Chaînes UTF-8.</p></div>
+      <div class="card"><h3>OpenSSL</h3><p>Clés, HTTPS, hash.</p></div>
+      <div class="card"><h3>Tokenizer, XML, Ctype, JSON</h3><p>Cœur Laravel.</p></div>
+      <div class="card"><h3>BCMath</h3><p>Calculs (facturation).</p></div>
+      <div class="card"><h3>Fileinfo + Curl</h3><p>Uploads et appels HTTP.</p></div>
+    </div>
+
+    <h2>Droits d’écriture</h2>
+    <p>L’assistant doit pouvoir écrire :</p>
+    <ul>
+      <li><code>storage/</code> (logs, cache, fichier <code>installed</code>)</li>
+      <li><code>bootstrap/cache/</code></li>
+      <li>le fichier <code>.env</code> à la racine, ou le dossier racine s’il n’existe pas encore</li>
+    </ul>
+    <pre><code>chmod -R 775 storage bootstrap/cache
+# Si besoin, propriétaire = utilisateur du serveur web
+chown -R USER:USER storage bootstrap/cache</code></pre>
+
+    <div class="callout warn">
+      <strong>Node.js n’est pas obligatoire en production</strong>
+      Les assets sont déjà compilés dans <code>public/</code>. N’uploadez pas <code>node_modules/</code>. Composer en mode <code>--no-dev</code> suffit si <code>vendor/</code> est absent.
+    </div>
+
+    <h2>Ce qu’il ne faut pas uploader</h2>
+    <ul>
+      <li><code>node_modules/</code></li>
+      <li>archives <code>.zip</code> du projet (elles gonflent le compte)</li>
+      <li>vieux backups dans <code>storage/app/backups/</code></li>
+      <li>le dossier <code>.git/</code> (optionnel, inutile en prod)</li>
+    </ul>
+
+    <footer><a href="wizard.html">Suivant : assistant d’installation →</a></footer>
+  </main>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

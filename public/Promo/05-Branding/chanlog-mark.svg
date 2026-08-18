@@ -1,18 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="ChanLog mark">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Evolora mark">
   <defs>
-    <linearGradient id="m" x1="20" y1="16" x2="108" y2="112" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#2DD4BF"/>
-      <stop offset="100%" stop-color="#0D9488"/>
+    <linearGradient id="ev-m" x1="24" y1="16" x2="112" y2="112" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#5EEAD4"/>
+      <stop offset="55%" stop-color="#14B8A6"/>
+      <stop offset="100%" stop-color="#E8B86D"/>
     </linearGradient>
   </defs>
-  <!-- Transparent background mark for badges / README inline use -->
-  <g fill="none" stroke="url(#m)" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M36 24v80" stroke-width="10"/>
-    <circle cx="36" cy="36" r="8" fill="#2DD4BF" stroke="none"/>
-    <circle cx="36" cy="64" r="8" fill="#14B8A6" stroke="none"/>
-    <circle cx="36" cy="92" r="8" fill="#0D9488" stroke="none"/>
-    <path d="M54 36h48" stroke-width="10"/>
-    <path d="M54 64h36" stroke-width="10"/>
-    <path d="M54 92h24" stroke-width="10"/>
+  <g fill="none" stroke="url(#ev-m)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M40 22c0 28 0 42 18 54 14 10 30 14 30 30" stroke-width="10"/>
+    <circle cx="40" cy="36" r="8" fill="#5EEAD4" stroke="none"/>
+    <circle cx="52" cy="64" r="8" fill="#14B8A6" stroke="none"/>
+    <circle cx="88" cy="96" r="8" fill="#E8B86D" stroke="none"/>
+    <path d="M56 36h40" stroke-width="9"/>
+    <path d="M68 64h32" stroke-width="9"/>
+    <path d="M100 96h12" stroke-width="9"/>
   </g>
 </svg>

@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ChanLog — Changelog multi-tenant</title>
+<title>Evolora — Changelog multi-tenant</title>
 @include('partials.favicon')
-@php $siteVersion = config('updates.number', config('version.number', '2.8.7')); @endphp
+@php $siteVersion = config('updates.number', config('version.number', '2.8.8')); @endphp
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -172,8 +172,8 @@ footer b{color:var(--ink)}
 <div class="wrap">
 <header class="nav" id="topNav">
   <a class="brand" href="/">
-    <img src="{{ asset('Promo/05-Branding/chanlog-mark.svg') }}" alt="">
-    ChanLog
+    <img src="{{ asset('Promo/05-Branding/evolora-mark.svg') }}" alt="">
+    Evolora
   </a>
   <button class="nav-burger" id="burger" aria-label="{{ __('app.nav.menu') }}">☰</button>
   <nav class="nav-links" id="navLinks" aria-label="{{ __('app.nav.menu') }}">
@@ -208,10 +208,10 @@ footer b{color:var(--ink)}
       <span class="window-url" id="winUrl">https://acme.{{ config('tenancy.central_domain') }}/changelog</span>
     </div>
     <div class="slides" id="slides">
-      <img class="on" src="{{ asset('Promo/03-Marketplace/chanlog-marketplace-01-cover.png') }}" alt="Dashboard ChanLog" data-url="/admin" loading="eager">
-      <img src="{{ asset('Promo/03-Marketplace/chanlog-marketplace-02-roadmap.png') }}" alt="Roadmap publique" data-url="/todolist" loading="lazy">
-      <img src="{{ asset('Promo/03-Marketplace/chanlog-marketplace-03-bugs.png') }}" alt="Suivi des bugs" data-url="/bug-report" loading="lazy">
-      <img src="{{ asset('Promo/03-Marketplace/chanlog-marketplace-04-wiki.png') }}" alt="Wiki" data-url="/wiki" loading="lazy">
+      <img class="on" src="{{ asset('Promo/03-Marketplace/evolora-marketplace-01-cover.png') }}" alt="Dashboard Evolora" data-url="/admin" loading="eager">
+      <img src="{{ asset('Promo/03-Marketplace/evolora-marketplace-02-roadmap.png') }}" alt="Roadmap publique" data-url="/todolist" loading="lazy">
+      <img src="{{ asset('Promo/03-Marketplace/evolora-marketplace-03-bugs.png') }}" alt="Suivi des bugs" data-url="/bug-report" loading="lazy">
+      <img src="{{ asset('Promo/03-Marketplace/evolora-marketplace-04-wiki.png') }}" alt="Wiki" data-url="/wiki" loading="lazy">
     </div>
     <div class="slide-tabs" id="slideTabs">
       <button class="on" type="button">{{ __('app.landing.dashboard') }}</button>
@@ -260,15 +260,15 @@ footer b{color:var(--ink)}
   </div>
   <div class="shots">
     <figure class="shot full reveal" style="margin:0">
-      <img src="{{ asset('Promo/03-Marketplace/chanlog-marketplace-01-cover.png') }}" alt="Dashboard ChanLog" loading="lazy">
+      <img src="{{ asset('Promo/03-Marketplace/evolora-marketplace-01-cover.png') }}" alt="Dashboard Evolora" loading="lazy">
       <figcaption><b>{{ __('app.landing.dashboard') }}</b><span>{{ __('app.landing.dashboard_cap') }}</span></figcaption>
     </figure>
     <figure class="shot reveal d1" style="margin:0">
-      <img src="{{ asset('Promo/03-Marketplace/chanlog-marketplace-02-roadmap.png') }}" alt="Roadmap publique" loading="lazy">
+      <img src="{{ asset('Promo/03-Marketplace/evolora-marketplace-02-roadmap.png') }}" alt="Roadmap publique" loading="lazy">
       <figcaption><b>{{ __('app.landing.mod_roadmap_only') }}</b><span>{{ __('app.landing.roadmap_cap') }}</span></figcaption>
     </figure>
     <figure class="shot reveal d2" style="margin:0">
-      <img src="{{ asset('Promo/03-Marketplace/chanlog-marketplace-03-bugs.png') }}" alt="Suivi des bugs" loading="lazy">
+      <img src="{{ asset('Promo/03-Marketplace/evolora-marketplace-03-bugs.png') }}" alt="Suivi des bugs" loading="lazy">
       <figcaption><b>{{ __('app.landing.mod_bugs') }}</b><span>{{ __('app.landing.bugs_cap') }}</span></figcaption>
     </figure>
   </div>
@@ -333,7 +333,7 @@ footer b{color:var(--ink)}
 </section>
 
 <footer>
-  <span><b>ChanLog</b> v{{ $siteVersion }}</span>
+  <span><b>Evolora</b> v{{ $siteVersion }}</span>
   <span>{{ __('app.footer.multi_tenant') }}</span>
 </footer>
 </div>

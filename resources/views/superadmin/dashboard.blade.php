@@ -4,7 +4,7 @@
 <div class="sa-top">
   <div>
     <h1>{{ __('app.superadmin.dashboard') }}</h1>
-    <div class="text-muted">Pilotage de ChanLog en un coup d’œil</div>
+    <div class="text-muted">Pilotage de Evolora en un coup d’œil</div>
   </div>
   <a href="{{ route('superadmin.tenants.index') }}" class="btn btn-accent">Gérer les tenants</a>
 </div>

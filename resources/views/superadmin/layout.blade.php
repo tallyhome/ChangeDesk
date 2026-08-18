@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>@yield('title', 'Superadmin') — ChanLog</title>
+<title>@yield('title', 'Superadmin') — Evolora</title>
 @include('partials.favicon')
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -51,7 +51,7 @@ body{margin:0;font-family:Manrope,system-ui,sans-serif;background:var(--sa-bg);c
 <div class="sa-shell">
   <aside class="sa-side" id="saSide">
     <div class="d-flex justify-content-between align-items-center">
-      <div class="sa-brand">Chan<span>Log</span> Admin</div>
+      <div class="sa-brand">Evo<span>lora</span> Admin</div>
       <button type="button" class="sa-menu-btn d-md-none" id="saClose" aria-label="{{ __('app.nav.close') }}">✕</button>
     </div>
     <nav class="sa-nav">

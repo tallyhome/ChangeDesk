@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Installation ChanLog</title>
+<title>Installation Evolora</title>
 @include('partials.favicon')
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@ body{font-family:Manrope,system-ui,sans-serif;background:#f3faf8;min-height:100v
 <body>
 <div class="wrap">
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <div class="brand">Chan<span>Log</span> Installer</div>
+    <div class="brand">Evo<span>lora</span> Installer</div>
     @include('partials.lang-switcher', ['variant' => 'light'])
   </div>
   <div class="steps">

@@ -9,9 +9,15 @@ use Throwable;
 
 class ApplyPlatformUpdate extends Command
 {
-    protected $signature = 'chanlog:apply-update {tag? : Tag GitHub à installer (sinon dernière release)}';
+    protected $signature = 'evolora:apply-update {tag? : Tag GitHub à installer (sinon dernière release)}';
 
     protected $description = 'Applique une mise à jour plateforme en arrière-plan (progression via progress.json)';
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->setAliases(['chanlog:apply-update']);
+    }
 
     public function handle(GithubUpdater $updater): int
     {

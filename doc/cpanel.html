@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Installation cPanel / WHM — Evolora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Manrope:wght@500;650;750;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div id="app" data-page="cpanel">
+  <main class="main">
+    <div class="kicker">cPanel · WHM</div>
+    <h1>Installer Evolora sur cPanel</h1>
+    <p class="lead">Méthode la plus courante. L’objectif : fichiers en place, PHP 8.2, base MySQL, Document Root sur <code>public/</code>, puis l’assistant <code>/install</code>.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div>
+          <h3>Créer le domaine ou sous-domaine</h3>
+          <p>cPanel → <strong>Domaines</strong>. Exemple : <code>changelog.monsite.fr</code>. Notez le chemin du dossier (souvent <code>/home/USER/changelog.monsite.fr</code>).</p>
+        </div>
+      </div>
+      <div class="step">
+        <div>
+          <h3>Pointer le Document Root vers public/</h3>
+          <p>Domaines → Gérer → Document Root : <code>/home/USER/changelog.monsite.fr/public</code>. C’est la méthode A, recommandée.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div>
+          <h3>Uploader le projet</h3>
+          <p>Gestionnaire de fichiers ou FTP/SFTP. Extraire l’archive <strong>dans</strong> le dossier du domaine, de façon à avoir <code>app/</code>, <code>public/</code>, <code>vendor/</code> au même niveau. Si <code>vendor/</code> est absent, ouvrez le Terminal cPanel et lancez Composer (voir plus bas).</p>
+        </div>
+      </div>
+      <div class="step">
+        <div>
+          <h3>PHP 8.2</h3>
+          <p>cPanel → <strong>Select PHP Version</strong> / MultiPHP. Choisissez 8.2 ou 8.3 pour ce domaine. Cochez pdo_mysql, mbstring, openssl, tokenizer, xml, ctype, json, bcmath, fileinfo, curl.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div>
+          <h3>Créer la base MySQL</h3>
+          <p>cPanel → <strong>Bases de données MySQL</strong> : créer la base, un utilisateur, lui donner <strong>TOUS LES PRIVILÈGES</strong>. Notez nom complet (souvent préfixé <code>user_</code>), user et mot de passe. Détail : <a href="base-de-donnees.html">page base de données</a>.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div>
+          <h3>Permissions</h3>
+          <p>Dans le gestionnaire de fichiers, droits <code>755</code> ou <code>775</code> sur <code>storage</code> et <code>bootstrap/cache</code> (récursif). Le <code>.env</code> n’existe pas encore : l’installeur le créera.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div>
+          <h3>SSL</h3>
+          <p>cPanel → SSL/TLS Status → AutoSSL, ou Let’s Encrypt. Attendez que <code>https://changelog.monsite.fr</code> soit vert.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div>
+          <h3>Lancer l’assistant</h3>
+          <p>Ouvrez <code>https://changelog.monsite.fr/install</code> (ou simplement le domaine : redirection automatique). Suivez prérequis → base + superadmin.</p>
+        </div>
+      </div>
+    </div>
+
+    <h2>Méthode B — Document Root bloqué sur la racine</h2>
+    <p>Si cPanel impose le dossier du domaine sans <code>/public</code>, gardez le <code>.htaccess</code> à la racine (fichier <strong>avec le point</strong>). Un fichier nommé <code>htaccess</code> sans point est ignoré par Apache.</p>
+    <pre><code>cd /home/USER/changelog.monsite.fr
+# Si seul « htaccess » est présent :
+cp htaccess .htaccess</code></pre>
+    <p>Ce fichier réécrit <code>/install</code> et tout le reste vers <code>public/</code>, et désactive le listing des dossiers.</p>
+
+    <h2>Composer dans le Terminal cPanel</h2>
+    <pre><code>cd /home/USER/changelog.monsite.fr
+composer install --no-dev --prefer-dist --optimize-autoloader</code></pre>
+    <p>Sous Windows en local (PowerShell), ne pas utiliser <code>rm -rf</code> :</p>
+    <pre><code>Remove-Item -Recurse -Force vendor
+composer install --no-dev --prefer-dist --optimize-autoloader</code></pre>
+
+    <div class="callout warn">
+      <strong>Sous-domaines clients inaccessibles ?</strong>
+      Le site central peut marcher alors que <code>client.changelog.monsite.fr</code> échoue. C’est DNS / vhost / SSL, pas Laravel. Voir <a href="sous-domaines.html">sous-domaines wildcard</a>.
+    </div>
+
+    <footer><a href="webuzo.html">Suivant : Webuzo →</a></footer>
+  </main>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

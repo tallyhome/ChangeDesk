@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>@yield('title', $currentTenant->name ?? 'ChanLog') — {{ $currentTenant->name ?? 'ChanLog' }}</title>
+<title>@yield('title', $currentTenant->name ?? config('app.name')) — {{ $currentTenant->name ?? config('app.name') }}</title>
 @include('partials.favicon')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="{{ asset('css/themes/aurora.css') }}?v={{ config('version.number') }}">
@@ -12,7 +12,7 @@
 @php
   $gate = app(\App\Services\PlanGate::class);
   $t = $currentTenant ?? null;
-  $brand = $t->name ?? 'ChanLog';
+  $brand = $t->name ?? config('app.name');
   $central = rtrim(config('app.url'), '/');
 @endphp
 <div class="au-bg" aria-hidden="true"></div>

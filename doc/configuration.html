@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Configurer l’application — Evolora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Manrope:wght@500;650;750;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div id="app" data-page="config">
+  <main class="main">
+    <div class="kicker">Après l’assistant</div>
+    <h1>Configurer l’application</h1>
+    <p class="lead">L’installeur écrit un <code>.env</code> de production. Vous pouvez l’ajuster (e-mail, Stripe, PayPal, domaines) puis vider le cache de config.</p>
+
+    <h2>Variables essentielles</h2>
+    <pre><code>APP_NAME=Evolora
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://changelog.monsite.fr
+
+CENTRAL_DOMAIN=changelog.monsite.fr
+CENTRAL_DOMAINS=changelog.monsite.fr,www.changelog.monsite.fr
+TENANCY_CNAME_TARGET=cname.changelog.monsite.fr</code></pre>
+    <ul>
+      <li><code>APP_URL</code> : sans slash final.</li>
+      <li><code>CENTRAL_DOMAIN</code> : hôte du site vitrine / login, sans <code>https://</code>.</li>
+      <li><code>CENTRAL_DOMAINS</code> : liste des hôtes considérés comme « centraux » (pas un tenant).</li>
+      <li><code>TENANCY_CNAME_TARGET</code> : cible DNS que vos clients doivent pointer pour un domaine personnalisé.</li>
+    </ul>
+
+    <h2>Base, session, cache</h2>
+    <p>Écrits par l’installeur :</p>
+    <pre><code>DB_CONNECTION=mysql
+DB_HOST=localhost
+DB_PORT=3306
+DB_DATABASE=...
+DB_USERNAME=...
+DB_PASSWORD="..."
+
+SESSION_DRIVER=database
+QUEUE_CONNECTION=database
+CACHE_STORE=database
+SESSION_DOMAIN=null</code></pre>
+    <p>Pour partager la session entre le domaine central et les sous-domaines tenants, vous pourrez passer <code>SESSION_DOMAIN=.changelog.monsite.fr</code> (point devant). Laissez <code>null</code> au début si tout passe par le domaine central.</p>
+
+    <h2>E-mail</h2>
+    <p>Par défaut <code>MAIL_MAILER=log</code> (les mails vont dans les logs). En production, configurez SMTP (cPanel, Mailgun, SES, etc.) :</p>
+    <pre><code>MAIL_MAILER=smtp
+MAIL_HOST=mail.monsite.fr
+MAIL_PORT=587
+MAIL_USERNAME=noreply@monsite.fr
+MAIL_PASSWORD=...
+MAIL_FROM_ADDRESS=noreply@changelog.monsite.fr
+MAIL_FROM_NAME=Evolora</code></pre>
+
+    <h2>Facturation (optionnel)</h2>
+    <pre><code>STRIPE_KEY=
+STRIPE_SECRET=
+STRIPE_WEBHOOK_SECRET=
+STRIPE_PRICE_PRO=
+STRIPE_PRICE_BUSINESS=
+
+PAYPAL_MODE=sandbox
+PAYPAL_CLIENT_ID=
+PAYPAL_CLIENT_SECRET=
+PAYPAL_WEBHOOK_ID=
+PAYPAL_PLAN_PRO=
+PAYPAL_PLAN_BUSINESS=
+BILLING_CURRENCY=eur</code></pre>
+    <p>Webhooks à déclarer chez Stripe / PayPal :</p>
+    <pre><code>https://changelog.monsite.fr/webhooks/stripe
+https://changelog.monsite.fr/webhooks/paypal</code></pre>
+    <p>Ces URLs sont exclues de la protection CSRF.</p>
+
+    <h2>Après chaque modification du .env</h2>
+    <pre><code>php artisan config:clear
+php artisan config:cache</code></pre>
+    <p>Sans SSH : dans le gestionnaire de fichiers, vous pouvez supprimer <code>bootstrap/cache/config.php</code> pour forcer Laravel à relire le <code>.env</code> (remettez un cache ensuite si possible).</p>
+
+    <h2>Sécurité post-install</h2>
+    <ul class="checklist">
+      <li><code>APP_DEBUG=false</code> en production</li>
+      <li>Vérifier que <code>storage/app/installed</code> existe (le wizard se désactive tout seul)</li>
+      <li>Document Root = <code>public/</code></li>
+      <li>Ne pas commiter le <code>.env</code></li>
+    </ul>
+
+    <div class="callout info">
+      <strong>Mises à jour GitHub</strong>
+      Le jeton d’accès pour les mises à jour n’est pas dans le <code>.env</code> : il se configure dans <code>app/Support/GithubUpdateAuth.php</code> (dépôt privé : PAT lecture Contents).
+    </div>
+
+    <footer><a href="sous-domaines.html">Suivant : sous-domaines wildcard →</a></footer>
+  </main>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

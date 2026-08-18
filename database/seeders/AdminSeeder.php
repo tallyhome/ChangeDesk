@@ -27,7 +27,7 @@ class AdminSeeder extends Seeder
         }
 
         User::updateOrCreate(
-            ['email' => 'demo@chanlog.app'],
+            ['email' => 'demo@evolora.app'],
             [
                 'name' => 'Demo Admin',
                 'password' => 'password',
@@ -37,20 +37,22 @@ class AdminSeeder extends Seeder
             ]
         );
 
-        // Compat anciens comptes démo
-        if ($legacy = User::where('email', 'admin@admin.com')->first()) {
-            $legacy->update([
-                'name' => 'Demo Admin',
-                'role' => User::ROLE_CLIENT,
-                'tenant_id' => $tenant->id,
-            ]);
+        if ($legacyDemo = User::whereIn('email', ['demo@chanlog.app', 'admin@admin.com'])->first()) {
+            if ($legacyDemo->email !== 'demo@evolora.app' && ! User::where('email', 'demo@evolora.app')->where('id', '!=', $legacyDemo->id)->exists()) {
+                $legacyDemo->update([
+                    'email' => 'demo@evolora.app',
+                    'name' => 'Demo Admin',
+                    'role' => User::ROLE_CLIENT,
+                    'tenant_id' => $tenant->id,
+                ]);
+            }
         }
 
-        // Unifier l’ancien email migration → superadmin@chanlog.app
-        $legacySa = User::where('email', 'superadmin@changelog.fr')->first();
-        if ($legacySa && ! User::where('email', 'superadmin@chanlog.app')->exists()) {
+        $targetSa = 'superadmin@evolora.app';
+        $legacySa = User::whereIn('email', ['superadmin@changelog.fr', 'superadmin@chanlog.app'])->first();
+        if ($legacySa && $legacySa->email !== $targetSa && ! User::where('email', $targetSa)->exists()) {
             $legacySa->update([
-                'email' => 'superadmin@chanlog.app',
+                'email' => $targetSa,
                 'name' => 'Super Admin',
                 'password' => 'password',
                 'role' => User::ROLE_SUPERADMIN,
@@ -66,7 +68,7 @@ class AdminSeeder extends Seeder
         }
 
         User::updateOrCreate(
-            ['email' => 'superadmin@chanlog.app'],
+            ['email' => $targetSa],
             [
                 'name' => 'Super Admin',
                 'password' => 'password',

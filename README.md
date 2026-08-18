@@ -1,23 +1,23 @@
 <p align="center">
-  <img src=".github/banner.png" alt="ChanLog / ChangeDesk" width="100%"/>
+  <img src=".github/banner.png" alt="Evolora" width="100%"/>
 </p>
 
 <p align="center">
-  <img src="logo.png" alt="ChanLog icon" width="96"/>
+  <img src="logo.png" alt="Evolora icon" width="96"/>
 </p>
 
-# ChangeDesk / ChanLog v2.1.0
+# Evolora
 
 <p align="center">
   <strong>SaaS multi-tenant</strong> — Changelog · Roadmap · Bugs · Wiki<br/>
   <code>changelog.monsite.fr</code>
 </p>
 
-## À propos de ChangeDesk (ChanLog)
+## À propos d’Evolora
 
-ChangeDesk (aussi appelé **ChanLog**) est une application web développée avec Laravel permettant de gérer les versions et les rapports de bugs d'un projet. Cette application offre une interface conviviale pour suivre l'évolution de votre projet et gérer les problèmes signalés par les utilisateurs.
+**Evolora** est une application web Laravel pour publier les versions d’un produit : changelog, roadmap, signalement de bugs et wiki, dans un espace public à votre marque.
 
-Chaque compte client pourra créer son propre espace changelog sous un domaine dédié (ex. `changelog.monsite.fr`), avec changelog, roadmap, signalement de bugs et wiki.
+Chaque compte client peut créer son propre espace sous un sous-domaine (`slug.votredomaine.fr`) ou un domaine personnalisé.
 
 **Identité visuelle :** `logo.png`, `logo.svg`, `icon.svg`, `assets/logo/`, `Promo/`
 
@@ -157,28 +157,16 @@ L'application sera accessible à l'adresse http://127.0.0.1:8000
 - timestamps (created_at, updated_at)
 
 
-### Screen 
+### Screen
 # Aperçu du projet
 
-| ChangeDesk | Todolist | Report Bug |
+| Cover | Roadmap | Bugs |
 |---------|---------|------------|
-| ![ChangeDesk](https://github.com/user-attachments/assets/fbb8276f-f467-4992-870d-887a50c23f07) | ![Todolist](https://github.com/user-attachments/assets/25ff9e3e-4ea2-4f6c-ba85-38990468a802) | ![Report_Bug](https://github.com/user-attachments/assets/43ef171a-d5c3-4b88-955c-a004f535a889) |
+| ![Cover](Promo/03-Marketplace/evolora-marketplace-01-cover.png) | ![Roadmap](Promo/03-Marketplace/evolora-marketplace-02-roadmap.png) | ![Bugs](Promo/03-Marketplace/evolora-marketplace-03-bugs.png) |
 
-| Admin Todolist News | Admin Report Bug News | Admin Report Bug Edit |
+| Wiki | Marque | GitHub |
 |---------------------|----------------------|----------------------|
-| ![Admin_todolist_news](https://github.com/user-attachments/assets/694afa42-30b1-4b93-90e2-50d6db63d7c1) | ![Admin_report_bug_news](https://github.com/user-attachments/assets/f0978c77-9787-422f-a5cb-a184e3f49c08) | ![Admin_report_bug_edit](https://github.com/user-attachments/assets/8221bf5e-c696-4b09-ae14-fc3e4590a8eb) |
-
-| Admin Report Bug | Admin Profile | Admin Page |
-|-----------------|---------------|------------|
-| ![Admin_report_bug](https://github.com/user-attachments/assets/2fa10500-601c-4657-9583-a6da547734f2) | ![Admin_Profile](https://github.com/user-attachments/assets/62d6ce4e-c90f-4809-a8f4-6e1aeed5c189) | ![Admin_Page](https://github.com/user-attachments/assets/48e1042f-c36d-49cd-952c-3a00fbc146b9) |
-
-| Admin ChangeLog News | Admin ChangeLog Edit | Admin ChangeLog |
-|---------------------|---------------------|----------------|
-| ![Admin_ChangeDesk_news](https://github.com/user-attachments/assets/7b59ef04-2e0d-4032-a4b9-6f7993987e17) | ![Admin_ChangeDesk_edit](https://github.com/user-attachments/assets/4d9f79fa-bcc4-4f99-bc92-8f0d40cb8b34) | ![Admin_ChangeDesk](https://github.com/user-attachments/assets/7c8eeead-3db6-424f-afa3-f663063dcafe) |
-
-| Admin Todolist Edit | Admin Todolist |
-|--------------------|---------------|
-| ![Admin_todolist_edit](https://github.com/user-attachments/assets/d6709bff-cc71-43b6-9acb-19c24e7c37c2) | ![Admin_todolist](https://github.com/user-attachments/assets/2a8e2825-153b-43e7-a12e-0b916cb10f2f) |
+| ![Wiki](Promo/03-Marketplace/evolora-marketplace-04-wiki.png) | ![Brand](Promo/01-Reseaux-sociaux/evolora-social-01-brand.png) | ![Banner](.github/banner.png) |
 
 
 

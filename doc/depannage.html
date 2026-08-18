@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dépannage — Evolora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Manrope:wght@500;650;750;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div id="app" data-page="help">
+  <main class="main">
+    <div class="kicker">Problèmes fréquents</div>
+    <h1>Dépannage</h1>
+    <p class="lead">La plupart des échecs viennent du Document Root, des droits d’écriture, de PHP trop ancien, ou d’identifiants MySQL.</p>
+
+    <h2>Page blanche ou 500</h2>
+    <ul>
+      <li>Ouvrez <code>storage/logs/laravel.log</code>.</li>
+      <li>Vérifiez PHP ≥ 8.2 pour ce domaine.</li>
+      <li><code>storage/</code> et <code>bootstrap/cache</code> doivent être inscriptibles.</li>
+      <li>Si <code>vendor/</code> manque : <code>composer install --no-dev</code>.</li>
+    </ul>
+
+    <h2>/install introuvable (404) trop tôt</h2>
+    <ul>
+      <li>Le fichier <code>storage/app/installed</code> existe déjà → l’installeur se masque. Supprimez-le seulement pour réinstaller une instance neuve.</li>
+      <li>Le Document Root n’atteint pas Laravel (mauvais dossier, archive extraite dans un sous-dossier).</li>
+      <li><code>mod_rewrite</code> inactif, ou <code>.htaccess</code> racine absent (méthode B).</li>
+    </ul>
+
+    <h2>Toujours redirigé vers /install</h2>
+    <p>Le middleware considère que l’app n’est pas installée s’il n’y a ni <code>storage/app/installed</code> ni <code>.env</code> avec <code>APP_KEY</code>. Relancez l’assistant jusqu’au bout, ou créez ces fichiers après une install CLI.</p>
+
+    <h2>Connexion MySQL impossible</h2>
+    <ul>
+      <li>Préfixe cPanel oublié (<code>user_nom</code>).</li>
+      <li>Utilisateur non lié à la base, ou privilèges incomplets.</li>
+      <li>Host : tester <code>localhost</code> puis <code>127.0.0.1</code>.</li>
+    </ul>
+
+    <h2>Installation interrompue pendant migrate</h2>
+    <p>Le message d’erreur s’affiche sous le formulaire. Causes typiques : timeout PHP, mémoire, ou tables déjà partiellement créées. Augmentez <code>max_execution_time</code>, corrigez, réessayez. En dernier recours, videz la base et relancez.</p>
+
+    <h2>CSS / images cassés</h2>
+    <p>Document Root pas sur <code>public/</code>, ou URL dans <code>APP_URL</code> incorrecte (http vs https, mauvais hôte). Relancez <code>php artisan storage:link</code> si les uploads 404.</p>
+
+    <h2>Sous-domaine client inaccessible</h2>
+    <ol>
+      <li>Le DNS <code>*</code> résout-il ?</li>
+      <li>Le vhost wildcard pointe-t-il vers le même <code>public/</code> ?</li>
+      <li>Le certificat couvre-t-il <code>*.domaine</code> ?</li>
+    </ol>
+    <p>Si ces trois points échouent, la requête n’arrive jamais à PHP.</p>
+
+    <h2>Le projet pèse plusieurs Go</h2>
+    <p>Le code + <code>vendor/</code> fait plutôt 50–150 Mo. Cherchez archives, <code>node_modules</code>, <code>.git</code> ou backups :</p>
+    <pre><code>du -sh * .[^.]* 2>/dev/null | sort -hr | head -20</code></pre>
+
+    <h2>Réinstaller proprement</h2>
+    <ol>
+      <li>Sauvegarder la base si elle contient des données.</li>
+      <li>Supprimer <code>storage/app/installed</code>.</li>
+      <li>Optionnel : supprimer ou vider le <code>.env</code>.</li>
+      <li>Vider les tables (ou recréer la base).</li>
+      <li>Ouvrir à nouveau <code>/install</code>.</li>
+    </ol>
+
+    <div class="callout ok">
+      <strong>Santé de l’application</strong>
+      Laravel expose <code>/up</code> (health check). Cette URL n’est pas redirigée vers l’installeur.
+    </div>
+
+    <footer><a href="index.html">Retour à la vue d’ensemble</a></footer>
+  </main>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

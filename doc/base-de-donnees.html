@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Base de données — Evolora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Manrope:wght@500;650;750;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div id="app" data-page="bdd">
+  <main class="main">
+    <div class="kicker">MySQL / MariaDB</div>
+    <h1>Mettre en place la base de données</h1>
+    <p class="lead">Créez une base <strong>vide</strong>. N’importez aucun fichier SQL : l’assistant exécute les migrations Laravel et les seeders.</p>
+
+    <h2>Dans cPanel</h2>
+    <ol>
+      <li>Ouvrez <strong>Bases de données MySQL</strong>.</li>
+      <li>Créez une base, par exemple <code>chanlog</code>. Le nom réel sera souvent <code>compte_chanlog</code>.</li>
+      <li>Créez un utilisateur et un mot de passe fort.</li>
+      <li>Ajoutez l’utilisateur à la base avec <strong>Tous les privilèges</strong>.</li>
+      <li>Hôte : en général <code>localhost</code>. Port : <code>3306</code>.</li>
+    </ol>
+
+    <h2>Dans Webuzo</h2>
+    <ol>
+      <li>Menu <strong>MySQL Database</strong> (ou phpMyAdmin).</li>
+      <li>Create Database + Create User.</li>
+      <li>Associez l’utilisateur à la base (ALL PRIVILEGES).</li>
+      <li>Host <code>localhost</code>.</li>
+    </ol>
+
+    <h2>En ligne de commande</h2>
+    <pre><code>CREATE DATABASE chanlog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'chanlog'@'localhost' IDENTIFIED BY 'MotDePasseFort';
+GRANT ALL PRIVILEGES ON chanlog.* TO 'chanlog'@'localhost';
+FLUSH PRIVILEGES;</code></pre>
+
+    <h2>Saisie dans l’assistant</h2>
+    <p>À l’étape <code>/install/database</code>, recopiez exactement :</p>
+    <table>
+      <thead><tr><th>Champ wizard</th><th>Variable .env</th><th>Exemple cPanel</th></tr></thead>
+      <tbody>
+        <tr><td>DB Host</td><td><code>DB_HOST</code></td><td><code>localhost</code></td></tr>
+        <tr><td>Port</td><td><code>DB_PORT</code></td><td><code>3306</code></td></tr>
+        <tr><td>Base</td><td><code>DB_DATABASE</code></td><td><code>compte_chanlog</code></td></tr>
+        <tr><td>User</td><td><code>DB_USERNAME</code></td><td><code>compte_user</code></td></tr>
+        <tr><td>Mot de passe</td><td><code>DB_PASSWORD</code></td><td>celui choisi dans le panneau</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout danger">
+      <strong>Erreur « Connexion MySQL impossible »</strong>
+      Mauvais préfixe cPanel, mot de passe avec caractères spéciaux mal copiés, ou hôte incorrect (<code>127.0.0.1</code> au lieu de <code>localhost</code>, ou l’inverse). L’installeur teste PDO <em>avant</em> d’écrire le <code>.env</code>.
+    </div>
+
+    <h2>Ce que l’installeur crée ensuite</h2>
+    <ul class="checklist">
+      <li>Toutes les tables via <code>php artisan migrate</code></li>
+      <li>Les plans (free, etc.) via <code>PlanSeeder</code></li>
+      <li>Un seed admin via <code>AdminSeeder</code>, puis votre superadmin (email du formulaire)</li>
+      <li>Un tenant <code>default</code> si aucun n’existe</li>
+      <li>Sessions, cache et files d’attente en base (<code>SESSION_DRIVER=database</code>, etc.)</li>
+    </ul>
+
+    <div class="callout info">
+      <strong>SQLite</strong>
+      Le <code>.env.example</code> local utilise SQLite. En production, l’installeur force <code>DB_CONNECTION=mysql</code>. Ne restez pas sur SQLite pour un site public.
+    </div>
+
+    <footer><a href="configuration.html">Suivant : configuration .env →</a></footer>
+  </main>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

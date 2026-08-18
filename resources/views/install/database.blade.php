@@ -20,6 +20,6 @@
   <div class="col-md-6"><label class="form-label">Mot de passe</label><input type="password" name="admin_password" class="form-control" required></div>
   <div class="col-md-6"><label class="form-label">Confirmation</label><input type="password" name="admin_password_confirmation" class="form-control" required></div>
 </div>
-<button class="btn btn-success mt-4">Installer ChanLog</button>
+<button class="btn btn-success mt-4">Installer Evolora</button>
 </form>
 @endsection

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sous-domaines wildcard — Evolora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Manrope:wght@500;650;750;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div id="app" data-page="wildcard">
+  <main class="main">
+    <div class="kicker">Multi-tenant</div>
+    <h1>Sous-domaines clients (wildcard)</h1>
+    <p class="lead">Chaque projet client peut vivre sur <code>slug.votredomaine.fr</code>. Laravel est déjà prêt. Il faut que le DNS, le vhost et le SSL envoient <em>tous</em> ces hôtes vers le même <code>public/</code>.</p>
+
+    <div class="flow">
+      <span>teste.changelog.monsite.fr</span><i>→</i>
+      <span>DNS *</span><i>→</i>
+      <span>Apache / Nginx</span><i>→</i>
+      <span>…/public</span><i>→</i>
+      <span>Laravel</span>
+    </div>
+
+    <h2>1. DNS wildcard</h2>
+    <p>Chez le registrar, Cloudflare ou la zone DNS cPanel :</p>
+    <ul>
+      <li>Type <strong>A</strong> (ou CNAME) : hôte <code>*</code> → même IP (ou même cible) que le domaine central.</li>
+      <li>Résultat : <code>nimportequoi.changelog.monsite.fr</code> résout comme le site principal.</li>
+    </ul>
+    <pre><code>ping teste.changelog.monsite.fr
+nslookup teste.changelog.monsite.fr</code></pre>
+
+    <h2>2. Sous-domaine wildcard dans le panneau</h2>
+    <h3>cPanel</h3>
+    <p>Domaines / Subdomains → créer :</p>
+    <ul>
+      <li>Subdomain : <code>*</code></li>
+      <li>Domain : <code>changelog.monsite.fr</code></li>
+      <li>Document Root : <strong>le même</strong> que Laravel (<code>…/public</code>)</li>
+    </ul>
+    <p>Équivalent Apache : <code>ServerAlias *.changelog.monsite.fr</code>.</p>
+    <h3>Webuzo / Plesk / Nginx</h3>
+    <p>Ajoutez un wildcard subdomain ou un <code>server_name *.changelog.monsite.fr</code> avec le même root. Un tutoriel cPanel / WHM / PowerDNS / AutoSSL plus détaillé se trouve dans <code>docs/tutoriel-wildcard-cpanel-whm.md</code>.</p>
+
+    <h2>3. Certificat SSL wildcard</h2>
+    <p>Il faut un certificat pour <code>*.changelog.monsite.fr</code> <em>et</em> le domaine apex. AutoSSL cPanel, Let’s Encrypt DNS-01, ou Caddy. Sans SSL valide, le navigateur affiche une erreur d’accès même si PHP est correct.</p>
+
+    <h2>4. Variables Laravel</h2>
+    <pre><code>APP_URL=https://changelog.monsite.fr
+CENTRAL_DOMAIN=changelog.monsite.fr
+CENTRAL_DOMAINS=changelog.monsite.fr,www.changelog.monsite.fr
+TENANCY_CNAME_TARGET=cname.changelog.monsite.fr</code></pre>
+
+    <h2>Domaines personnalisés (CNAME)</h2>
+    <p>Le client pointe <code>changelog.sonentreprise.fr</code> en CNAME vers <code>cname.changelog.monsite.fr</code>, puis vérifie le DNS dans Admin → Domaine. Côté reverse-proxy avancé, l’API <code>GET /api/ssl/ask?domain=…</code> indique si un certificat on-demand peut être émis.</p>
+
+    <div class="callout warn">
+      <strong>Le wizard n’configure pas le DNS</strong>
+      L’assistant installe l’application et le premier tenant. Les enregistrements <code>*</code>, le vhost wildcard et le certificat se font dans le panneau d’hébergement.
+    </div>
+
+    <footer><a href="depannage.html">Suivant : dépannage →</a></footer>
+  </main>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

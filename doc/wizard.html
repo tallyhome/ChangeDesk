@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Assistant d’installation /install — Evolora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Manrope:wght@500;650;750;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div id="app" data-page="wizard">
+  <main class="main">
+    <div class="kicker">Install Wizard</div>
+    <h1>L’auto-installeur Laravel est bien présent</h1>
+    <p class="lead">Evolora n’utilise pas Softaculous. Il a son propre assistant web, intégré à l’application. C’est la méthode officielle pour installer le logiciel sur n’importe quel hébergement PHP.</p>
+
+    <div class="callout ok">
+      <strong>Vérifié dans le code source</strong>
+      Contrôleur <code>app/Http/Controllers/InstallController.php</code>, routes <code>/install</code>, vues <code>resources/views/install/</code>, middleware <code>RedirectIfNotInstalled</code>. Si l’app n’est pas encore installée, toute visite est redirigée vers <code>/install</code>.
+    </div>
+
+    <h2>Comment y accéder</h2>
+    <pre><code>https://votre-domaine/install
+https://votre-domaine/install/requirements
+https://votre-domaine/install/database</code></pre>
+    <p>Après une installation réussie, <code>/install</code> répond <strong>404</strong> : le fichier <code>storage/app/installed</code> bloque une réinstallation accidentelle.</p>
+
+    <h2>Les 4 étapes</h2>
+    <div class="steps">
+      <div class="step">
+        <div>
+          <h3>Accueil</h3>
+          <p>Présente l’assistant. Rappel : PHP 8.2+, base MySQL prête, Document Root vers <code>public/</code>.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div>
+          <h3>Prérequis</h3>
+          <p>Chaque extension et droit d’écriture est affiché OK / KO. Tant qu’un point est KO, le bouton Continuer reste bloqué.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div>
+          <h3>Configuration</h3>
+          <p>Vous saisissez l’URL, le domaine central, les identifiants MySQL et le compte superadmin (mot de passe 8 caractères minimum, avec confirmation).</p>
+        </div>
+      </div>
+      <div class="step">
+        <div>
+          <h3>Terminé</h3>
+          <p>Lien vers la connexion et la vitrine. Configurez ensuite Stripe / PayPal dans le <code>.env</code> si vous activez la facturation.</p>
+        </div>
+      </div>
+    </div>
+
+    <h2>Champs du formulaire</h2>
+    <table>
+      <thead><tr><th>Champ</th><th>Exemple</th><th>Rôle</th></tr></thead>
+      <tbody>
+        <tr><td>URL de l’application</td><td><code>https://changelog.monsite.fr</code></td><td>Devient <code>APP_URL</code> (sans slash final)</td></tr>
+        <tr><td>Domaine central</td><td><code>changelog.monsite.fr</code></td><td>Sans <code>https://</code>. Sert à <code>CENTRAL_DOMAIN</code></td></tr>
+        <tr><td>DB Host / Port</td><td><code>localhost</code> / <code>3306</code></td><td>Parfois <code>127.0.0.1</code> selon l’hébergeur</td></tr>
+        <tr><td>Base / User / Mot de passe</td><td>ceux créés dans le panneau</td><td>Testés avant d’écrire le <code>.env</code></td></tr>
+        <tr><td>Superadmin</td><td>nom, email, mot de passe</td><td>Compte <code>ROLE_SUPERADMIN</code> pour /superadmin</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Actions exécutées côté serveur</h2>
+    <pre><code>1. Test PDO MySQL
+2. Écriture du fichier .env
+3. php artisan key:generate --force
+4. php artisan config:clear
+5. php artisan migrate --force
+6. php artisan db:seed --class=PlanSeeder
+7. php artisan db:seed --class=AdminSeeder
+8. php artisan storage:link
+9. Création / mise à jour du superadmin
+10. Création du tenant « default » (plan free) s’il n’existe pas
+11. Fichier storage/app/installed
+12. php artisan config:cache</code></pre>
+
+    <div class="callout info">
+      <strong>Redirection automatique</strong>
+      Le middleware ignore <code>/install</code> et <code>/up</code>. S’il existe déjà un <code>.env</code> avec <code>APP_KEY</code>, l’installeur n’est pas forcé (déploiement déjà configuré). Sinon, tout le site renvoie vers <code>/install</code>.
+    </div>
+
+    <h2>Installation manuelle (SSH, optionnelle)</h2>
+    <p>Si vous préférez la ligne de commande plutôt que le wizard :</p>
+    <pre><code>cp .env.example .env
+php artisan key:generate
+# Éditer DB_* APP_URL CENTRAL_DOMAIN dans .env
+php artisan migrate --force
+php artisan db:seed --class=PlanSeeder --force
+php artisan db:seed --class=AdminSeeder --force
+php artisan storage:link
+# Créer ensuite storage/app/installed pour désactiver le wizard</code></pre>
+    <p>En hébergement mutualisé sans SSH, restez sur <code>/install</code>.</p>
+
+    <footer><a href="cpanel.html">Suivant : installation cPanel →</a></footer>
+  </main>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

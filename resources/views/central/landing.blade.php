@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ChanLog — Changelog multi-tenant</title>
+<title>Evolora — Changelog multi-tenant</title>
 @include('partials.favicon')
-@php $siteVersion = config('updates.number', config('version.number', '2.8.7')); @endphp
+@php $siteVersion = config('updates.number', config('version.number', '2.8.8')); @endphp
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet">
@@ -141,8 +141,8 @@ footer strong{color:var(--ink)}
 <body>
 <header class="nav" id="topNav">
   <a class="brand" href="/">
-    <img src="{{ asset('Promo/05-Branding/chanlog-mark.svg') }}" alt="">
-    ChanLog
+    <img src="{{ asset('Promo/05-Branding/evolora-mark.svg') }}" alt="">
+    Evolora
   </a>
   <nav class="nav-links" aria-label="Navigation">
     <a href="#modules">{{ __('app.nav.modules') }}</a>
@@ -175,19 +175,19 @@ footer strong{color:var(--ink)}
         </div>
         <div class="carousel-inner carousel-wrap">
           <div class="carousel-item active">
-            <img src="{{ asset('Promo/03-Marketplace/chanlog-marketplace-01-cover.png') }}" alt="Dashboard ChanLog" loading="eager">
+            <img src="{{ asset('Promo/03-Marketplace/evolora-marketplace-01-cover.png') }}" alt="Dashboard Evolora" loading="eager">
             <div class="carousel-caption-bar"><strong>{{ __('app.landing.dashboard') }}</strong><span>{{ __('app.landing.dashboard_cap') }}</span></div>
           </div>
           <div class="carousel-item">
-            <img src="{{ asset('Promo/03-Marketplace/chanlog-marketplace-02-roadmap.png') }}" alt="Roadmap" loading="lazy">
+            <img src="{{ asset('Promo/03-Marketplace/evolora-marketplace-02-roadmap.png') }}" alt="Roadmap" loading="lazy">
             <div class="carousel-caption-bar"><strong>{{ __('app.landing.mod_roadmap_only') }}</strong><span>{{ __('app.landing.roadmap_cap') }}</span></div>
           </div>
           <div class="carousel-item">
-            <img src="{{ asset('Promo/03-Marketplace/chanlog-marketplace-03-bugs.png') }}" alt="Bugs" loading="lazy">
+            <img src="{{ asset('Promo/03-Marketplace/evolora-marketplace-03-bugs.png') }}" alt="Bugs" loading="lazy">
             <div class="carousel-caption-bar"><strong>{{ __('app.landing.mod_bugs') }}</strong><span>{{ __('app.landing.bugs_cap') }}</span></div>
           </div>
           <div class="carousel-item">
-            <img src="{{ asset('Promo/03-Marketplace/chanlog-marketplace-04-wiki.png') }}" alt="Wiki" loading="lazy">
+            <img src="{{ asset('Promo/03-Marketplace/evolora-marketplace-04-wiki.png') }}" alt="Wiki" loading="lazy">
             <div class="carousel-caption-bar"><strong>{{ __('app.nav.wiki') }}</strong><span>{{ __('app.landing.wiki_cap') }}</span></div>
           </div>
         </div>
@@ -215,9 +215,9 @@ footer strong{color:var(--ink)}
     <p>{{ __('app.landing.shots_lead') }}</p>
   </div>
   <div class="shots">
-    <div class="shot wide reveal"><img src="{{ asset('Promo/03-Marketplace/chanlog-marketplace-01-cover.png') }}" alt="Dashboard ChanLog" loading="lazy"></div>
-    <div class="shot reveal reveal-delay-1"><img src="{{ asset('Promo/03-Marketplace/chanlog-marketplace-02-roadmap.png') }}" alt="Roadmap publique" loading="lazy"></div>
-    <div class="shot reveal reveal-delay-2"><img src="{{ asset('Promo/03-Marketplace/chanlog-marketplace-03-bugs.png') }}" alt="Suivi des bugs" loading="lazy"></div>
+    <div class="shot wide reveal"><img src="{{ asset('Promo/03-Marketplace/evolora-marketplace-01-cover.png') }}" alt="Dashboard Evolora" loading="lazy"></div>
+    <div class="shot reveal reveal-delay-1"><img src="{{ asset('Promo/03-Marketplace/evolora-marketplace-02-roadmap.png') }}" alt="Roadmap publique" loading="lazy"></div>
+    <div class="shot reveal reveal-delay-2"><img src="{{ asset('Promo/03-Marketplace/evolora-marketplace-03-bugs.png') }}" alt="Suivi des bugs" loading="lazy"></div>
   </div>
 </section>
 
@@ -279,7 +279,7 @@ footer strong{color:var(--ink)}
 </section>
 
 <footer>
-  <span><strong>ChanLog</strong> v{{ $siteVersion }}</span>
+  <span><strong>Evolora</strong> v{{ $siteVersion }}</span>
   <span>{{ __('app.footer.multi_tenant') }}</span>
 </footer>
 

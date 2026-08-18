@@ -7,11 +7,17 @@ use Illuminate\Console\Command;
 
 class ResetSuperadminPassword extends Command
 {
-    protected $signature = 'chanlog:reset-superadmin
-                            {email=superadmin@chanlog.app : Email du superadmin}
+    protected $signature = 'evolora:reset-superadmin
+                            {email=superadmin@evolora.app : Email du superadmin}
                             {--password=password : Nouveau mot de passe}';
 
     protected $description = 'Réinitialise le mot de passe superadmin (secours si la connexion échoue)';
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->setAliases(['chanlog:reset-superadmin']);
+    }
 
     public function handle(): int
     {
@@ -22,8 +28,12 @@ class ResetSuperadminPassword extends Command
 
         if (! $user) {
             // Ancien email legacy
-            $legacy = User::where('email', 'superadmin@changelog.fr')->first();
+            $legacy = User::whereIn('email', [
+                'superadmin@changelog.fr',
+                'superadmin@chanlog.app',
+            ])->first();
             if ($legacy) {
+                $from = $legacy->email;
                 $legacy->update([
                     'email' => $email,
                     'name' => 'Super Admin',
@@ -33,7 +43,7 @@ class ResetSuperadminPassword extends Command
                     'is_active' => true,
                 ]);
                 $user = $legacy->fresh();
-                $this->warn('Compte legacy superadmin@changelog.fr migré vers '.$email);
+                $this->warn('Compte legacy '.$from.' migré vers '.$email);
             }
         }
 

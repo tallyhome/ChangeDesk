@@ -1,4 +1,4 @@
-# Installation ChanLog (cPanel / Webuzo / Plesk)
+# Installation Evolora (cPanel / Webuzo / Plesk)
 
 ## Taille du projet (~3 Go) — pas normal pour le code seul
 

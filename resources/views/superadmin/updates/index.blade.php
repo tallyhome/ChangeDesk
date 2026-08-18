@@ -97,7 +97,7 @@
 </div>
 
 <div class="sa-card p-3 mt-4 small text-muted">
-  Après chaque MAJ, ChanLog exécute automatiquement :
+  Après chaque MAJ, Evolora exécute automatiquement :
   <code>migrate --force</code>, <code>optimize:clear</code>, <code>storage:link</code>,
   <code>config:cache</code>, <code>route:cache</code>, <code>view:cache</code>.
   Aucune commande SSH n’est nécessaire (sauf <code>composer install</code> si les dépendances PHP changent).

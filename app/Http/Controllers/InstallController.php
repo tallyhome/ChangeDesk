@@ -167,7 +167,7 @@ class InstallController extends Controller
         $key = 'base64:'.base64_encode(random_bytes(32));
 
         return <<<ENV
-APP_NAME=ChanLog
+APP_NAME=Evolora
 APP_ENV=production
 APP_KEY={$key}
 APP_DEBUG=false
@@ -203,7 +203,7 @@ BROADCAST_CONNECTION=log
 
 MAIL_MAILER=log
 MAIL_FROM_ADDRESS="noreply@{$domain}"
-MAIL_FROM_NAME="ChanLog"
+MAIL_FROM_NAME="Evolora"
 
 STRIPE_KEY=
 STRIPE_SECRET=

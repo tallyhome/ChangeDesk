@@ -4,12 +4,40 @@
 <div class="container-fluid px-4">
     <h1 class="mt-4">{{ __('app.admin.stats') }}</h1>
 
-    <div class="row mt-4">
+    <div class="row mt-4 g-3">
         <div class="col-xl-3 col-md-6">
-            <div class="card bg-primary text-white mb-4">
+            <div class="card bg-primary text-white mb-4 h-100">
                 <div class="card-body">
-                    <h2>{{ number_format($totalVisits) }}</h2>
-                    <div>Visites totales</div>
+                    <h2>{{ \App\Models\Visit::formatCount($analytics['total_views']) }}</h2>
+                    <div>{{ __('app.admin.analytics_views') }}</div>
+                    <div class="small opacity-75">{{ __('app.admin.analytics_this_month') }} : {{ \App\Models\Visit::formatCount($analytics['views_month']) }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-info text-white mb-4 h-100">
+                <div class="card-body">
+                    <h2>{{ \App\Models\Visit::formatCount($analytics['unique_visitors']) }}</h2>
+                    <div>{{ __('app.admin.analytics_unique') }}</div>
+                    <div class="small opacity-75">{{ __('app.admin.analytics_pages_per', ['count' => $analytics['pages_per_visitor']]) }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-dark text-white mb-4 h-100">
+                <div class="card-body">
+                    <h2>{{ \App\Models\Visit::formatCount($analytics['unique_month']) }}</h2>
+                    <div>{{ __('app.admin.analytics_visitors') }}</div>
+                    <div class="small opacity-75">{{ __('app.admin.analytics_this_month') }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-warning mb-4 h-100">
+                <div class="card-body">
+                    <h2>{{ number_format($analytics['engagement'], 1, ',', ' ') }}%</h2>
+                    <div>{{ __('app.admin.analytics_engagement') }}</div>
+                    <div class="small">{{ __('app.admin.analytics_returning', ['count' => $analytics['returning']]) }}</div>
                 </div>
             </div>
         </div>
@@ -17,7 +45,7 @@
             <div class="card bg-success text-white mb-4">
                 <div class="card-body">
                     <h2 id="active-visitors-count">{{ $activeVisitors }}</h2>
-                    <div>Visiteurs actifs en temps réel</div>
+                    <div>{{ __('app.admin.visits_active') }}</div>
                 </div>
             </div>
         </div>
@@ -28,7 +56,7 @@
             <div class="card mb-4">
                 <div class="card-header">
                     <i class="fas fa-chart-pie me-1"></i>
-                    Répartition par région
+                    {{ __('app.admin.visits_by_region') }}
                 </div>
                 <div class="card-body">
                     <canvas id="regionChart" width="100%" height="50"></canvas>
@@ -39,7 +67,7 @@
             <div class="card mb-4">
                 <div class="card-header">
                     <i class="fas fa-chart-line me-1"></i>
-                    Visites par jour (30 derniers jours)
+                    {{ __('app.admin.visits_by_day') }}
                 </div>
                 <div class="card-body">
                     <canvas id="visitsChart" width="100%" height="50"></canvas>
@@ -51,17 +79,17 @@
     <div class="card mb-4">
         <div class="card-header">
             <i class="fas fa-table me-1"></i>
-            Dernières visites
+            {{ __('app.admin.visits_recent') }}
         </div>
         <div class="card-body">
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>IP</th>
-                        <th>Page</th>
-                        <th>Région</th>
-                        <th>Pays</th>
+                        <th>{{ __('app.admin.visits_date') }}</th>
+                        <th>{{ __('app.admin.visits_ip') }}</th>
+                        <th>{{ __('app.admin.visits_page') }}</th>
+                        <th>{{ __('app.admin.visits_region') }}</th>
+                        <th>{{ __('app.admin.visits_country') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -132,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 data: {
                     labels: data.visitsByDay.map(item => item.date),
                     datasets: [{
-                        label: 'Nombre de visites',
+                        label: @json(__('app.admin.visits_chart_label')),
                         data: data.visitsByDay.map(item => item.count),
                         fill: false,
                         borderColor: '#4e73df',

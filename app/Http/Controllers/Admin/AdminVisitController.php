@@ -11,6 +11,7 @@ class AdminVisitController extends Controller
     public function index()
     {
         $stats = Visit::getVisitStats();
+        $analytics = Visit::overview();
         $totalVisits = $stats['total'];
         $visitsByRegion = $stats['by_region'];
         $visitsByCountry = $stats['by_country'];
@@ -22,7 +23,8 @@ class AdminVisitController extends Controller
             'visitsByRegion',
             'visitsByCountry',
             'recentVisits',
-            'activeVisitors'
+            'activeVisitors',
+            'analytics'
         ));
     }
 

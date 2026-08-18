@@ -115,7 +115,7 @@ class UpdateController extends Controller
         File::ensureDirectoryExists(dirname($log));
 
         $cmd = sprintf(
-            '%s %s chanlog:apply-update %s',
+            '%s %s evolora:apply-update %s',
             escapeshellarg($php),
             escapeshellarg($artisan),
             escapeshellarg($tag)

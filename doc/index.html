@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Installation Evolora — Vue d’ensemble</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Manrope:wght@500;650;750;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div id="app" data-page="index">
+  <main class="main">
+    <div class="hero">
+      <div class="kicker">Evolora / Evolora</div>
+      <h1>Installer l’application sur un serveur web</h1>
+      <p class="lead">Ce guide explique comment déployer Evolora sur cPanel, Webuzo, Plesk, Apache, Nginx ou un VPS. L’application inclut un assistant web : vous n’avez pas besoin de lancer Artisan à la main.</p>
+      <div class="badge-row">
+        <span class="badge ok">Assistant /install confirmé</span>
+        <span class="badge">PHP 8.2+</span>
+        <span class="badge">MySQL / MariaDB</span>
+        <span class="badge">Laravel 12</span>
+      </div>
+    </div>
+
+    <div class="callout ok">
+      <strong>Oui, il y a un auto-installeur (Install Wizard)</strong>
+      Evolora embarque un assistant complet à l’adresse <code>/install</code>. S’il n’existe pas encore de fichier <code>storage/app/installed</code> ni de <code>.env</code> avec une clé, le site redirige automatiquement vers cet assistant.
+    </div>
+
+    <div class="flow">
+      <span>Uploader les fichiers</span><i>→</i>
+      <span>Créer la base MySQL</span><i>→</i>
+      <span>Ouvrir /install</span><i>→</i>
+      <span>Superadmin</span><i>→</i>
+      <span>Connexion</span>
+    </div>
+
+    <h2>Par où commencer</h2>
+    <div class="grid grid-2">
+      <article class="card">
+        <h3>1. Vérifier le serveur</h3>
+        <p>PHP 8.2, extensions Laravel, droits d’écriture sur <code>storage/</code> et <code>bootstrap/cache</code>.</p>
+        <a class="more" href="prerequis.html">Prérequis →</a>
+      </article>
+      <article class="card">
+        <h3>2. Lancer l’assistant</h3>
+        <p>Ouvrez <code>https://votre-domaine/install</code>. L’assistant écrit le <code>.env</code>, migre la base et crée le superadmin.</p>
+        <a class="more" href="wizard.html">Voir le wizard →</a>
+      </article>
+      <article class="card">
+        <h3>3. Choisir l’hébergeur</h3>
+        <p>cPanel, Webuzo, Plesk ou serveur classique : le principe est le même, seul le panneau change.</p>
+        <a class="more" href="cpanel.html">Guide cPanel →</a>
+      </article>
+      <article class="card">
+        <h3>4. Multi-tenant</h3>
+        <p>Pour les espaces clients en sous-domaine (<code>client.votredomaine.fr</code>), configurez le DNS wildcard et le SSL.</p>
+        <a class="more" href="sous-domaines.html">Sous-domaines →</a>
+      </article>
+    </div>
+
+    <h2>Ce que fait l’installeur automatiquement</h2>
+    <ul class="checklist">
+      <li>Vérifie PHP 8.2+ et les extensions (PDO MySQL, OpenSSL, Mbstring, Curl…)</li>
+      <li>Teste la connexion MySQL puis écrit le fichier <code>.env</code></li>
+      <li>Génère <code>APP_KEY</code>, lance les migrations et les seeders (plans + admin)</li>
+      <li>Crée le compte superadmin et un projet tenant par défaut</li>
+      <li>Crée le lien <code>storage</code> et le fichier <code>storage/app/installed</code></li>
+    </ul>
+
+    <h2>Méthode recommandée : Document Root = public/</h2>
+    <p>Dans le panneau d’hébergement, pointez le domaine vers le dossier <code>public</code> du projet, pas vers la racine Laravel. Cela empêche d’exposer <code>.env</code>, <code>vendor/</code> et le code source.</p>
+    <pre><code>/home/USER/changelog.votredomaine.fr/public</code></pre>
+    <p>Si le panneau refuse de changer le Document Root, utilisez le fichier <code>.htaccess</code> fourni à la racine du projet : il redirige tout le trafic vers <code>public/</code>.</p>
+
+    <footer>Documentation d’installation Evolora · à ouvrir en local ou à copier dans <code>public/doc</code> pour la publier.</footer>
+  </main>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

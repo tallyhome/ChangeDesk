@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Apache, Nginx, Plesk, VPS — Evolora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Manrope:wght@500;650;750;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div id="app" data-page="serveur">
+  <main class="main">
+    <div class="kicker">Autres serveurs</div>
+    <h1>Apache, Nginx, Plesk et VPS</h1>
+    <p class="lead">Le principe reste identique : le serveur web ne doit exposer que <code>public/</code>, PHP 8.2 exécute <code>index.php</code>, puis vous ouvrez <code>/install</code>.</p>
+
+    <h2>Plesk</h2>
+    <ol>
+      <li>Domaines → Ajouter un domaine.</li>
+      <li>Hébergement → <strong>Racine du document</strong> : <code>httpdocs/public</code> (après upload) ou créez le domaine puis uploadez dans <code>httpdocs</code> et changez la racine en <code>public</code>.</li>
+      <li>PHP : 8.2 / 8.3, FPM recommandé.</li>
+      <li>Bases de données → MySQL, utilisateur avec tous les droits.</li>
+      <li>SSL Let’s Encrypt.</li>
+      <li><code>https://domaine/install</code>.</li>
+    </ol>
+
+    <h2>Apache (VPS)</h2>
+    <p>Activez <code>mod_rewrite</code> et <code>AllowOverride All</code> pour que <code>public/.htaccess</code> fonctionne.</p>
+    <pre><code>&lt;VirtualHost *:80&gt;
+    ServerName changelog.monsite.fr
+    ServerAlias *.changelog.monsite.fr
+    DocumentRoot /var/www/chanlog/public
+
+    &lt;Directory /var/www/chanlog/public&gt;
+        AllowOverride All
+        Require all granted
+    &lt;/Directory&gt;
+
+    ErrorLog ${APACHE_LOG_DIR}/chanlog-error.log
+    CustomLog ${APACHE_LOG_DIR}/chanlog-access.log combined
+&lt;/VirtualHost&gt;</code></pre>
+    <pre><code>sudo a2enmod rewrite
+sudo systemctl reload apache2</code></pre>
+
+    <h2>Nginx (VPS)</h2>
+    <pre><code>server {
+    listen 80;
+    server_name changelog.monsite.fr *.changelog.monsite.fr;
+    root /var/www/chanlog/public;
+    index index.php;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        fastcgi_pass unix:/run/php/php8.2-fpm.sock;
+    }
+
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}</code></pre>
+    <p>Puis Certbot pour HTTPS. Adaptez le socket PHP-FPM à votre version.</p>
+
+    <h2>Déploiement VPS type</h2>
+    <pre><code>cd /var/www
+# cloner ou extraire Evolora dans /var/www/chanlog
+cd chanlog
+composer install --no-dev --prefer-dist --optimize-autoloader
+chown -R www-data:www-data storage bootstrap/cache
+chmod -R 775 storage bootstrap/cache
+# Configurer le vhost, puis ouvrir https://domaine/install</code></pre>
+
+    <div class="callout warn">
+      <strong>Ne jamais pointer le vhost sur la racine Laravel</strong>
+      <code>/var/www/chanlog</code> comme Document Root exposerait <code>.env</code> et <code>vendor/</code>. Toujours <code>…/public</code>.
+    </div>
+
+    <h2>Caddy</h2>
+    <p>Si vous utilisez Caddy (SSL automatique, wildcard, domaines custom), un guide technique existe aussi dans le dépôt : <code>docs/tenancy-ssl-caddy.md</code>.</p>
+    <pre><code>changelog.monsite.fr, *.changelog.monsite.fr {
+    root * /var/www/chanlog/public
+    php_fastcgi unix//run/php/php8.2-fpm.sock
+    file_server
+}</code></pre>
+
+    <footer><a href="base-de-donnees.html">Suivant : base de données →</a></footer>
+  </main>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

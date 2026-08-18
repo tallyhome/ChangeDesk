@@ -1,30 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 220" role="img" aria-label="ChanLog logo dark">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 220" role="img" aria-label="Evolora logo dark">
   <defs>
-    <linearGradient id="cl-bg-d" x1="20" y1="10" x2="190" y2="200" gradientUnits="userSpaceOnUse">
+    <linearGradient id="ev-dbg" x1="20" y1="10" x2="190" y2="200" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#1E293B"/>
       <stop offset="100%" stop-color="#0B1218"/>
     </linearGradient>
-    <linearGradient id="cl-mark-d" x1="60" y1="50" x2="160" y2="170" gradientUnits="userSpaceOnUse">
+    <linearGradient id="ev-dmk" x1="60" y1="50" x2="160" y2="170" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#5EEAD4"/>
-      <stop offset="100%" stop-color="#14B8A6"/>
+      <stop offset="55%" stop-color="#2DD4BF"/>
+      <stop offset="100%" stop-color="#E8B86D"/>
     </linearGradient>
   </defs>
-
-  <!-- Icon mark -->
-  <rect x="12" y="20" width="180" height="180" rx="44" fill="url(#cl-bg-d)"/>
-  <g fill="none" stroke="url(#cl-mark-d)" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M66 62v116" stroke-width="12"/>
-    <circle cx="66" cy="76" r="9" fill="#5EEAD4" stroke="none"/>
-    <circle cx="66" cy="110" r="9" fill="#2DD4BF" stroke="none"/>
-    <circle cx="66" cy="144" r="9" fill="#14B8A6" stroke="none"/>
-    <path d="M86 76h58" stroke-width="12"/>
-    <path d="M86 110h46" stroke-width="12"/>
-    <path d="M86 144h34" stroke-width="12"/>
+  <rect x="12" y="20" width="180" height="180" rx="44" fill="url(#ev-dbg)"/>
+  <g fill="none" stroke="url(#ev-dmk)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M62 52c0 36 0 54 22 70 18 12 38 18 38 38" stroke-width="12"/>
+    <circle cx="62" cy="70" r="9" fill="#5EEAD4" stroke="none"/>
+    <circle cx="78" cy="108" r="9" fill="#2DD4BF" stroke="none"/>
+    <circle cx="122" cy="148" r="9" fill="#E8B86D" stroke="none"/>
+    <path d="M82 70h64" stroke-width="11"/>
+    <path d="M96 108h56" stroke-width="11"/>
+    <path d="M138 148h20" stroke-width="11"/>
   </g>
-
-  <!-- Wordmark (light for dark backgrounds / GitHub dark mode) -->
   <g font-family="Segoe UI, Inter, Helvetica Neue, Arial, sans-serif" fill="#F8FAFC">
-    <text x="230" y="132" font-size="92" font-weight="700" letter-spacing="-2">ChanLog</text>
+    <text x="230" y="132" font-size="88" font-weight="700" letter-spacing="-2">Evolora</text>
   </g>
   <text x="234" y="178" font-family="Segoe UI, Inter, Helvetica Neue, Arial, sans-serif" font-size="22" font-weight="500" fill="#94A3B8" letter-spacing="0.5">Changelog · Roadmap · Bugs · Wiki</text>
 </svg>

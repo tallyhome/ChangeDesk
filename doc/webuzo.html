@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Installation Webuzo — Evolora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Manrope:wght@500;650;750;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div id="app" data-page="webuzo">
+  <main class="main">
+    <div class="kicker">Webuzo</div>
+    <h1>Installer Evolora sur Webuzo</h1>
+    <p class="lead">Webuzo (souvent ports <code>:2004</code> utilisateur ou <code>:2002</code> admin) offre les mêmes briques : fichiers, MySQL, PHP, domaine. Evolora ne s’installe pas via Softaculous : on déploie les fichiers puis on ouvre <code>/install</code>.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div>
+          <h3>Ajouter le domaine</h3>
+          <p>Webuzo → <strong>Website / Domain</strong> → Add Domain. Indiquez <code>changelog.monsite.fr</code>. Repérez le chemin, en général <code>/home/USER/www/changelog.monsite.fr</code> ou <code>/home/USER/public_html</code>.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div>
+          <h3>Choisir PHP 8.2+</h3>
+          <p>Webuzo → <strong>PHP</strong> / MultiPHP. Assignez 8.2 ou 8.3 au domaine. Activez les extensions listées dans <a href="prerequis.html">Prérequis</a> (pdo_mysql, mbstring, curl, etc.).</p>
+        </div>
+      </div>
+      <div class="step">
+        <div>
+          <h3>Déposer les fichiers</h3>
+          <p>File Manager, FTP ou SFTP. Extraire le projet pour que <code>artisan</code>, <code>app/</code> et <code>public/</code> soient à la racine du site. Évitez d’avoir un sous-dossier <code>ChangeLog/ChangeLog/…</code>.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div>
+          <h3>Document Root = public</h3>
+          <p>Si Webuzo le permet (Domain → Edit / Document Root), pointez vers <code>…/public</code>. Sinon, conservez le <code>.htaccess</code> racine fourni avec le projet (Apache est le défaut Webuzo).</p>
+        </div>
+      </div>
+      <div class="step">
+        <div>
+          <h3>Base MySQL</h3>
+          <p>Webuzo → <strong>MySQL</strong> ou phpMyAdmin. Créez une base vide, un utilisateur, privileges ALL, hôte <code>localhost</code>. Gardez les identifiants pour l’assistant.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div>
+          <h3>SSL</h3>
+          <p>Webuzo → SSL / Let’s Encrypt. Émettez un certificat pour le domaine (et plus tard un wildcard si vous utilisez les sous-domaines clients).</p>
+        </div>
+      </div>
+      <div class="step">
+        <div>
+          <h3>Assistant Evolora</h3>
+          <p>Navigateur : <code>https://changelog.monsite.fr/install</code>. Même wizard que sur cPanel. Si une page blanche apparaît, regardez <code>storage/logs/laravel.log</code> et les droits d’écriture.</p>
+        </div>
+      </div>
+    </div>
+
+    <h2>SSH Webuzo (si activé)</h2>
+    <pre><code>cd /home/USER/www/changelog.monsite.fr
+composer install --no-dev --prefer-dist --optimize-autoloader
+chmod -R 775 storage bootstrap/cache</code></pre>
+
+    <div class="callout info">
+      <strong>Softaculous « Laravel »</strong>
+      N’installez pas un Laravel vide via Softaculous : vous auriez une autre application. Uploadez le package Evolora, puis utilisez <strong>son</strong> wizard <code>/install</code>.
+    </div>
+
+    <footer><a href="serveur.html">Suivant : Apache, Nginx, Plesk →</a></footer>
+  </main>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

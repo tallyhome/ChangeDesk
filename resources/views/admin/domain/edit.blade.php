@@ -25,7 +25,7 @@
             <div class="alert alert-warning mt-3 mb-0 small">
                 Si le lien affiche «&nbsp;site inaccessible&nbsp;», le sous-domaine n’arrive pas jusqu’à l’application.
                 Il faut un enregistrement DNS <strong>wildcard</strong> <code>*.{{ $centralDomain }}</code> (A ou CNAME)
-                et, idéalement, un certificat SSL wildcard — ce n’est pas un réglage dans ChanLog.
+                et, idéalement, un certificat SSL wildcard — ce n’est pas un réglage dans Evolora.
             </div>
         </div>
     </div>

@@ -287,7 +287,7 @@ class GithubUpdater
                 throw new RuntimeException('Redirect GitHub sans Location.');
             }
 
-            $file = Http::withHeaders(['User-Agent' => 'ChanLog-Updater'])
+            $file = Http::withHeaders(['User-Agent' => 'Evolora-Updater'])
                 ->timeout(240)
                 ->sink($destination)
                 ->get($location);
@@ -328,7 +328,7 @@ class GithubUpdater
     {
         $headers = [
             'Accept' => 'application/vnd.github+json',
-            'User-Agent' => 'ChanLog-Updater',
+            'User-Agent' => 'Evolora-Updater',
             'X-GitHub-Api-Version' => '2022-11-28',
         ];
 

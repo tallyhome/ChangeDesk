@@ -90,7 +90,7 @@ assert_true($response->getStatusCode() === 200, 'ssl ask allows verified custom 
 $central = Illuminate\Http\Request::create('http://localhost/', 'GET');
 $centralResponse = $kernel->handle($central);
 assert_true($centralResponse->getStatusCode() === 200, 'central landing is reachable');
-assert_true(str_contains($centralResponse->getContent(), 'ChanLog') || str_contains($centralResponse->getContent(), 'ChangeDesk'), 'central landing shows brand');
+assert_true(str_contains($centralResponse->getContent(), 'Evolora') || str_contains($centralResponse->getContent(), 'plans'), 'central landing shows brand');
 
 Tenant::forgetCurrent();
 $sub = Illuminate\Http\Request::create('http://'.$tenantA->slug.'.localhost/changelog', 'GET');

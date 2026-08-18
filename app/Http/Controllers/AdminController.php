@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Page;
 use App\Models\Tenant;
 use App\Models\Version;
+use App\Models\Visit;
 use App\Services\PlanGate;
 use Illuminate\Http\Request;
 
@@ -14,6 +15,10 @@ class AdminController extends Controller
     {
         $tenant = Tenant::current()->load('plan');
         $pages = Page::select('id', 'title', 'updated_at', 'created_at')->get();
+        $analytics = Visit::overview();
+        $publishedMonth = Version::where('release_date', '>=', now()->startOfMonth())->count();
+        $publishedTotal = Version::count();
+        $recentVersions = Version::orderByDesc('release_date')->orderByDesc('id')->limit(5)->get();
 
         $domainReady = filled($tenant->slug)
             || filled($tenant->custom_domain)
@@ -43,7 +48,15 @@ class AdminController extends Controller
             ],
         ];
 
-        return view('admin.dashboard', compact('pages', 'tenant', 'checklist'));
+        return view('admin.dashboard', compact(
+            'pages',
+            'tenant',
+            'checklist',
+            'analytics',
+            'publishedMonth',
+            'publishedTotal',
+            'recentVersions'
+        ));
     }
 
     public function index()
