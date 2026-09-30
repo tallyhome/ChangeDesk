@@ -36,9 +36,15 @@ Chaque compte client peut créer son propre espace sous un sous-domaine (`slug.v
    cd projet_laravel
    ```
 
-2. Installez les dépendances PHP
+2. Installez les dépendances PHP (développement local)
    ```
    composer install
+   ```
+
+   En production (`APP_ENV=production`), cette commande est refusée : elle installerait PHPUnit et peut cloner des dépôts Git dans `vendor/`. Utilisez :
+
+   ```
+   composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction
    ```
 
 3. Installez les dépendances JavaScript

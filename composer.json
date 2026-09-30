@@ -34,11 +34,27 @@
         }
     },
     "scripts": {
+        "pre-install-cmd": [
+            "@php scripts/guard-composer-install.php pre"
+        ],
+        "pre-update-cmd": [
+            "@php scripts/guard-composer-install.php pre"
+        ],
+        "post-install-cmd": [
+            "@php scripts/guard-composer-install.php post"
+        ],
+        "post-package-install": [
+            "@php scripts/guard-composer-install.php post"
+        ],
+        "post-package-update": [
+            "@php scripts/guard-composer-install.php post"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
+            "@php scripts/guard-composer-install.php post",
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
         ],
         "post-root-package-install": [

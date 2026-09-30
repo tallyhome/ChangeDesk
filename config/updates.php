@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'number' => '2.8.8',
+    'number' => '2.8.9',
 
     'github_api' => \App\Support\GithubUpdateAuth::API,
 

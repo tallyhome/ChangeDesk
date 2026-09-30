@@ -100,7 +100,7 @@
   Après chaque MAJ, Evolora exécute automatiquement :
   <code>migrate --force</code>, <code>optimize:clear</code>, <code>storage:link</code>,
   <code>config:cache</code>, <code>route:cache</code>, <code>view:cache</code>.
-  Aucune commande SSH n’est nécessaire (sauf <code>composer install</code> si les dépendances PHP changent).
+  Aucune commande SSH n’est nécessaire (sauf <code>composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction</code> si les dépendances PHP changent). Si <code>APP_ENV=production</code>, un <code>composer install</code> sans <code>--no-dev</code> est refusé.
 </div>
 
 <script>
