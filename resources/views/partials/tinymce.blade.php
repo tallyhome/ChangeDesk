@@ -24,6 +24,61 @@
 <!-- Utilisation de TinyMCE en local -->
 <script src="{{ asset('js/tinymce/tinymce/js/tinymce/tinymce.min.js') }}" referrerpolicy="origin"></script>
 <script>
+    (function () {
+        if (window.__evoloraRichTextBound || !window.tinymce) {
+            return;
+        }
+        window.__evoloraRichTextBound = true;
+
+        var submitEvent = null;
+        var prefix = 'evolora64:';
+
+        function encodeRichText(value) {
+            var bytes = new TextEncoder().encode(value);
+            var binary = '';
+            for (var i = 0; i < bytes.length; i++) {
+                binary += String.fromCharCode(bytes[i]);
+            }
+            return btoa(binary);
+        }
+
+        function hookEditor(editor) {
+            if (!editor || editor.__evoloraRichHook) {
+                return;
+            }
+            editor.__evoloraRichHook = true;
+            editor.on('GetContent', function (event) {
+                if (!submitEvent || submitEvent.defaultPrevented) {
+                    return;
+                }
+                if (event.format && event.format !== 'html') {
+                    return;
+                }
+                if (typeof event.content !== 'string' || event.content === '' || event.content.indexOf(prefix) === 0) {
+                    return;
+                }
+                if (event.content.indexOf('<') === -1) {
+                    return;
+                }
+                event.content = prefix + encodeRichText(event.content);
+            });
+        }
+
+        document.addEventListener('submit', function (event) {
+            submitEvent = event;
+        }, true);
+        document.addEventListener('submit', function () {
+            setTimeout(function () {
+                submitEvent = null;
+            }, 0);
+        });
+
+        tinymce.on('AddEditor', function (event) {
+            hookEditor(event.editor);
+        });
+        (tinymce.editors || []).forEach(hookEditor);
+    })();
+
     $(document).ready(function() {
         // Sélectionne à la fois les éléments avec la classe .summernote et les éléments avec l'ID #content ou #description
         tinymce.init({

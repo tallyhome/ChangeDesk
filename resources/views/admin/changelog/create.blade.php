@@ -67,22 +67,10 @@
 @include('partials.tinymce')
 <script>
     $(document).ready(function() {
-        // Configuration spécifique pour le formulaire de création
-        tinymce.init({
-            selector: '#content',
-            height: 400,
-            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-            setup: function(editor) {
-                editor.on('change', function() {
-                    editor.save(); // Sauvegarde le contenu dans le textarea
-                });
-            }
-        });
-
-        // Validation du formulaire
         $('form').on('submit', function(e) {
-            if (!$('#version_number').val() || !$('#release_date').val() || !tinymce.get('content').getContent()) {
+            var editor = window.tinymce && tinymce.get('content');
+            var text = editor ? editor.getContent({ format: 'text' }) : $('#content').val();
+            if (!$('#version_number').val() || !$('#release_date').val() || !$.trim(text)) {
                 e.preventDefault();
                 alert('Veuillez remplir tous les champs obligatoires');
             }

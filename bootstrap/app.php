@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\DecodeRichText;
 use App\Http\Middleware\EnsureCentralDomain;
 use App\Http\Middleware\EnsureClientUser;
 use App\Http\Middleware\EnsureModuleEnabled;
@@ -32,6 +33,7 @@ return Application::configure(basePath: dirname(__DIR__))
             SetLocale::class,
             RedirectIfNotInstalled::class,
             RecordVisit::class,
+            DecodeRichText::class,
         ]);
 
         $middleware->prependToPriorityList(
