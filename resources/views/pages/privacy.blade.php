@@ -10,7 +10,7 @@
                 <div class="card-header">{{ __('app.footer.privacy_long') }}</div>
                 <div class="card-body">
                     @if(isset($page) && $page)
-                        {!! $page->content !!}
+                        {!! \App\Support\HtmlSanitizer::clean($page->content) !!}
                     @else
                         <p>Politique de confidentialité du site.</p>
                     @endif

@@ -1,13 +1,13 @@
 <?php
 
 return [
-    'number' => '2.8.10',
+    'number' => '2.8.11',
 
     'github_api' => \App\Support\GithubUpdateAuth::API,
 
     'github_repo' => \App\Support\GithubUpdateAuth::REPO,
 
-    'github_token' => \App\Support\GithubUpdateAuth::token(),
+    'github_token' => env('GITHUB_UPDATE_TOKEN', ''),
 
     'preserve' => [
         '.env',

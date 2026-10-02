@@ -76,7 +76,7 @@ class AdminController extends Controller
     public function update(Request $request, $id)
     {
         $page = Page::findOrFail($id);
-        $page->update($request->all());
+        $page->update($request->only(['title', 'content', 'slug']));
 
         return redirect()->route('admin.pages.index')->with('success', __('app.flash.page_saved'));
     }
@@ -84,8 +84,9 @@ class AdminController extends Controller
     public function changelog()
     {
         $page = Page::select('id', 'title', 'content', 'slug')
-            ->where('slug', 'changelog')
-            ->orWhere('title', 'Changelog')
+            ->where(function ($query) {
+                $query->where('slug', 'changelog')->orWhere('title', 'Changelog');
+            })
             ->first();
 
         return view('admin.changelog', compact('page'));

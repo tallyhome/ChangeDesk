@@ -53,7 +53,7 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label for="captcha" class="form-label">{{ __('app.public.captcha') }}</label>
+                            <label for="captcha" class="form-label">{{ __('app.public.captcha', ['question' => $captchaQuestion]) }}</label>
                             <input type="text" class="form-control @error('captcha') is-invalid @enderror" id="captcha" name="captcha" required>
                             @error('captcha')
                                 <div class="invalid-feedback">{{ $message }}</div>

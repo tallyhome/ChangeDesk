@@ -47,7 +47,7 @@
                         <div class="col-md-12">
                             <p class="mb-1"><strong>{{ __('app.common.description') }}:</strong></p>
                             <div class="p-3 bg-light rounded">
-                                {!! $bug->description !!}
+                                {!! \App\Support\HtmlSanitizer::format($bug->description) !!}
                             </div>
                         </div>
                     </div>

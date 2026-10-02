@@ -50,12 +50,12 @@ Route::post('/webhooks/paypal', PayPalWebhookController::class)->name('webhooks.
 // Login accessible aussi depuis un sous-domaine tenant (puis redirect admin central)
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
-    Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+    Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('throttle:10,1');
 });
 
 Route::middleware(['central', 'guest'])->group(function () {
     Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
-    Route::post('/register', [RegisteredUserController::class, 'store']);
+    Route::post('/register', [RegisteredUserController::class, 'store'])->middleware('throttle:5,1');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -77,7 +77,7 @@ Route::middleware(['tenant.host', 'tenant.notSuspended'])->group(function () {
 
     Route::middleware('module:bugs')->group(function () {
         Route::get('/bug-report', [PageController::class, 'bugReport'])->name('bug-report');
-        Route::post('/bug-report', [PageController::class, 'storeBugReport'])->name('bug-report.store');
+        Route::post('/bug-report', [PageController::class, 'storeBugReport'])->middleware('throttle:8,1')->name('bug-report.store');
         Route::get('/bug-report/{id}', [PageController::class, 'showBugReport'])->name('bug-report.show');
     });
 

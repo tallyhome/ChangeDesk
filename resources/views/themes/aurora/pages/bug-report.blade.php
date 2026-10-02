@@ -35,7 +35,7 @@
             <input type="email" id="email" name="email" value="{{ old('email') }}">
           </div>
           <div class="field">
-            <label for="captcha">{{ __('app.public.captcha_short') }}</label>
+            <label for="captcha">{{ __('app.public.captcha_short', ['question' => $captchaQuestion]) }}</label>
             <input type="text" id="captcha" name="captcha" required>
             @error('captcha')<div class="invalid-feedback">{{ $message }}</div>@enderror
           </div>

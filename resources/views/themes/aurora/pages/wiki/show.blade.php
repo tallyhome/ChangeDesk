@@ -30,7 +30,7 @@
     <div class="au-panel-pad">
       <h1 class="au-title" style="margin-top:0">{{ $article->title }}</h1>
       <p class="au-muted" style="margin-top:-.5rem">{{ \App\Support\Locale::formatDate($article->updated_at) }}</p>
-      <div class="au-prose" style="color:#e2e8f0">{!! $article->content !!}</div>
+      <div class="au-prose" style="color:#e2e8f0">{!! \App\Support\HtmlSanitizer::clean($article->content) !!}</div>
     </div>
   </article>
 

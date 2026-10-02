@@ -7,7 +7,7 @@
 <div class="au-panel">
   <div class="au-panel-pad au-prose" style="color:#e2e8f0">
     @if(isset($page) && $page)
-      {!! $page->content !!}
+      {!! \App\Support\HtmlSanitizer::clean($page->content) !!}
     @else
       <p>Bienvenue sur notre site.</p>
     @endif

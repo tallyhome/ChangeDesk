@@ -16,6 +16,7 @@ class ImpersonationController extends Controller
         abort_unless($impersonatorId, 403);
 
         $admin = User::findOrFail($impersonatorId);
+        abort_unless($admin->isSuperAdmin() && $admin->is_active, 403);
         Auth::login($admin);
         Tenant::forgetCurrent();
 

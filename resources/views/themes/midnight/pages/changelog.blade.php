@@ -10,7 +10,7 @@
         <strong style="color:var(--md-accent)">v{{ $version->version_number }}</strong>
         <div class="md-muted">{{ \App\Support\Locale::formatDate($version->release_date) }}</div>
         <p>{{ $version->description }}</p>
-        <div>{!! $version->content !!}</div>
+        <div>{!! \App\Support\HtmlSanitizer::clean($version->content) !!}</div>
       </div>
       <span class="md-badge"><i class="fas fa-check-circle"></i> {{ __('app.common.published') }}</span>
     </div>

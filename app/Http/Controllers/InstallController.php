@@ -25,6 +25,11 @@ class InstallController extends Controller
         if (File::exists($this->installedPath())) {
             abort(404);
         }
+
+        $envPath = base_path('.env');
+        if (File::exists($envPath) && preg_match('/^APP_KEY=base64:[A-Za-z0-9+\/=]+/m', File::get($envPath))) {
+            abort(404);
+        }
     }
 
     public function welcome()
@@ -195,7 +200,10 @@ DB_PASSWORD="{$pass}"
 
 SESSION_DRIVER=database
 SESSION_LIFETIME=120
+SESSION_ENCRYPT=true
+SESSION_SECURE_COOKIE=true
 SESSION_DOMAIN=null
+GITHUB_UPDATE_TOKEN=
 QUEUE_CONNECTION=database
 CACHE_STORE=database
 FILESYSTEM_DISK=local

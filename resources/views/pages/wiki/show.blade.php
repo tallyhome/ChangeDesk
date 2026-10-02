@@ -48,7 +48,7 @@
                 </div>
                 <div class="card-body">
                     <div class="wiki-content">
-                        {!! $article->content !!}
+                        {!! \App\Support\HtmlSanitizer::clean($article->content) !!}
                     </div>
                 </div>
                 <div class="card-footer bg-light text-muted">

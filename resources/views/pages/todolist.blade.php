@@ -17,7 +17,7 @@
                 <div class="card h-100">
                     <div class="card-body">
                         <h5 class="card-title">{{ $item->title }}</h5>
-                        <div class="card-text">{!! $item->description !!}</div>
+                        <div class="card-text">{!! \App\Support\HtmlSanitizer::clean($item->description) !!}</div>
                         
                         <div class="progress mb-3">
                             <div class="progress-bar bg-{{ $item->color ?? 'primary' }}" role="progressbar" 

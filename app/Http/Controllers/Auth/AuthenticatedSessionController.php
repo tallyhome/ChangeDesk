@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Tenant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\ValidationException;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -21,11 +23,22 @@ class AuthenticatedSessionController extends Controller
             'password' => ['required'],
         ]);
 
+        $throttleKey = 'login:'.sha1(strtolower($credentials['email']).'|'.$request->ip());
+        if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
+            throw ValidationException::withMessages([
+                'email' => 'Trop de tentatives. Réessayez dans '.RateLimiter::availableIn($throttleKey).' secondes.',
+            ]);
+        }
+
         if (! Auth::attempt($credentials)) {
+            RateLimiter::hit($throttleKey, 60);
+
             return back()->withErrors([
                 'email' => 'Les identifiants fournis ne correspondent pas à nos enregistrements.',
             ])->withInput();
         }
+
+        RateLimiter::clear($throttleKey);
 
         $user = Auth::user();
         if (! $user->is_active) {

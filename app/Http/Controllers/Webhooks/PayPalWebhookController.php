@@ -11,10 +11,14 @@ class PayPalWebhookController extends Controller
 {
     public function __invoke(Request $request, PayPalBilling $paypal)
     {
-        $payload = $request->all();
-        Log::info('paypal.webhook', ['type' => $payload['event_type'] ?? null]);
-
         try {
+            $paypal->assertValidWebhook($request);
+            $payload = json_decode($request->getContent(), true);
+            if (! is_array($payload)) {
+                return response('invalid', 400);
+            }
+
+            Log::info('paypal.webhook', ['type' => $payload['event_type'] ?? null]);
             $paypal->handleWebhook($payload);
         } catch (\Throwable $e) {
             Log::error('paypal.webhook.error', ['message' => $e->getMessage()]);

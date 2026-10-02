@@ -150,7 +150,7 @@ class DatabaseBackupController extends Controller
      */
     public function download($filename)
     {
-        $path = storage_path('app/backups/' . $filename);
+        $path = $this->backupPath($filename);
         
         if (file_exists($path)) {
             return response()->download($path);
@@ -165,7 +165,7 @@ class DatabaseBackupController extends Controller
      */
     public function destroy($filename)
     {
-        $path = storage_path('app/backups/' . $filename);
+        $path = $this->backupPath($filename);
         
         if (file_exists($path)) {
             unlink($path);
@@ -183,7 +183,7 @@ class DatabaseBackupController extends Controller
     public function restore($filename)
     {
         try {
-            $path = storage_path('app/backups/' . $filename);
+            $path = $this->backupPath($filename);
             
             if (!file_exists($path)) {
                 return redirect()->route('superadmin.backups.index')
@@ -262,6 +262,33 @@ class DatabaseBackupController extends Controller
         }
         
         return $queries;
+    }
+
+    /**
+     * Chemin réel d'une sauvegarde, limité au dossier backups et aux fichiers .sql.
+     */
+    private function backupPath(string $filename): string
+    {
+        $name = basename(str_replace('\\', '/', $filename));
+        if (! preg_match('/^[A-Za-z0-9._-]+\.sql$/', $name)) {
+            abort(404);
+        }
+
+        $directory = storage_path('app/backups');
+        $path = $directory.DIRECTORY_SEPARATOR.$name;
+        $realDir = realpath($directory);
+        $realFile = realpath($path);
+        if ($realDir === false || $realFile === false || ! is_file($realFile)) {
+            abort(404);
+        }
+
+        $prefix = rtrim(str_replace('\\', '/', $realDir), '/').'/';
+        $file = str_replace('\\', '/', $realFile);
+        if (! str_starts_with(strtolower($file), strtolower($prefix))) {
+            abort(404);
+        }
+
+        return $realFile;
     }
 
     /**

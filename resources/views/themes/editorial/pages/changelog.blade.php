@@ -19,7 +19,7 @@
         @if($version->description)
           <p style="margin:.25rem 0 .75rem;font-weight:600">{{ $version->description }}</p>
         @endif
-        <div class="ed-prose">{!! $version->content !!}</div>
+        <div class="ed-prose">{!! \App\Support\HtmlSanitizer::clean($version->content) !!}</div>
       </article>
     @empty
       <div class="ed-card ed-muted">{{ __('app.common.empty') }}</div>

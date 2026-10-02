@@ -9,7 +9,6 @@ use App\Models\Tenant;
 use App\Models\User;
 use App\Services\Billing\StripeBilling;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
@@ -166,10 +165,13 @@ class UserController extends Controller
     public function resetPassword(User $user)
     {
         $temp = Str::password(12);
-        $user->update(['password' => Hash::make($temp)]);
+        $user->password = $temp;
+        $user->save();
         AuditLog::record('user.password_reset', $user->tenant, ['user_id' => $user->id]);
 
-        return back()->with('success', __('app.flash.user_temp_password', ['password' => $temp]));
+        return back()
+            ->with('success', __('app.flash.user_temp_password'))
+            ->with('temp_password', $temp);
     }
 
     public function toggleActive(User $user)

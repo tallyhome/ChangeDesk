@@ -80,6 +80,35 @@ class PayPalBilling
         return $approve['href'];
     }
 
+    public function assertValidWebhook(\Illuminate\Http\Request $request): void
+    {
+        $webhookId = (string) config('billing.paypal.webhook_id');
+        if ($webhookId === '' || ! config('billing.paypal.client_id') || ! config('billing.paypal.client_secret')) {
+            throw new \RuntimeException('Webhook PayPal non configuré.');
+        }
+
+        $event = json_decode($request->getContent(), true);
+        if (! is_array($event)) {
+            throw new \RuntimeException('Payload PayPal invalide.');
+        }
+
+        $response = Http::withToken($this->accessToken())
+            ->acceptJson()
+            ->post($this->baseUrl().'/v1/notifications/verify-webhook-signature', [
+                'auth_algo' => (string) $request->header('PAYPAL-AUTH-ALGO'),
+                'cert_url' => (string) $request->header('PAYPAL-CERT-URL'),
+                'transmission_id' => (string) $request->header('PAYPAL-TRANSMISSION-ID'),
+                'transmission_sig' => (string) $request->header('PAYPAL-TRANSMISSION-SIG'),
+                'transmission_time' => (string) $request->header('PAYPAL-TRANSMISSION-TIME'),
+                'webhook_id' => $webhookId,
+                'webhook_event' => $event,
+            ]);
+
+        if (! $response->successful() || $response->json('verification_status') !== 'SUCCESS') {
+            throw new \RuntimeException('Signature PayPal refusée.');
+        }
+    }
+
     public function handleWebhook(array $payload): void
     {
         $event = $payload['event_type'] ?? '';

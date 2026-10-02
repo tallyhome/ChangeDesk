@@ -14,7 +14,7 @@
                         <h2 class="h4 mb-0">v{{ $version->version_number }} <small class="text-muted">({{ \App\Support\Locale::formatDate($version->release_date) }})</small></h2>
                     </div>
                     <div class="card-body">
-                        {!! $version->content !!}
+                        {!! \App\Support\HtmlSanitizer::clean($version->content) !!}
                     </div>
                 </div>
             @endforeach

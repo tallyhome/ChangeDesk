@@ -14,7 +14,7 @@
     @endphp
     <article class="ed-card">
       <h3 style="margin:0 0 .5rem;font-family:var(--ed-display)">{{ $item->title }}</h3>
-      <div class="ed-prose">{!! $item->description !!}</div>
+      <div class="ed-prose">{!! \App\Support\HtmlSanitizer::clean($item->description) !!}</div>
       <div class="ed-progress"><span style="width: {{ $progress }}%;background:{{ $barColor }}"></span></div>
       <div class="ed-meta">
         <span>

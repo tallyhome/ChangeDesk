@@ -3,13 +3,8 @@
 namespace App\Support;
 
 /**
- * Identifiants MAJ GitHub — volontairement hors .env (embarqués dans le produit).
- *
- * Pour un dépôt privé : crée un Fine-grained PAT GitHub
- * (Settings → Developer settings → Fine-grained tokens) avec uniquement :
- * - Repository access : tallyhome/ChangeDesk
- * - Permissions : Contents = Read-only, Metadata = Read-only
- * Puis colle le token dans TOKEN ci-dessous.
+ * Dépôt des mises à jour. Le token se lit dans GITHUB_UPDATE_TOKEN (.env), jamais dans le code.
+ * TOKEN reste un repli vide pour les installations déjà en place.
  */
 final class GithubUpdateAuth
 {
@@ -17,14 +12,15 @@ final class GithubUpdateAuth
 
     public const API = 'https://api.github.com';
 
-    /**
-     * PAT lecture seule. Laisser vide si le dépôt est public.
-     * Exemple : github_pat_xxxxxxxx ou ghp_xxxxxxxx
-     */
     public const TOKEN = '';
 
     public static function token(): string
     {
+        $fromConfig = config('updates.github_token');
+        if (is_string($fromConfig) && trim($fromConfig) !== '') {
+            return trim($fromConfig);
+        }
+
         return trim(self::TOKEN);
     }
 

@@ -13,7 +13,7 @@
     <div style="display:flex;justify-content:space-between;gap:1rem">
       <div style="flex:1">
         <strong>{{ $item->title }}</strong>
-        <div class="md-muted">{!! $item->description !!}</div>
+        <div class="md-muted">{!! \App\Support\HtmlSanitizer::clean($item->description) !!}</div>
         <div class="md-progress"><span style="width: {{ $progress }}%;background:{{ $barColor }}"></span></div>
       </div>
       <span class="md-badge">{{ ThemeUi::statusLabel($item->status) }} · {{ $progress }}%</span>

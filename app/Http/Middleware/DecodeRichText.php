@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\HtmlSanitizer;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,6 +35,19 @@ class DecodeRichText
             }
 
             $decoded[$field] = $html;
+        }
+
+        foreach (self::FIELDS as $field) {
+            $value = $decoded[$field] ?? $request->input($field);
+            if (! is_string($value) || ! preg_match('/<[a-z!\/]/i', $value)) {
+                if (isset($decoded[$field])) {
+                    $decoded[$field] = $value;
+                }
+
+                continue;
+            }
+
+            $decoded[$field] = HtmlSanitizer::clean($value);
         }
 
         if ($decoded !== []) {

@@ -35,7 +35,7 @@
         </div>
       </div>
       <div class="field">
-        <label for="captcha">{{ __('app.public.captcha') }}</label>
+        <label for="captcha">{{ __('app.public.captcha', ['question' => $captchaQuestion]) }}</label>
         <input type="text" id="captcha" name="captcha" required style="max-width:8rem">
         @error('captcha')<div class="invalid-feedback">{{ $message }}</div>@enderror
       </div>

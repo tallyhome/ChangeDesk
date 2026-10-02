@@ -50,6 +50,42 @@ class StripeBilling
         return $response->json('url');
     }
 
+    public function assertValidWebhook(string $payload, ?string $header): void
+    {
+        $secret = (string) config('billing.stripe.webhook_secret');
+        if ($secret === '' || $header === null || $header === '') {
+            throw new \RuntimeException('Signature Stripe absente.');
+        }
+
+        $timestamp = null;
+        $signatures = [];
+        foreach (explode(',', $header) as $part) {
+            $part = trim($part);
+            if (str_starts_with($part, 't=')) {
+                $timestamp = substr($part, 2);
+            } elseif (str_starts_with($part, 'v1=')) {
+                $signatures[] = substr($part, 3);
+            }
+        }
+
+        if ($timestamp === null || $signatures === [] || ! ctype_digit($timestamp)) {
+            throw new \RuntimeException('Signature Stripe invalide.');
+        }
+
+        if (abs(time() - (int) $timestamp) > 300) {
+            throw new \RuntimeException('Signature Stripe expirée.');
+        }
+
+        $expected = hash_hmac('sha256', $timestamp.'.'.$payload, $secret);
+        foreach ($signatures as $signature) {
+            if (hash_equals($expected, $signature)) {
+                return;
+            }
+        }
+
+        throw new \RuntimeException('Signature Stripe refusée.');
+    }
+
     public function handleWebhook(array $payload): void
     {
         $type = $payload['type'] ?? '';

@@ -6,7 +6,7 @@
 <p class="ed-lead">Suivez les versions, la roadmap et les retours utilisateurs au même endroit.</p>
 <div class="ed-card ed-prose">
   @if(isset($page) && $page)
-    {!! $page->content !!}
+    {!! \App\Support\HtmlSanitizer::clean($page->content) !!}
   @else
     <p>Bienvenue sur notre site.</p>
   @endif

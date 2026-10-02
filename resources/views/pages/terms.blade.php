@@ -10,7 +10,7 @@
                 <div class="card-header">{{ __('app.footer.terms_long') }}</div>
                 <div class="card-body">
                     @if(isset($page) && $page)
-                        {!! $page->content !!}
+                        {!! \App\Support\HtmlSanitizer::clean($page->content) !!}
                     @else
                         <p>Conditions d'utilisation du site.</p>
                     @endif

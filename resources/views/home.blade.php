@@ -10,7 +10,7 @@
         <div class="col-md-12">
             <h1>{{ $page->title }}</h1>
             <div class="content-area">
-                {!! $page->content !!}
+                {!! \App\Support\HtmlSanitizer::clean($page->content) !!}
             </div>
         </div>
     </div>

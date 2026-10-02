@@ -46,7 +46,7 @@
                             @foreach($bugReports as $bug)
                                 <tr>
                                     <td>{{ $bug->title }}</td>
-                                    <td>{!! Str::limit($bug->description, 100) !!}</td>
+                                    <td>{{ Str::limit(strip_tags($bug->description), 100) }}</td>
                                     <td style="width: 200px;">
                                         <div class="progress">
                                             <div class="progress-bar bg-{{ $bug->color }}" role="progressbar" style="width: {{ $bug->progress }}%" aria-valuenow="{{ $bug->progress }}" aria-valuemin="0" aria-valuemax="100">{{ $bug->progress }}%</div>

@@ -11,6 +11,11 @@
   </div>
   <a href="{{ route('superadmin.users.index') }}" class="btn btn-outline-secondary">{{ __('app.common.back') }}</a>
 </div>
+@if(session('temp_password'))
+  <div class="alert alert-warning mt-3">
+    Mot de passe temporaire (affiché une seule fois) : <code>{{ session('temp_password') }}</code>
+  </div>
+@endif
 
 <div class="row g-4">
   <div class="col-lg-8">

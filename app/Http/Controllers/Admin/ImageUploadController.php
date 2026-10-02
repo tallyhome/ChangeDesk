@@ -21,11 +21,19 @@ class ImageUploadController extends Controller
                 'file' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
             ]);
 
-            $fileName = time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+            $ext = strtolower((string) $file->guessExtension());
+            $allowed = ['jpg' => 'jpg', 'jpeg' => 'jpg', 'png' => 'png', 'gif' => 'gif'];
+            if (! isset($allowed[$ext])) {
+                return response()->json([
+                    'error' => 'Format d\'image refusé',
+                ], 422);
+            }
+
+            $fileName = time().'_'.Str::random(10).'.'.$allowed[$ext];
             $uploadPath = public_path('uploads/images');
-            
-            if (!file_exists($uploadPath)) {
-                mkdir($uploadPath, 0777, true);
+
+            if (! file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
             }
             
             try {

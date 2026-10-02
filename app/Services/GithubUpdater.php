@@ -186,6 +186,7 @@ class GithubUpdater
             }
             $extractTo = $tmpRoot.'/extract';
             File::ensureDirectoryExists($extractTo);
+            $this->assertSafeZip($zip);
             $zip->extractTo($extractTo);
             $count = $zip->numFiles;
             $zip->close();
@@ -337,6 +338,17 @@ class GithubUpdater
         }
 
         return $headers;
+    }
+
+    protected function assertSafeZip(ZipArchive $zip): void
+    {
+        for ($i = 0; $i < $zip->numFiles; $i++) {
+            $name = str_replace('\\', '/', (string) $zip->getNameIndex($i));
+            if ($name === '' || str_starts_with($name, '/') || preg_match('#(^|/)\.\.(/|$)#', $name)) {
+                $zip->close();
+                throw new RuntimeException('Archive refusée : chemin dangereux.');
+            }
+        }
     }
 
     protected function mirror(string $source, string $destination, ?callable $onProgress = null): int

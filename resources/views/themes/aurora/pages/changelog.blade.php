@@ -39,7 +39,7 @@
               <tr>
                 <td colspan="4" style="padding:0">
                   <div class="au-detail" id="detail-{{ $version->id }}">
-                    <div class="au-prose">{!! $version->content !!}</div>
+                    <div class="au-prose">{!! \App\Support\HtmlSanitizer::clean($version->content) !!}</div>
                   </div>
                 </td>
               </tr>

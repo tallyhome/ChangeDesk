@@ -10,7 +10,7 @@
                 <div class="card-header">Accueil</div>
                 <div class="card-body">
                     @if(isset($page) && $page)
-                        {!! $page->content !!}
+                        {!! \App\Support\HtmlSanitizer::clean($page->content) !!}
                     @else
                         <p>Bienvenue sur notre site.</p>
                     @endif

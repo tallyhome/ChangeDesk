@@ -16,7 +16,7 @@
         <span class="dot"></span>{{ ThemeUi::statusLabel($bug->status) }}
       </span>
     </p>
-    <div class="au-prose" style="color:#e2e8f0">{!! nl2br(e($bug->description)) !!}</div>
+    <div class="au-prose" style="color:#e2e8f0">{!! \App\Support\HtmlSanitizer::format($bug->description) !!}</div>
   </div>
 </div>
 @endsection
