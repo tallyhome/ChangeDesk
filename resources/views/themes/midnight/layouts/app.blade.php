@@ -34,8 +34,10 @@
       @else
       <a href="{{ $central }}/admin"><i class="fas fa-cog"></i> {{ __('app.nav.admin_short') }}</a>
       @endguest
+      @include('partials.external-nav-link')
       @include('partials.lang-switcher', ['variant' => 'on-dark'])
     </nav>
+    <div style="margin-top:1.25rem">@include('partials.store-badges')</div>
   </aside>
   <main class="md-main">@yield('content')</main>
 </div>

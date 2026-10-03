@@ -34,6 +34,7 @@
       @else
         <a class="ed-login" href="{{ $central }}/admin">{{ __('app.nav.admin_short') }}</a>
       @endguest
+      @include('partials.external-nav-link')
       @include('partials.lang-switcher', ['variant' => 'light'])
     </nav>
   </div>
@@ -46,6 +47,7 @@
       <a href="{{ route('terms') }}">{{ __('app.footer.terms') }}</a> ·
       <a href="{{ route('privacy') }}">{{ __('app.footer.privacy') }}</a>
     </span>
+    @include('partials.store-badges')
   </div>
 </footer>
 @stack('scripts')

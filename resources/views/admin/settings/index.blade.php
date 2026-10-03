@@ -24,14 +24,15 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="external_link_text" class="form-label">Texte du lien dans le menu</label>
-                            <input type="text" class="form-control" id="external_link_text" name="external_link_text" 
-                                   value="{{ $settings['external_link_text'] ?? '' }}">
+                            <input type="text" class="form-control" id="external_link_text" name="external_link_text"
+                                   value="{{ old('external_link_text', $settings['external_link_text'] ?? '') }}">
                         </div>
                         
                         <div class="mb-3">
                             <label for="external_link_url" class="form-label">URL du lien externe</label>
-                            <input type="url" class="form-control" id="external_link_url" name="external_link_url" 
-                                   value="{{ $settings['external_link_url'] ?? '' }}">
+                            <input type="url" class="form-control @error('external_link_url') is-invalid @enderror" id="external_link_url" name="external_link_url"
+                                   value="{{ old('external_link_url', $settings['external_link_url'] ?? '') }}">
+                            @error('external_link_url')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             <div class="form-text">Exemple: https://play.google.com/store/apps/details?id=…</div>
                         </div>
                         
@@ -41,8 +42,7 @@
                                 <input type="hidden" name="external_link_enabled" value="0">
                                 <input class="form-check-input" type="checkbox" role="switch" id="external_link_enabled" 
                                        name="external_link_enabled" value="1"
-                                       {{ isset($settings['external_link_enabled']) && $settings['external_link_enabled'] == '1' ? 'checked' : '' }}
-                                       data-key="external_link_enabled">
+                                       {{ old('external_link_enabled', $settings['external_link_enabled'] ?? '0') == '1' ? 'checked' : '' }}>
                             </div>
                         </div>
                     </div>
@@ -50,8 +50,10 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="app_store_url" class="form-label">URL de l'App Store</label>
-                            <input type="url" class="form-control" id="app_store_url" name="app_store_url" 
-                                   value="{{ $settings['app_store_url'] ?? '' }}">
+                            <input type="url" class="form-control @error('app_store_url') is-invalid @enderror" id="app_store_url" name="app_store_url"
+                                   value="{{ old('app_store_url', $settings['app_store_url'] ?? '') }}"
+                                   placeholder="https://apps.apple.com/app/id…">
+                            @error('app_store_url')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
 
                         <div class="mb-3 d-flex align-items-center">
@@ -60,15 +62,16 @@
                                 <input type="hidden" name="app_store_enabled" value="0">
                                 <input class="form-check-input" type="checkbox" role="switch" id="app_store_enabled"
                                        name="app_store_enabled" value="1"
-                                       {{ isset($settings['app_store_enabled']) && $settings['app_store_enabled'] == '1' ? 'checked' : '' }}
-                                       data-key="app_store_enabled">
+                                       {{ old('app_store_enabled', $settings['app_store_enabled'] ?? '0') == '1' ? 'checked' : '' }}>
                             </div>
                         </div>
 
                         <div class="mb-3">
                             <label for="play_store_url" class="form-label">URL du Google Play Store</label>
-                            <input type="url" class="form-control" id="play_store_url" name="play_store_url" 
-                                   value="{{ $settings['play_store_url'] ?? '' }}">
+                            <input type="url" class="form-control @error('play_store_url') is-invalid @enderror" id="play_store_url" name="play_store_url"
+                                   value="{{ old('play_store_url', $settings['play_store_url'] ?? '') }}"
+                                   placeholder="https://play.google.com/store/apps/details?id=…">
+                            @error('play_store_url')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
 
                         <div class="mb-3 d-flex align-items-center">
@@ -77,8 +80,7 @@
                                 <input type="hidden" name="play_store_enabled" value="0">
                                 <input class="form-check-input" type="checkbox" role="switch" id="play_store_enabled"
                                        name="play_store_enabled" value="1"
-                                       {{ isset($settings['play_store_enabled']) && $settings['play_store_enabled'] == '1' ? 'checked' : '' }}
-                                       data-key="play_store_enabled">
+                                       {{ old('play_store_enabled', $settings['play_store_enabled'] ?? '0') == '1' ? 'checked' : '' }}>
                             </div>
                         </div>
                     </div>
@@ -93,55 +95,4 @@
         </div>
     </div>
 </div>
-@endsection
-
-@section('scripts')
-<script>
-$(document).ready(function() {
-    // Ajouter le token CSRF à toutes les requêtes AJAX
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-    
-    // Gérer le toggle des paramètres
-    $('.form-check-input').on('change', function() {
-        const $checkbox = $(this);
-        const key = $checkbox.data('key');
-        const isChecked = $checkbox.prop('checked');
-        
-        // Désactiver le checkbox pendant la requête
-        $checkbox.prop('disabled', true);
-        
-        // Envoyer la requête AJAX
-        $.ajax({
-            url: "{{ route('admin.settings.toggle') }}",
-            method: 'POST',
-            data: { key: key },
-            success: function(response) {
-                if (response.success) {
-                    // Afficher le message de succès
-                    const message = $('<div class="alert alert-success alert-dismissible fade show">' +
-                        response.message +
-                        '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
-                        '</div>');
-                    $('.container').prepend(message);
-                    setTimeout(() => message.remove(), 3000);
-                }
-            },
-            error: function(xhr) {
-                // En cas d'erreur, remettre le checkbox dans son état précédent
-                $checkbox.prop('checked', !isChecked);
-                console.error('Erreur lors de la mise à jour du paramètre:', xhr.responseText);
-                alert('Une erreur est survenue lors de la mise à jour du paramètre.');
-            },
-            complete: function() {
-                // Réactiver le checkbox
-                $checkbox.prop('disabled', false);
-            }
-        });
-    });
-});
-</script>
 @endsection

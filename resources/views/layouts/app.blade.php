@@ -211,20 +211,7 @@
                 <div class="col-md-6 text-md-end">
                     <a href="{{ route('terms') }}" class="text-decoration-none me-3">{{ __('app.footer.terms_long') }}</a>
                     <a href="{{ route('privacy') }}" class="text-decoration-none me-3">{{ __('app.footer.privacy_long') }}</a>
-                    @php
-                        $playStoreEnabled = \App\Models\Setting::getValue('play_store_enabled', '0');
-                        $appStoreEnabled = \App\Models\Setting::getValue('app_store_enabled', '0');
-                    @endphp
-                    @if($playStoreEnabled == '1')
-                    <a href="{{ \App\Models\Setting::getValue('play_store_url', '#') }}" target="_blank" class="me-2">
-                        <img src="{{ asset('images/google-play-badge.svg') }}" alt="Disponible sur Google Play" style="height: 40px;">
-                    </a>
-                    @endif
-                    @if($appStoreEnabled == '1')
-                    <a href="{{ \App\Models\Setting::getValue('app_store_url', '#') }}" target="_blank">
-                        <img src="{{ asset('images/app-store-badge.svg') }}" alt="Disponible sur l'App Store" style="height: 40px;">
-                    </a>
-                    @endif
+                    @include('partials.store-badges')
                 </div>
             </div>
         </div>

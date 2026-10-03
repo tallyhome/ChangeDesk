@@ -28,6 +28,7 @@
       <a href="{{ route('terms') }}">{{ __('app.footer.terms') }}</a> ·
       <a href="{{ route('privacy') }}">{{ __('app.footer.privacy') }}</a>
     </span>
+    @include('partials.store-badges')
   </div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
