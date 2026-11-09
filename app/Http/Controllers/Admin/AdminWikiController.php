@@ -106,7 +106,10 @@ class AdminWikiController extends Controller
     public function preview(Request $request)
     {
         $content = $request->input('content');
-        return response()->json(['preview' => $content]);
+
+        return response()->json([
+            'preview' => \App\Support\HtmlSanitizer::clean(is_string($content) ? $content : ''),
+        ]);
     }
 
     public function togglePublication(WikiArticle $article)

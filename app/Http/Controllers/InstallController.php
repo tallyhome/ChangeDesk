@@ -170,6 +170,7 @@ class InstallController extends Controller
     {
         $pass = $data['db_password'] ?? '';
         $key = 'base64:'.base64_encode(random_bytes(32));
+        $sslAskToken = bin2hex(random_bytes(16));
 
         return <<<ENV
 APP_NAME=Evolora
@@ -204,6 +205,10 @@ SESSION_ENCRYPT=true
 SESSION_SECURE_COOKIE=true
 SESSION_DOMAIN=null
 GITHUB_UPDATE_TOKEN=
+TRUSTED_PROXIES=
+SSL_ASK_TOKEN={$sslAskToken}
+VISIT_RETENTION_DAYS=90
+REGISTRATION_ENABLED=true
 QUEUE_CONNECTION=database
 CACHE_STORE=database
 FILESYSTEM_DISK=local

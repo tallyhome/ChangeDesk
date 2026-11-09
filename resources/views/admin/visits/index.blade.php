@@ -3,6 +3,9 @@
 @section('content')
 <div class="container-fluid px-4">
     <h1 class="mt-4">{{ __('app.admin.stats') }}</h1>
+    @if((int) config('security.visit_retention_days') > 0)
+        <p class="text-muted">{{ __('app.admin.visits_retention', ['days' => config('security.visit_retention_days')]) }}</p>
+    @endif
 
     <div class="row mt-4 g-3">
         <div class="col-xl-3 col-md-6">

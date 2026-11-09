@@ -47,7 +47,7 @@ class AdminProfileController extends Controller
         
         // Mettre à jour le mot de passe si fourni
         if ($request->filled('password')) {
-            $user->password = Hash::make($validated['password']);
+            $user->password = $validated['password'];
         }
         
         $user->save();

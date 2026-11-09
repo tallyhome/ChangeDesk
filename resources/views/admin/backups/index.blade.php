@@ -62,6 +62,7 @@
                                                 
                                                 <form action="{{ route('superadmin.backups.restore', $backup['filename']) }}" method="POST" class="me-2">
                                                     @csrf
+                                                    <input type="hidden" name="confirm_restore" value="RESTORE">
                                                     <button type="submit" class="btn btn-sm btn-warning" data-confirm="Êtes-vous sûr de vouloir restaurer cette sauvegarde ? Toutes les données actuelles seront remplacées.">
                                                         <i class="fas fa-undo"></i> Restaurer
                                                     </button>

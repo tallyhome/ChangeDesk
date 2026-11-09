@@ -9,6 +9,7 @@
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
+                        @include('partials.bug-public-guard')
 
                         <div class="mb-3">
                             <label class="form-label" for="name">{{ __('app.auth.your_name') }}</label>

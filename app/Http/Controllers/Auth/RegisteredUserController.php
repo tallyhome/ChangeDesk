@@ -18,11 +18,21 @@ class RegisteredUserController extends Controller
 {
     public function create()
     {
+        abort_unless(config('security.registration_enabled'), 404);
+
         return view('auth.register');
     }
 
     public function store(Request $request, TenantProvisioner $provisioner)
     {
+        abort_unless(config('security.registration_enabled'), 404);
+
+        if (filled($request->input('evolora_hp'))) {
+            throw ValidationException::withMessages([
+                'email' => __('validation.prohibited', ['attribute' => 'email']),
+            ]);
+        }
+
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],

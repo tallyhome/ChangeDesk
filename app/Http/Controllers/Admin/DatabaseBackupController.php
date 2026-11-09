@@ -73,6 +73,10 @@ class DatabaseBackupController extends Controller
             
             // Pour chaque table, générer les instructions SQL
             foreach ($tables as $table) {
+                if (! is_string($table) || ! preg_match('/^[A-Za-z0-9_]+$/', $table)) {
+                    continue;
+                }
+
                 // Structure de la table
                 fwrite($file, "\n-- Structure de la table `{$table}`\n\n");
                 
@@ -98,23 +102,21 @@ class DatabaseBackupController extends Controller
                     
                     if ($count > 0) {
                         // Récupérer les noms des colonnes
-                        $columns = array_keys((array)$rows[0]);
-                        $columnNames = '`' . implode('`, `', $columns) . '`';
-                        
-                        // Générer les instructions INSERT
+                        $columns = array_keys((array) $rows[0]);
+                        $columns = array_values(array_filter($columns, fn ($column) => is_string($column) && preg_match('/^[A-Za-z0-9_]+$/', $column)));
+                        if ($columns === []) {
+                            continue;
+                        }
+                        $columnNames = '`'.implode('`, `', $columns).'`';
+
                         foreach ($rows as $row) {
+                            $row = (array) $row;
                             $values = [];
-                            foreach ((array)$row as $value) {
-                                if (is_null($value)) {
-                                    $values[] = 'NULL';
-                                } else if (is_numeric($value)) {
-                                    $values[] = $value;
-                                } else {
-                                    $values[] = "'" . str_replace("'", "\\'", $value) . "'";
-                                }
+                            foreach ($columns as $column) {
+                                $values[] = $this->sqlLiteral($row[$column] ?? null);
                             }
-                            
-                            fwrite($file, "INSERT INTO `{$table}` ({$columnNames}) VALUES (" . implode(", ", $values) . ");\n");
+
+                            fwrite($file, "INSERT INTO `{$table}` ({$columnNames}) VALUES (".implode(', ', $values).");\n");
                         }
                     }
                     
@@ -180,8 +182,13 @@ class DatabaseBackupController extends Controller
     /**
      * Restaure une sauvegarde
      */
-    public function restore($filename)
+    public function restore(Request $request, $filename)
     {
+        if ($request->input('confirm_restore') !== 'RESTORE') {
+            return redirect()->route('superadmin.backups.index')
+                ->with('error', 'Confirmation manquante. La restauration n’a pas été lancée.');
+        }
+
         try {
             $path = $this->backupPath($filename);
             
@@ -205,13 +212,17 @@ class DatabaseBackupController extends Controller
             
             // Exécuter chaque requête
             foreach ($queries as $query) {
+                $query = trim($query);
+                if ($query === '' || str_starts_with($query, '--') || str_starts_with($query, '#')) {
+                    continue;
+                }
+
+                $this->assertRestorableSql($query);
+
                 try {
-                    if (trim($query) != '') {
-                        DB::unprepared($query);
-                    }
+                    DB::unprepared($query);
                 } catch (\Exception $e) {
-                    // Continuer même si une requête échoue
-                    // On pourrait enregistrer les erreurs dans un log ici
+                    // Une requête de structure peut échouer si la table existe déjà.
                 }
             }
             
@@ -220,13 +231,18 @@ class DatabaseBackupController extends Controller
             
             return redirect()->route('superadmin.backups.index')
                 ->with('success', __('app.flash.backup_restored'));
-                
+
         } catch (\Exception $e) {
+            try {
+                DB::statement('SET FOREIGN_KEY_CHECKS=1');
+            } catch (\Throwable) {
+            }
+
             return redirect()->route('superadmin.backups.index')
-                ->with('error', 'Erreur: ' . $e->getMessage());
+                ->with('error', 'Erreur: '.$e->getMessage());
         }
     }
-    
+
     /**
      * Divise un fichier SQL en requêtes individuelles
      * 
@@ -237,7 +253,7 @@ class DatabaseBackupController extends Controller
     {
         // Supprimer les commentaires
         $sql = preg_replace('/\/\*.*?\*\//s', '', $sql);
-        $sql = preg_replace('/--.*?\n/', '\n', $sql);
+        $sql = preg_replace('/--.*?(\r?\n|$)/', "\n", $sql);
         
         // Diviser le fichier en requêtes individuelles
         $queries = [];
@@ -262,6 +278,43 @@ class DatabaseBackupController extends Controller
         }
         
         return $queries;
+    }
+
+    private function sqlLiteral(mixed $value): string
+    {
+        if ($value === null) {
+            return 'NULL';
+        }
+
+        if (is_bool($value)) {
+            return $value ? '1' : '0';
+        }
+
+        if (is_int($value) || (is_float($value) && is_finite($value))) {
+            return (string) $value;
+        }
+
+        $string = str_replace(
+            ["\\", "\0", "\n", "\r", "'", '"', "\x1a"],
+            ['\\\\', '\\0', '\\n', '\\r', "\\'", '\\"', '\\Z'],
+            (string) $value
+        );
+
+        return "'".$string."'";
+    }
+
+    private function assertRestorableSql(string $query): void
+    {
+        $head = preg_replace('/^\s*(--[^\n]*\R\s*)*/', '', $query) ?? $query;
+        $head = ltrim($head);
+
+        if (preg_match('/\b(INTO\s+OUTFILE|LOAD_FILE|LOAD\s+DATA|BENCHMARK\s*\(|SLEEP\s*\()/i', $head)) {
+            throw new \RuntimeException('Requête de sauvegarde refusée.');
+        }
+
+        if (! preg_match('/^(SET|CREATE|INSERT)\b/i', $head)) {
+            throw new \RuntimeException('Requête de sauvegarde refusée.');
+        }
     }
 
     /**

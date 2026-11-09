@@ -12,6 +12,7 @@
     @endif
     <form class="ed-form" action="{{ route('bug-report.store') }}" method="POST">
       @csrf
+      @include('partials.bug-public-guard', ['publicNotice' => true])
       <div class="field">
         <label for="title">{{ __('app.public.bug_title_label') }}</label>
         <input type="text" id="title" name="title" value="{{ old('title') }}" required>

@@ -21,6 +21,18 @@ class SslAskController extends Controller
             return response('missing domain', 400);
         }
 
+        $secret = (string) config('security.ssl_ask_token');
+        if ($secret === '') {
+            if (app()->environment('production')) {
+                return response('forbidden', 404);
+            }
+        } else {
+            $given = (string) ($request->header('X-Ssl-Ask-Token') ?: $request->query('token', ''));
+            if (! hash_equals($secret, $given)) {
+                return response('forbidden', 404);
+            }
+        }
+
         $centralDomains = array_map('strtolower', config('tenancy.central_domains', []));
         $centralDomain = strtolower((string) config('tenancy.central_domain'));
 

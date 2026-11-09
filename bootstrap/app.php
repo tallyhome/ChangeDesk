@@ -10,8 +10,10 @@ use App\Http\Middleware\EnsureTenantNotSuspended;
 use App\Http\Middleware\RecordVisit;
 use App\Http\Middleware\RedirectIfNotInstalled;
 use App\Http\Middleware\ResolveTenant;
+use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\SetTenantFromAuth;
+use App\Http\Middleware\TrustConfiguredProxies;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -25,6 +27,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->prepend(TrustConfiguredProxies::class);
+        $middleware->append(SecurityHeaders::class);
+
         $middleware->web(prepend: [
             ResolveTenant::class,
         ]);

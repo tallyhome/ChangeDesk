@@ -56,6 +56,10 @@ class PageController extends Controller
 
     public function storeBugReport(Request $request)
     {
+        if (filled($request->input('evolora_hp'))) {
+            return redirect()->route('bug-report')->with('success', __('app.flash.bug_public'));
+        }
+
         $this->ensureBugCaptcha();
 
         $validated = $request->validate([

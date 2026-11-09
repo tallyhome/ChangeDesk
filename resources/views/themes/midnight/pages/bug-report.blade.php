@@ -8,6 +8,7 @@
   @if(session('success'))<p style="color:var(--md-accent)">{{ session('success') }}</p>@endif
   <form method="POST" action="{{ route('bug-report.store') }}">
     @csrf
+    @include('partials.bug-public-guard', ['publicNotice' => true])
     <p><input name="title" required placeholder="{{ __('app.public.bug_summary') }}" style="width:100%;padding:.7rem;border-radius:10px;border:1px solid #243036;background:#0f1619;color:#fff"></p>
     <p><textarea name="description" required rows="5" placeholder="{{ __('app.common.description') }}" style="width:100%;padding:.7rem;border-radius:10px;border:1px solid #243036;background:#0f1619;color:#fff"></textarea></p>
     <p><input name="name" placeholder="{{ __('app.common.name') }}" style="width:100%;padding:.7rem;border-radius:10px;border:1px solid #243036;background:#0f1619;color:#fff;margin-bottom:.5rem">

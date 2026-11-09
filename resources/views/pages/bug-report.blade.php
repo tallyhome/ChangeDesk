@@ -18,6 +18,7 @@
                 <div class="card-body">
                     <form action="{{ route('bug-report.store') }}" method="POST">
                         @csrf
+                        @include('partials.bug-public-guard', ['publicNotice' => true])
                         
                         <div class="mb-3">
                             <label for="title" class="form-label">{{ __('app.public.bug_title_label') }}</label>

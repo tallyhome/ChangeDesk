@@ -12,6 +12,7 @@
 
     <form class="au-form" action="{{ route('bug-report.store') }}" method="POST">
       @csrf
+      @include('partials.bug-public-guard', ['publicNotice' => true])
       <div class="au-bug-layout">
         <div>
           <div class="field">

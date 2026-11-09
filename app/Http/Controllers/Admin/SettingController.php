@@ -8,6 +8,13 @@ use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
+    /** @var list<string> */
+    private const TOGGLES = [
+        'external_link_enabled',
+        'app_store_enabled',
+        'play_store_enabled',
+    ];
+
     public function index()
     {
         $defaultSettings = [
@@ -39,14 +46,8 @@ class SettingController extends Controller
             Setting::setValue($key, $value);
         }
 
-        $toggles = [
-            'external_link_enabled',
-            'app_store_enabled',
-            'play_store_enabled',
-        ];
-
-        foreach ($toggles as $key) {
-            Setting::setValue($key, $request->input($key, '0'));
+        foreach (self::TOGGLES as $key) {
+            Setting::setValue($key, $request->input($key) === '1' ? '1' : '0');
         }
 
         return redirect()->route('admin.settings.index')
@@ -58,7 +59,11 @@ class SettingController extends Controller
      */
     public function toggle(Request $request)
     {
-        $key = $request->input('key');
+        $key = (string) $request->input('key');
+        if (! in_array($key, self::TOGGLES, true)) {
+            abort(404);
+        }
+
         $current = Setting::getValue($key, '0');
         $newValue = $current == '1' ? '0' : '1';
         $setting = Setting::setValue($key, $newValue);
