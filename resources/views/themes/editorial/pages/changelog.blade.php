@@ -3,6 +3,7 @@
 @section('content')
 <p class="ed-kicker">{{ __('app.nav.changelog') }}</p>
 <h1 class="ed-title">{{ __('app.public.changelog_title') }}</h1>
+@include('partials.changelog-subscribe')
 <p class="ed-lead">Ce qui change, clairement — une chronologie lisible et ancrée.</p>
 
 <div class="ed-grid">

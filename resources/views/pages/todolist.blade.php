@@ -17,6 +17,7 @@
                 <div class="card h-100">
                     <div class="card-body">
                         <h5 class="card-title">{{ $item->title }}</h5>
+                        @include('partials.roadmap-vote', ['item' => $item])
                         <div class="card-text">{!! \App\Support\HtmlSanitizer::clean($item->description) !!}</div>
                         
                         <div class="progress mb-3">

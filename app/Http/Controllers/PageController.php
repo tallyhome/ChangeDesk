@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BugReport;
 use App\Models\Page;
+use App\Models\RoadmapVote;
 use App\Models\TodoItem;
 use App\Models\Version;
 use App\Support\ThemeView;
@@ -41,7 +42,15 @@ class PageController extends Controller
 
     public function todolist()
     {
-        $todoItems = TodoItem::orderBy('priority', 'desc')->get();
+        $todoItems = TodoItem::withCount('votes')->orderBy('priority', 'desc')->get();
+        $voted = [];
+        $voter = (string) request()->cookie('roadmap_voter');
+        if (preg_match('/^[a-f0-9]{32}$/', $voter) === 1) {
+            $voted = RoadmapVote::query()->where('voter_token', $voter)->pluck('todo_item_id')->all();
+        }
+        $todoItems->each(function (TodoItem $item) use ($voted) {
+            $item->setAttribute('voted', in_array($item->id, $voted, true));
+        });
 
         return ThemeView::make('todolist', compact('todoItems'));
     }

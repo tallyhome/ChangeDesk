@@ -62,6 +62,7 @@
                     @endif
                 </div>
             </div>
+            @include('partials.bug-watch', ['bug' => $bug])
         </div>
     </div>
 </div>

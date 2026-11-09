@@ -2,6 +2,7 @@
 @section('title', __('app.public.changelog_title'))
 @section('content')
 <h1 class="au-title">{{ __('app.public.changelog_title') }}</h1>
+@include('partials.changelog-subscribe')
 
 <div class="au-grid">
   <div class="au-panel">

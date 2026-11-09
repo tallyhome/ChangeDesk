@@ -1,8 +1,8 @@
 # Audit de sécurité Evolora — mise en production
 
-Les corrections de code décrites ci-dessous sont livrées en 2.8.13. Le second facteur du superadmin reste une mesure d’exploitation : mot de passe long, non réutilisé. Il n’est pas imposé dans l’application, pour ne pas bloquer la connexion sans codes de secours.
+Les corrections de code décrites ci-dessous sont livrées en 2.8.13. La 3.0.0 ajoute le flux RSS, les votes, les abonnements confirmés, le widget et les éditeurs de projet, sans rouvrir ces corrections. Le nom de fichier des images de version est désormais choisi par le serveur. Le second facteur du superadmin reste une mesure d’exploitation : mot de passe long, non réutilisé. Il n’est pas imposé dans l’application, pour ne pas bloquer la connexion sans codes de secours.
 
-Version revue : **2.8.13**.  
+Version revue : **2.8.13**, application en **3.0.0**.  
 Date : 9 novembre 2026  
 Périmètre : code de l’application (Laravel 12, multi-tenant).  
 Ce document est une revue des chemins d’attaque dans le code. Ce n’est pas un test d’intrusion contre un serveur en ligne.

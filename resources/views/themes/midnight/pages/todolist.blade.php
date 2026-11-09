@@ -13,6 +13,7 @@
     <div style="display:flex;justify-content:space-between;gap:1rem">
       <div style="flex:1">
         <strong>{{ $item->title }}</strong>
+        @include('partials.roadmap-vote', ['item' => $item])
         <div class="md-muted">{!! \App\Support\HtmlSanitizer::clean($item->description) !!}</div>
         <div class="md-progress"><span style="width: {{ $progress }}%;background:{{ $barColor }}"></span></div>
       </div>

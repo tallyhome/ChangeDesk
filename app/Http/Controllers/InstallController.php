@@ -214,6 +214,7 @@ CACHE_STORE=database
 FILESYSTEM_DISK=local
 BROADCAST_CONNECTION=log
 
+# Abonnements (versions et suivi de bug) : remplacez log par smtp, sinon les confirmations restent dans storage/logs.
 MAIL_MAILER=log
 MAIL_FROM_ADDRESS="noreply@{$domain}"
 MAIL_FROM_NAME="Evolora"

@@ -2,6 +2,7 @@
 @section('title', __('app.public.changelog_title'))
 @section('content')
 <h1 class="md-title">{{ __('app.public.changelog_title') }}</h1>
+@include('partials.changelog-subscribe')
 <p class="md-muted">{{ __('app.landing.mod_changelog_text') }}</p>
 @forelse($versions as $version)
   <article class="md-card">

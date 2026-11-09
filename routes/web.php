@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DomainController;
 use App\Http\Controllers\Admin\ImageUploadController;
 use App\Http\Controllers\Admin\ProjectOnboardingController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\Admin\TodoItemController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -16,7 +17,11 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\ImpersonationController;
 use App\Http\Controllers\InstallController;
+use App\Http\Controllers\FeedController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\RoadmapVoteController;
+use App\Http\Controllers\SubscribeController;
+use App\Http\Controllers\WidgetController;
 use App\Http\Controllers\ThemePreviewController;
 use App\Http\Controllers\SuperAdmin\AuditLogController;
 use App\Http\Controllers\SuperAdmin\BillingController as SuperAdminBillingController;
@@ -68,17 +73,39 @@ Route::middleware(['central', 'auth'])->group(function () {
 
 Route::middleware(['tenant.host', 'tenant.notSuspended'])->group(function () {
     Route::get('/changelog', [PageController::class, 'changelog'])->name('changelog');
+    Route::get('/changelog.xml', [FeedController::class, 'rss'])->name('changelog.feed')->withoutMiddleware([
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
+    ]);
+    Route::get('/widget.js', [WidgetController::class, 'script'])->name('widget.script')->withoutMiddleware([
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
+    ]);
+    Route::get('/widget/feed.json', [FeedController::class, 'widgetFeed'])->name('widget.feed')->withoutMiddleware([
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
+    ]);
+    Route::post('/changelog/subscribe', [SubscribeController::class, 'changelog'])->middleware('throttle:5,1')->name('changelog.subscribe');
+    Route::get('/changelog/subscribe/{token}', [SubscribeController::class, 'confirmChangelog'])->middleware('throttle:20,1')->name('changelog.subscribe.confirm');
+    Route::get('/changelog/unsubscribe/{token}', [SubscribeController::class, 'unsubscribeChangelog'])->middleware('throttle:20,1')->name('changelog.unsubscribe');
     Route::get('/terms', [PageController::class, 'terms'])->name('terms');
     Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
 
     Route::middleware('module:todolist')->group(function () {
         Route::get('/todolist', [PageController::class, 'todolist'])->name('todolist');
+        Route::post('/todolist/{todoItem}/vote', [RoadmapVoteController::class, 'toggle'])->middleware('throttle:10,1')->name('roadmap.vote');
     });
 
     Route::middleware('module:bugs')->group(function () {
         Route::get('/bug-report', [PageController::class, 'bugReport'])->name('bug-report');
         Route::post('/bug-report', [PageController::class, 'storeBugReport'])->middleware('throttle:8,1')->name('bug-report.store');
         Route::get('/bug-report/{id}', [PageController::class, 'showBugReport'])->name('bug-report.show');
+        Route::post('/bug-report/{id}/watch', [SubscribeController::class, 'bug'])->middleware('throttle:5,1')->name('bug.watch');
+        Route::get('/bug-watch/{token}', [SubscribeController::class, 'confirmBug'])->middleware('throttle:20,1')->name('bug.watch.confirm');
+        Route::get('/bug-unwatch/{token}', [SubscribeController::class, 'unsubscribeBug'])->middleware('throttle:20,1')->name('bug.unwatch');
     });
 
     Route::middleware('module:wiki')->prefix('wiki')->group(function () {
@@ -103,16 +130,23 @@ Route::middleware(['central', 'auth', 'client', 'tenant.fromAuth'])
     ->group(function () {
         Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
 
-        Route::get('/domain', [DomainController::class, 'edit'])->name('domain.edit');
-        Route::put('/domain', [DomainController::class, 'update'])->name('domain.update');
-        Route::post('/domain/verify', [DomainController::class, 'verify'])->name('domain.verify');
+        Route::middleware('owner')->group(function () {
+            Route::get('/domain', [DomainController::class, 'edit'])->name('domain.edit');
+            Route::put('/domain', [DomainController::class, 'update'])->name('domain.update');
+            Route::post('/domain/verify', [DomainController::class, 'verify'])->name('domain.verify');
+
+            Route::get('/billing', [AdminBillingController::class, 'index'])->name('billing.index');
+            Route::post('/billing/checkout', [AdminBillingController::class, 'checkout'])->name('billing.checkout');
+            Route::get('/billing/success', [AdminBillingController::class, 'success'])->name('billing.success');
+
+            Route::get('/team', [TeamController::class, 'index'])->name('team.index');
+            Route::post('/team', [TeamController::class, 'store'])->name('team.store');
+            Route::post('/team/{user}/reset', [TeamController::class, 'reset'])->name('team.reset');
+            Route::delete('/team/{user}', [TeamController::class, 'destroy'])->name('team.destroy');
+        });
 
         Route::get('/appearance', [AppearanceController::class, 'edit'])->name('appearance.edit');
         Route::put('/appearance', [AppearanceController::class, 'update'])->name('appearance.update');
-
-        Route::get('/billing', [AdminBillingController::class, 'index'])->name('billing.index');
-        Route::post('/billing/checkout', [AdminBillingController::class, 'checkout'])->name('billing.checkout');
-        Route::get('/billing/success', [AdminBillingController::class, 'success'])->name('billing.success');
 
         Route::get('/visits', [\App\Http\Controllers\Admin\AdminVisitController::class, 'index'])->name('visits.index');
         Route::get('/visits/analysis', [\App\Http\Controllers\Admin\AdminVisitController::class, 'analysis'])->name('visits.analysis');

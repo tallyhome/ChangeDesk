@@ -3,6 +3,7 @@
 use App\Http\Middleware\DecodeRichText;
 use App\Http\Middleware\EnsureCentralDomain;
 use App\Http\Middleware\EnsureClientUser;
+use App\Http\Middleware\EnsureProjectOwner;
 use App\Http\Middleware\EnsureModuleEnabled;
 use App\Http\Middleware\EnsureSuperAdmin;
 use App\Http\Middleware\EnsureTenantHost;
@@ -58,6 +59,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'tenant.notSuspended' => EnsureTenantNotSuspended::class,
             'module' => EnsureModuleEnabled::class,
             'client' => EnsureClientUser::class,
+            'owner' => EnsureProjectOwner::class,
             'superadmin' => EnsureSuperAdmin::class,
         ]);
     })

@@ -7,6 +7,7 @@
     <div class="row">
         <div class="col-md-8">
             <h1 class="mb-4">{{ __('app.public.changelog_title') }}</h1>
+            @include('partials.changelog-subscribe')
             
             @foreach($versions as $version)
                 <div class="card mb-4">

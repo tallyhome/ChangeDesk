@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>@yield('title', $currentTenant->name ?? config('app.name')) — {{ $currentTenant->name ?? config('app.name') }}</title>
 @include('partials.favicon')
+@if(\App\Models\Tenant::current())
+<link rel="alternate" type="application/rss+xml" title="{{ __('app.public.changelog_title') }}" href="{{ url('/changelog.xml') }}">
+@endif
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="{{ asset('css/themes/aurora.css') }}?v={{ config('version.number') }}">
 </head>

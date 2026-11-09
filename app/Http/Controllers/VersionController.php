@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Version;
+use App\Services\ReleaseNotifier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class VersionController extends Controller
 {
@@ -35,13 +37,12 @@ class VersionController extends Controller
         $version->content = $validated['content'];
         
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->move(public_path('uploads'), $imageName);
-            $version->image_path = 'uploads/' . $imageName;
+            $version->image_path = $this->storeVersionImage($request->file('image'));
         }
         
         $version->save();
+
+        app(ReleaseNotifier::class)->created($version);
         
         return redirect()->route('admin.changelog')->with('success', __('app.flash.version_added'));
     }
@@ -68,15 +69,8 @@ class VersionController extends Controller
         $version->content = $validated['content'];
         
         if ($request->hasFile('image')) {
-            // Supprimer l'ancienne image si elle existe
-            if ($version->image_path && file_exists(public_path($version->image_path))) {
-                unlink(public_path($version->image_path));
-            }
-            
-            $image = $request->file('image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->move(public_path('uploads'), $imageName);
-            $version->image_path = 'uploads/' . $imageName;
+            $this->deleteVersionImage($version->image_path);
+            $version->image_path = $this->storeVersionImage($request->file('image'));
         }
         
         $version->save();
@@ -88,6 +82,35 @@ class VersionController extends Controller
     {
         $version->delete();
         return redirect()->route('admin.changelog')->with('success', __('app.flash.version_deleted'));
+    }
+
+    private function storeVersionImage($image): string
+    {
+        $ext = strtolower((string) $image->guessExtension());
+        $allowed = ['jpg' => 'jpg', 'jpeg' => 'jpg', 'png' => 'png', 'gif' => 'gif'];
+        abort_unless(isset($allowed[$ext]), 422);
+
+        $dir = public_path('uploads');
+        if (! is_dir($dir)) {
+            mkdir($dir, 0755, true);
+        }
+
+        $name = time().'_'.Str::random(10).'.'.$allowed[$ext];
+        $image->move($dir, $name);
+
+        return 'uploads/'.$name;
+    }
+
+    private function deleteVersionImage(?string $path): void
+    {
+        if (! is_string($path) || ! str_starts_with($path, 'uploads/') || str_contains($path, '..')) {
+            return;
+        }
+
+        $full = public_path($path);
+        if (is_file($full)) {
+            unlink($full);
+        }
     }
 
     public function toggleChangelogStatus()

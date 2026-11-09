@@ -47,6 +47,30 @@ cp htaccess .htaccess   # ou utilise le .htaccess fourni dans le repo
 
 L’installeur écrit `.env`, lance migrate/seed, crée `storage/app/installed`.
 
+Les abonnements e-mail (nouvelles versions, changement de statut d’un bug) partent seulement après confirmation du visiteur. L’installeur laisse `MAIL_MAILER=log` : les messages vont dans `storage/logs`. Pour les envoyer vraiment, passez le `.env` en SMTP (`MAIL_MAILER`, `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD`, `MAIL_FROM_ADDRESS`) puis `php artisan config:clear`.
+
+Après une mise à jour du code :
+
+```bash
+composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction
+php artisan migrate --force
+php artisan view:clear
+```
+
+## Nouveautés 3.0.0 — adresses utiles
+
+Remplacez l’hôte par le site public du projet (sous-domaine ou domaine vérifié) :
+
+| Usage | Adresse |
+| --- | --- |
+| Changelog | `https://slug.domaine.fr/changelog` |
+| Flux RSS | `https://slug.domaine.fr/changelog.xml` |
+| Widget | `https://slug.domaine.fr/widget.js` |
+| Badge | même script avec l’attribut `data-evolora-badge` |
+| Feuille de route | `https://slug.domaine.fr/todolist` |
+
+Le code à coller est aussi affiché dans l’admin, page Changelog. L’invitation d’un éditeur est dans l’admin, page Équipe : ce compte écrit le contenu, sans facturation ni domaine.
+
 ## .env important
 
 ```env

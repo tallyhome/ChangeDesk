@@ -106,14 +106,76 @@ L'application sera accessible à l'adresse http://127.0.0.1:8000
 
 ## Fonctionnalités principales
 
-- Gestion des versions (changelog) avec support des images
-- Suivi des rapports de bugs avec système de progression et statuts colorés
-- Liste de tâches (todo) avec gestion des priorités
-- Gestion de pages de contenu dynamique
-- Système de wiki avec catégories et articles
-- Interface d'administration complète
-- Thème sombre/clair
-- Gestion des paramètres système
+- Changelog public, avec images, et flux RSS fixe : `https://slug.votredomaine.fr/changelog.xml`
+- Abonnement e-mail « Prévenez-moi des prochaines versions » (confirmation obligatoire avant tout envoi)
+- Suivi d’un bug : « Prévenez-moi quand le statut change », avec la même confirmation
+- Votes publics sur la feuille de route (« Je veux ça »), un vote par navigateur
+- Widget à coller sur le site du client (liste des versions ou badge Nouveautés)
+- Plusieurs personnes sur un projet : l’administrateur invite un éditeur, sans facturation ni domaine
+- Suivi des rapports de bugs
+- Wiki
+- Quatre thèmes publics
+- Interface d’administration
+
+## Utilisation
+
+### Flux RSS
+
+L’adresse ne change pas et ne demande pas de compte : `https://slug.votredomaine.fr/changelog.xml`. Les lecteurs RSS et les outils s’y abonnent. Le lien est aussi annoncé dans les pages publiques du projet.
+
+### Abonnements e-mail
+
+Sur le changelog, le visiteur laisse seulement son adresse. Il reçoit un lien de confirmation. Tant que ce lien n’est pas ouvert, aucune version ne lui est envoyée. Le même principe existe sur la fiche d’un bug, pour le changement de statut. Le message affiché est le même que l’adresse existe déjà ou non.
+
+En production, configurez un vrai envoi :
+
+```
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.exemple.fr
+MAIL_PORT=587
+MAIL_USERNAME=
+MAIL_PASSWORD=
+MAIL_FROM_ADDRESS=noreply@votredomaine.fr
+MAIL_FROM_NAME=Evolora
+```
+
+Avec `MAIL_MAILER=log` (valeur de l’installeur), les messages sont seulement écrits dans `storage/logs`. Le site fonctionne quand même.
+
+### Votes
+
+Chaque idée publique a un bouton « Je veux ça ». Un second clic retire le vote. Le compteur est visible par les visiteurs et dans l’admin. La priorité choisie par l’administrateur reste distincte de ce compteur.
+
+### Widget
+
+Dans l’admin, Changelog affiche les deux extraits à copier. Ils pointent vers le site public du projet, pas vers le domaine central.
+
+Liste des dernières versions :
+
+```html
+<script src="https://slug.votredomaine.fr/widget.js" async></script>
+```
+
+Badge Nouveautés :
+
+```html
+<script src="https://slug.votredomaine.fr/widget.js" data-evolora-badge async></script>
+```
+
+Le script n’affiche que le numéro, la date, un court extrait et le lien vers le changelog. Il ne lit pas les cookies du site qui l’héberge.
+
+### Équipe
+
+L’administrateur ouvre **Équipe**, saisit le nom, l’adresse et un mot de passe d’au moins 8 caractères. Le compte créé est un éditeur : changelog, feuille de route, bugs et wiki. La facturation, le domaine et la gestion de l’équipe restent réservés à l’administrateur. Le mot de passe temporaire affiché après une réinitialisation n’est montré qu’une fois.
+
+## Mise à jour depuis une version précédente
+
+```
+composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction
+php artisan migrate --force
+php artisan view:clear
+```
+
+La migration ajoute le rôle de projet (`owner` pour les comptes déjà présents), les abonnés, les suivis de bugs et les votes.
 
 ## Structure de la base de données
 

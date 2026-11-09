@@ -45,6 +45,6 @@ class RecordVisit
     {
         $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
-        return in_array($extension, ['js', 'css', 'png', 'jpg', 'jpeg', 'gif', 'ico', 'svg', 'woff', 'woff2', 'map'], true);
+        return in_array($extension, ['js', 'css', 'json', 'xml', 'png', 'jpg', 'jpeg', 'gif', 'ico', 'svg', 'woff', 'woff2', 'map'], true);
     }
 }

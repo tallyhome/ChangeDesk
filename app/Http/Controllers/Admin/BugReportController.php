@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\BugWatchNotifier;
 use Illuminate\Http\Request;
 use App\Models\BugReport;
 
@@ -69,7 +70,12 @@ class BugReportController extends Controller
             'expected_fix_date' => 'nullable|date',
         ]);
         
+        $previous = $bugReport->status;
         $bugReport->update($validated);
+
+        if ($previous !== $bugReport->status) {
+            app(BugWatchNotifier::class)->statusChanged($bugReport);
+        }
         
         return redirect()->route('admin.bug_reports')->with('success', __('app.flash.bug_updated'));
     }

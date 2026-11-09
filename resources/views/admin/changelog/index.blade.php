@@ -26,6 +26,21 @@
         </div>
     @endif
 
+    @php $embedBase = \App\Models\Tenant::current()?->publicBaseUrl(); @endphp
+    @if($embedBase)
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="h5">{{ __('app.admin.embed_title') }}</h2>
+                <p class="text-muted">{{ __('app.admin.embed_help') }}</p>
+                <p class="mb-1"><strong>{{ __('app.admin.embed_list') }}</strong></p>
+                <pre class="mb-3"><code>{{ '<script src="'.$embedBase.'/widget.js" async></script>' }}</code></pre>
+                <p class="mb-1"><strong>{{ __('app.admin.embed_badge') }}</strong></p>
+                <pre class="mb-3"><code>{{ '<script src="'.$embedBase.'/widget.js" data-evolora-badge async></script>' }}</code></pre>
+                <p class="mb-0">{{ __('app.admin.rss_link') }} : <a href="{{ $embedBase }}/changelog.xml">{{ $embedBase }}/changelog.xml</a></p>
+            </div>
+        </div>
+    @endif
+
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>

@@ -50,6 +50,7 @@
           <div class="au-road-ico" aria-hidden="true"><i class="fas {{ $icon }}"></i></div>
           <div class="au-road-body">
             <strong>{{ $item->title }}</strong>
+            @include('partials.roadmap-vote', ['item' => $item])
             @if($excerpt)<p>{{ $excerpt }}</p>@endif
           </div>
           <div class="au-road-prog">

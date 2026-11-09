@@ -204,21 +204,30 @@
                                 <i class="fas fa-bug"></i> {{ __('app.admin.bug_reports') }}
                             </a>
                         </li>
+                        @if(auth()->user()?->isProjectOwner())
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.domain.*') ? 'active' : '' }}" href="{{ route('admin.domain.edit') }}">
                                 <i class="fas fa-globe"></i> {{ __('app.admin.domain') }}
                             </a>
                         </li>
+                        @endif
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.appearance.*') ? 'active' : '' }}" href="{{ route('admin.appearance.edit') }}">
                                 <i class="fas fa-palette"></i> {{ __('app.admin.appearance') }}
                             </a>
                         </li>
+                        @if(auth()->user()?->isProjectOwner())
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.billing.*') ? 'active' : '' }}" href="{{ route('admin.billing.index') }}">
                                 <i class="fas fa-credit-card"></i> {{ __('app.admin.billing') }}
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.team.*') ? 'active' : '' }}" href="{{ route('admin.team.index') }}">
+                                <i class="fas fa-users"></i> {{ __('app.admin.team') }}
+                            </a>
+                        </li>
+                        @endif
                         <li class="nav-item">
                             <a href="{{ route('admin.settings.index') }}" class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
                                 <i class="fas fa-link me-2"></i>{{ __('app.admin.external_links') }}

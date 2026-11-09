@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Concerns\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Carbon\Carbon;
 
 class TodoItem extends Model
@@ -26,6 +27,11 @@ class TodoItem extends Model
         'expected_date' => 'date',
         'estimated_completion_date' => 'date',
     ];
+
+    public function votes(): HasMany
+    {
+        return $this->hasMany(RoadmapVote::class);
+    }
 
     public function getEstimatedCompletionDateAttribute($value)
     {

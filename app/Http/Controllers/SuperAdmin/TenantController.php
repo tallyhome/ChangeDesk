@@ -121,7 +121,11 @@ class TenantController extends Controller
 
     public function impersonate(Tenant $tenant)
     {
-        $client = $tenant->users()->where('role', User::ROLE_CLIENT)->where('is_active', true)->first();
+        $client = $tenant->users()
+            ->where('role', User::ROLE_CLIENT)
+            ->where('is_active', true)
+            ->orderByRaw('case when project_role = ? then 0 else 1 end', [User::PROJECT_OWNER])
+            ->first();
         abort_unless($client, 404, 'Aucun client actif pour ce tenant.');
 
         request()->session()->put('impersonator_id', Auth::id());

@@ -38,6 +38,7 @@
                                 <th>{{ __('app.common.progress') }}</th>
                                 <th>{{ __('app.common.status') }}</th>
                                 <th>{{ __('app.common.status') }}</th>
+                                <th>{{ __('app.admin.votes') }}</th>
                                 <th>{{ __('app.common.estimated_date') }}</th>
                                 <th>{{ __('app.common.actions') }}</th>
                             </tr>
@@ -67,6 +68,7 @@
                                             {{ \App\Support\ThemeUi::statusLabel($item->status) }}
                                         </span>
                                     </td>
+                                    <td>{{ (int) ($item->votes_count ?? 0) }}</td>
                                     <td>{{ $item->expected_completion_date ? \App\Support\Locale::formatDate($item->expected_completion_date) : __('app.common.undefined') }}</td>
                                     <td>
                                         <div class="btn-group">

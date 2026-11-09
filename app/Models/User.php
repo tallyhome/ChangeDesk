@@ -16,11 +16,16 @@ class User extends Authenticatable
 
     public const ROLE_CLIENT = 'client';
 
+    public const PROJECT_OWNER = 'owner';
+
+    public const PROJECT_EDITOR = 'editor';
+
     protected $fillable = [
         'name',
         'email',
         'password',
         'role',
+        'project_role',
         'tenant_id',
         'preferred_plan_id',
         'is_active',
@@ -58,5 +63,15 @@ class User extends Authenticatable
     public function isClient(): bool
     {
         return $this->role === self::ROLE_CLIENT;
+    }
+
+    public function isProjectOwner(): bool
+    {
+        return $this->isClient() && ($this->project_role ?: self::PROJECT_OWNER) !== self::PROJECT_EDITOR;
+    }
+
+    public function isEditor(): bool
+    {
+        return $this->isClient() && $this->project_role === self::PROJECT_EDITOR;
     }
 }

@@ -10,7 +10,7 @@ class TodoItemController extends Controller
 {
     public function index()
     {
-        $todoItems = TodoItem::orderBy('created_at', 'desc')->get();
+        $todoItems = TodoItem::withCount('votes')->orderBy('created_at', 'desc')->get();
         return view('admin.todolist.index', compact('todoItems'));
     }
 
