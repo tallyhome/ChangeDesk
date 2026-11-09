@@ -10,6 +10,9 @@
       { href: "webuzo.html", id: "webuzo", label: "Webuzo" },
       { href: "serveur.html", id: "serveur", label: "Apache, Nginx, Plesk" },
     ]},
+    { group: "Utiliser", items: [
+      { href: "utilisation.html", id: "usage", label: "Configuration et utilisation" },
+    ]},
     { group: "Configurer", items: [
       { href: "base-de-donnees.html", id: "bdd", label: "Base de données" },
       { href: "configuration.html", id: "config", label: "Fichier .env" },

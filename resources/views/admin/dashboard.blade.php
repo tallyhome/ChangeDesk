@@ -81,6 +81,48 @@
     </div>
   </div>
 
+  <div class="card mb-4 border-0 shadow-sm">
+    <div class="card-body">
+      <h2 class="h5 mb-1">{{ __('app.admin.growth_title') }}</h2>
+      <p class="text-muted small">{{ __('app.admin.growth_help') }}</p>
+      <div class="row g-3">
+        <div class="col-6 col-xl-3">
+          <div class="rounded-3 p-3 h-100" style="background:rgba(13,110,253,.06);">
+            <div class="text-muted small">{{ __('app.admin.growth_subscribers') }}</div>
+            <div class="fs-3 fw-semibold lh-1">{{ $growth['subscribers'] }}</div>
+            <div class="small text-muted mt-2">{{ __('app.admin.growth_pending', ['count' => $growth['subscribers_pending']]) }}</div>
+          </div>
+        </div>
+        <div class="col-6 col-xl-3">
+          <div class="rounded-3 p-3 h-100" style="background:rgba(25,135,84,.06);">
+            <div class="text-muted small">{{ __('app.admin.growth_votes') }}</div>
+            <div class="fs-3 fw-semibold lh-1">{{ $growth['votes'] }}</div>
+            <a href="{{ route('admin.todolist') }}" class="small">{{ __('app.admin.upcoming') }}</a>
+          </div>
+        </div>
+        <div class="col-6 col-xl-3">
+          <div class="rounded-3 p-3 h-100" style="background:rgba(13,202,240,.08);">
+            <div class="text-muted small">{{ __('app.admin.growth_editors') }}</div>
+            <div class="fs-3 fw-semibold lh-1">{{ $growth['editors'] }}</div>
+            @if($owner)
+              <a href="{{ route('admin.team.index') }}" class="small">{{ __('app.admin.team') }}</a>
+            @endif
+          </div>
+        </div>
+        <div class="col-6 col-xl-3">
+          <div class="rounded-3 p-3 h-100" style="background:rgba(255,193,7,.1);">
+            <div class="text-muted small">{{ __('app.admin.rss_link') }}</div>
+            <div class="small mt-2"><a href="{{ $growth['public_url'] }}/changelog.xml" target="_blank" rel="noopener">changelog.xml</a></div>
+            <div class="small"><a href="{{ route('admin.changelog') }}">{{ __('app.admin.embed_title') }}</a></div>
+          </div>
+        </div>
+      </div>
+      @if($owner && $growth['mail_log'])
+        <p class="small text-warning mb-0 mt-3">{{ __('app.admin.growth_mail_log') }}</p>
+      @endif
+    </div>
+  </div>
+
   <div class="row g-3 mb-4">
     <div class="col-lg-4">
       <div class="card h-100">
@@ -132,7 +174,9 @@
           @endif
         </div>
         <div class="small text-muted mb-1">{{ parse_url($tenant->subdomainUrl(), PHP_URL_HOST) }}</div>
-        <a href="{{ route('admin.domain.edit') }}" class="small">{{ __('app.admin.configure') }}</a>
+        @if($owner)
+          <a href="{{ route('admin.domain.edit') }}" class="small">{{ __('app.admin.configure') }}</a>
+        @endif
       </div></div>
     </div>
     <div class="col-md-4">
@@ -143,11 +187,13 @@
       </div></div>
     </div>
     <div class="col-md-4">
+      @if($owner)
       <div class="card h-100"><div class="card-body">
         <div class="text-muted">{{ __('app.admin.billing') }}</div>
         <div class="fw-semibold">{{ $tenant->plan?->formattedPrice() ?? __('app.common.free') }}</div>
         <a href="{{ route('admin.billing.index') }}" class="small">{{ __('app.admin.manage_link') }}</a>
       </div></div>
+      @endif
     </div>
   </div>
 

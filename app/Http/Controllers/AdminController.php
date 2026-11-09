@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ChangelogSubscriber;
 use App\Models\Page;
+use App\Models\RoadmapVote;
 use App\Models\Tenant;
+use App\Models\User;
 use App\Models\Version;
 use App\Models\Visit;
 use App\Services\PlanGate;
@@ -25,27 +28,49 @@ class AdminController extends Controller
             || $tenant->domain_status === Tenant::DOMAIN_PENDING
             || $tenant->isCustomDomainVerified();
 
+        $owner = (bool) auth()->user()?->isProjectOwner();
         $checklist = [
             [
                 'label' => __('app.admin.check_changelog'),
                 'done' => Version::count() > 0,
                 'url' => route('admin.changelog.create'),
+                'owner' => false,
             ],
             [
                 'label' => __('app.admin.check_domain'),
                 'done' => $domainReady,
                 'url' => route('admin.domain.edit'),
+                'owner' => true,
             ],
             [
                 'label' => __('app.admin.check_theme'),
                 'done' => filled($tenant->visual_theme),
                 'url' => route('admin.appearance.edit'),
+                'owner' => false,
             ],
             [
                 'label' => __('app.admin.check_plan'),
                 'done' => (bool) $tenant->plan_id,
                 'url' => route('admin.billing.index'),
+                'owner' => true,
             ],
+        ];
+        if (! $owner) {
+            $checklist = array_values(array_filter($checklist, fn (array $item) => ! $item['owner']));
+        }
+
+        $growth = [
+            'subscribers' => ChangelogSubscriber::query()->whereNotNull('confirmed_at')->count(),
+            'subscribers_pending' => ChangelogSubscriber::query()->whereNull('confirmed_at')->count(),
+            'votes' => RoadmapVote::query()->count(),
+            'editors' => User::query()
+                ->where('tenant_id', $tenant->id)
+                ->where('role', User::ROLE_CLIENT)
+                ->where('project_role', User::PROJECT_EDITOR)
+                ->count(),
+            'public_url' => $tenant->publicBaseUrl(),
+            'mail_log' => config('mail.default') === 'log',
+            'owner' => $owner,
         ];
 
         return view('admin.dashboard', compact(
@@ -55,7 +80,9 @@ class AdminController extends Controller
             'analytics',
             'publishedMonth',
             'publishedTotal',
-            'recentVersions'
+            'recentVersions',
+            'growth',
+            'owner'
         ));
     }
 

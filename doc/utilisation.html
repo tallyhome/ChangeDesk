@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Configuration et utilisation — Evolora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Manrope:wght@500;650;750;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div id="app" data-page="usage">
+  <main class="main">
+    <div class="kicker">Après l’installation</div>
+    <h1>Configuration et utilisation</h1>
+    <p class="lead">Une fois l’assistant terminé, le superadmin crée ou ouvre un projet. Le client travaille dans <code>/admin</code> sur le domaine central. Les visiteurs voient le changelog sur le sous-domaine du projet. Les écrans ci-dessous viennent de l’application, pas d’une maquette.</p>
+
+    <div class="callout info">
+      <strong>Où se connecter</strong>
+      Le domaine central sert à la connexion et à l’administration. Le site public du projet est <code>https://slug.votredomaine.fr</code>, ou le domaine personnalisé une fois vérifié.
+    </div>
+
+    <h2>Tableau de bord</h2>
+    <p>Le tableau de bord reprend l’audience (vues, visiteurs, engagement) et, depuis la 3.0.0, ce que les visiteurs demandent vraiment. Il n’affiche pas les adresses e-mail : seulement des compteurs.</p>
+    <figure class="figure">
+      <img src="assets/screens/dashboard.png" alt="Tableau de bord Evolora avec les compteurs d’abonnés, de votes et d’éditeurs">
+      <figcaption>Bloc « Ce que demandent les visiteurs » : abonnés confirmés, votes, éditeurs, lien du flux RSS et du widget.</figcaption>
+    </figure>
+    <ul>
+      <li><strong>Abonnés aux versions</strong> : adresses qui ont confirmé. La ligne en dessous compte celles qui n’ont pas encore cliqué le lien.</li>
+      <li><strong>Votes</strong> : total des « Je veux ça » sur la feuille de route. Le lien ouvre la liste admin, colonne Demandes.</li>
+      <li><strong>Éditeurs</strong> : comptes invités, sans facturation ni domaine. Le lien n’apparaît que pour l’administrateur du projet.</li>
+      <li><strong>Flux RSS</strong> : ouvre <code>/changelog.xml</code> du site public. Le second lien revient à la page Changelog, où se copie le widget.</li>
+    </ul>
+    <div class="callout warn">
+      <strong>Le bandeau jaune</strong>
+      S’il s’affiche, <code>MAIL_MAILER</code> vaut encore <code>log</code>. Les confirmations sont écrites dans <code>storage/logs</code> et n’arrivent pas dans les boîtes mail. Passez en SMTP : voir <a href="configuration.html">le fichier .env</a>. Le site reste utilisable sans ça.
+    </div>
+    <p>Un éditeur ne voit ni le lien Facturation, ni le lien Domaine, ni le bandeau e-mail. Ces pages répondent 403 s’il tape l’adresse.</p>
+
+    <h2>Publier une version</h2>
+    <p>Admin → Changelog → Nouvelle version. L’enregistrement d’une <em>nouvelle</em> version prévient les abonnés déjà confirmés. Modifier une version existante ne renvoie pas d’e-mail.</p>
+    <figure class="figure">
+      <img src="assets/screens/changelog-admin.png" alt="Page Changelog de l’admin avec le code du widget et le lien RSS">
+      <figcaption>Le code à coller et l’adresse RSS sont en haut de la page Changelog.</figcaption>
+    </figure>
+
+    <h2>Flux RSS</h2>
+    <p>Adresse fixe, sans compte :</p>
+    <pre><code>https://slug.votredomaine.fr/changelog.xml</code></pre>
+    <p>Les lecteurs RSS et les outils s’y abonnent. Le flux contient le numéro, la date et un extrait en texte. Les pages publiques annoncent aussi ce flux.</p>
+
+    <h2>Prévenir des prochaines versions</h2>
+    <p>Sur le changelog public, le visiteur laisse seulement son adresse et clique « Me prévenir ». Il reçoit un e-mail avec un lien. Tant que ce lien n’est pas ouvert, aucune version ne lui est envoyée. Le message à l’écran est le même que l’adresse soit nouvelle ou déjà connue.</p>
+    <figure class="figure">
+      <img src="assets/screens/changelog-public.png" alt="Changelog public avec le formulaire Prévenez-moi des prochaines versions et le lien Flux RSS">
+      <figcaption>Formulaire d’abonnement et lien Flux RSS, au-dessus des versions.</figcaption>
+    </figure>
+
+    <h2>Votes sur la feuille de route</h2>
+    <p>Chaque idée publique a un bouton « Je veux ça ». Un second clic retire le vote. Le vote est lié au navigateur, pas à un compte. Dans l’admin, la colonne <strong>Demandes</strong> montre le total. Elle ne remplace pas la priorité choisie par l’administrateur.</p>
+    <figure class="figure">
+      <img src="assets/screens/roadmap-admin.png" alt="Liste admin des fonctionnalités à venir avec la colonne Demandes">
+      <figcaption>Colonne Demandes : nombre de votes par idée.</figcaption>
+    </figure>
+    <div class="callout info">
+      <strong>Selon le plan</strong>
+      La page publique de la feuille de route (et donc le bouton) n’est visible que si le plan du projet inclut ce module. Sur le plan gratuit, le visiteur peut voir une page qui invite à changer de plan. Le compteur reste disponible dans l’admin.
+    </div>
+
+    <h2>Suivre un bug</h2>
+    <p>Sur la fiche publique d’un signalement, le visiteur laisse son adresse : « Prévenez-moi quand le statut change ». Même règle : e-mail de confirmation d’abord, puis un message seulement si le statut change vraiment (ouvert, en cours, résolu, fermé). Cette fiche est publique seulement si le module bugs est inclus dans le plan.</p>
+
+    <h2>Widget sur le site du client</h2>
+    <p>Le script se charge depuis le site public du projet, pas depuis le domaine central. Il affiche le numéro, la date, un court extrait et le lien vers le changelog. Il n’écrit pas le HTML reçu tel quel.</p>
+    <p>Liste des dernières versions :</p>
+    <pre><code>&lt;script src="https://slug.votredomaine.fr/widget.js" async&gt;&lt;/script&gt;</code></pre>
+    <p>Badge Nouveautés (un point tant que la dernière version n’a pas été ouverte dans ce navigateur) :</p>
+    <pre><code>&lt;script src="https://slug.votredomaine.fr/widget.js" data-evolora-badge async&gt;&lt;/script&gt;</code></pre>
+
+    <h2>Plusieurs personnes sur le projet</h2>
+    <p>Admin → Équipe. L’administrateur saisit un nom, une adresse et un mot de passe d’au moins 8 caractères. Le compte créé est un <strong>éditeur</strong> : changelog, feuille de route, bugs et wiki. Il n’ouvre pas la facturation, le domaine, ni la page Équipe.</p>
+    <figure class="figure">
+      <img src="assets/screens/equipe.png" alt="Page Équipe avec le formulaire d’ajout d’un éditeur">
+      <figcaption>Invitation d’un éditeur. L’administrateur du projet reste listé à part.</figcaption>
+    </figure>
+    <p>Le bouton de mot de passe temporaire n’affiche le nouveau mot de passe qu’une fois. Pour retirer quelqu’un, on supprime l’éditeur. On ne peut pas retirer le dernier administrateur depuis cet écran.</p>
+
+    <h2>Réglage e-mail à ne pas oublier</h2>
+    <pre><code>MAIL_MAILER=smtp
+MAIL_HOST=mail.votredomaine.fr
+MAIL_PORT=587
+MAIL_USERNAME=noreply@votredomaine.fr
+MAIL_PASSWORD=...
+MAIL_FROM_ADDRESS=noreply@votredomaine.fr
+MAIL_FROM_NAME=Evolora</code></pre>
+    <p>Puis, en SSH : <code>php artisan config:clear</code>. Sans SSH, supprimez <code>bootstrap/cache/config.php</code> s’il existe. Le détail des autres variables est sur la page <a href="configuration.html">Fichier .env</a>.</p>
+
+    <footer><a href="depannage.html">Dépannage →</a></footer>
+  </main>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -47,7 +47,7 @@ SESSION_DOMAIN=null</code></pre>
     <p>Pour partager la session entre le domaine central et les sous-domaines tenants, vous pourrez passer <code>SESSION_DOMAIN=.changelog.monsite.fr</code> (point devant). Laissez <code>null</code> au début si tout passe par le domaine central.</p>
 
     <h2>E-mail</h2>
-    <p>Par défaut <code>MAIL_MAILER=log</code> (les mails vont dans les logs). En production, configurez SMTP (cPanel, Mailgun, SES, etc.) :</p>
+    <p>Par défaut <code>MAIL_MAILER=log</code> (les mails vont dans les logs). En production, configurez SMTP (cPanel, Mailgun, SES, etc.). C’est indispensable pour les nouveautés 3.0.0 : confirmation d’abonnement aux versions et alerte de changement de statut d’un bug. Le détail d’usage est dans <a href="utilisation.html">Configuration et utilisation</a>.</p>
     <pre><code>MAIL_MAILER=smtp
 MAIL_HOST=mail.monsite.fr
 MAIL_PORT=587
@@ -93,7 +93,7 @@ php artisan config:cache</code></pre>
       Le jeton d’accès pour les mises à jour n’est pas dans le <code>.env</code> : il se configure dans <code>app/Support/GithubUpdateAuth.php</code> (dépôt privé : PAT lecture Contents).
     </div>
 
-    <footer><a href="sous-domaines.html">Suivant : sous-domaines wildcard →</a></footer>
+    <footer><a href="utilisation.html">Suivant : configuration et utilisation →</a></footer>
   </main>
 </div>
 <script src="assets/app.js"></script>
